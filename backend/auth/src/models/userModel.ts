@@ -4,3 +4,4 @@ export interface User {
     username: string,
     password_hash: string
 }
+
