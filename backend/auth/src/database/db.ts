@@ -1,4 +1,4 @@
-import { Pool } from 'pg'
+import { Pool } from 'pg';
 import { User } from '../models/userModel';
 
 // Initialize the PostgreSQL connection pool using environment variables
@@ -21,11 +21,7 @@ export const getUserByEmail = async (email: string): Promise<User> => {
     // Query the database to find the user by email
     const res = await pool.query<User>('SELECT * FROM users WHERE email=$1', [email]);
 
-    // Add a check if no user is found (edge case handling)
-    if (res.rows.length === 0) {
-        throw new Error(`No user found with email: ${email}`);
-    }
-
+   
     return res.rows[0]; // return the first and only user with matching email
 }
 
@@ -42,17 +38,50 @@ export const addUser = async (email: string, username: string, password_hash: st
     try {
         // Insert the new user into the database
         const res = await pool.query(
-            'INSERT INTO users(email, username, password_hash) VALUES($1, $2, $3)',
+            'INSERT INTO users(email, username, password_hash) VALUES($1, $2, $3) RETURNING user_id',
             [email, username, password_hash]
         );
 
-        return res.rowCount;
+        return res.rows[0].user_id;
     } catch (err: any) {
         // Handle specific error: Unique constraint violation (e.g., duplicate email)
         if (err.code === '23505') {  // '23505' is the PostgreSQL error code for unique violations
             throw new Error('A user with the same credentials already exists!');
         }
 
+        // Log unexpected errors for debugging
+        console.error(`Error adding user: ${err.message}`);
+
+        // Rethrow the error to propagate it to the caller
+        throw err;
+    }
+}
+
+export const updateUserGoogleId = async (email: string, google_id: string) => { 
+    try {
+        const res = await pool.query(
+            "UPDATE users SET google_id = $1 WHERE email = $2 RETURNING user_id", [google_id, email]
+        );
+        return res.rows[0].user_id;
+    } catch (error:any) {
+        // Log unexpected errors for debugging
+        console.error(`Error adding user: ${error.message}`);
+
+        // Rethrow the error to propagate it to the caller
+        throw error;
+    }
+}
+
+export const addUserWithGoogle = async (email: string, username: string, google_id: string): Promise<number | null> => {
+    try {
+        // Insert the new user into the database
+        const res = await pool.query(
+            'INSERT INTO users(email, username, google_id) VALUES($1, $2, $3) RETURNING user_id',
+            [email, username, google_id]
+        );
+
+        return res.rows[0].user_id;
+    } catch (err: any) {
         // Log unexpected errors for debugging
         console.error(`Error adding user: ${err.message}`);
 

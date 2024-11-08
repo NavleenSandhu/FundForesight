@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { addUser, getUserByEmail } from '../database/db';
+import { addUser, addUserWithGoogle, getUserByEmail, updateUserGoogleId } from '../database/db';
 import { Payload } from '../models/payload';
 import { validateCredentials } from './credentialCheckService';
 
@@ -32,22 +32,10 @@ export const registerUser = async (email: string, username: string, password: st
         const password_hash = await bcrypt.hash(password, salt);
 
         // Add the user to the database
-        const rowsAffected = await addUser(email, username, password_hash);
-
-        // Ensure at least one row was affected (i.e., user was added)
-        if (rowsAffected as number < 1) {
-            throw new Error('An error occurred while adding the user');
-        }
-
-        // Fetch the newly registered user from the database
-        const user = await getUserByEmail(email);
-
-        if (!user) {
-            throw new Error('User not found after registration');
-        }
+        const user_id = await addUser(email, username, password_hash);
 
         // Prepare the JWT payload
-        const payload = { user_id: user.user_id, email, username: user.username };
+        const payload = { user_id, email, username };
 
         // Sign the JWT token using the secret
         const token = jwt.sign(payload, JWT_SECRET);
@@ -76,11 +64,13 @@ export const loginUser = async (email: string, password: string): Promise<string
     try {
         // Fetch the user from the database by email
         const user = await getUserByEmail(email);
+        if (!user) throw new Error(`No user found with email: ${email}`)
+
+        
 
         // Validate that the user exists and the password is correct
-        if (!user || !(await bcrypt.compare(password, user.password_hash))) {
-            throw new Error('Invalid credentials');
-        }
+        if (!(await bcrypt.compare(password, user.password_hash || ""))) throw new Error('Invalid credentials');
+        
 
         // Prepare the JWT payload
         const payload = { user_id: user.user_id, email, username: user.username };
@@ -110,4 +100,38 @@ export const verifyToken = (token?:string) => {
     }
     
 
+}
+
+
+export const signinWithGoogle = async (email: string,username:string, google_id: string) => { 
+    try {
+        // Fetch the newly registered user from the database
+        const user = await getUserByEmail(email);
+        // Add a check if no user is found (edge case handling)
+        
+        let user_id;
+        if (!user) { 
+            user_id = await addUserWithGoogle(email, username, google_id)
+            
+        } else if (!user.google_id) {
+            user_id = await updateUserGoogleId(email, google_id);
+            
+        }
+
+
+         // Prepare the JWT payload
+        const payload = { user_id, email, username };
+
+        // Sign the JWT token using the secret
+        const token = jwt.sign(payload, JWT_SECRET);
+
+        return token;
+        
+    } catch (error:any) {
+        console.log(error.message);
+        throw error;
+        
+        
+    }
+     
 }
