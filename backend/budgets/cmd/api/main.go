@@ -18,7 +18,7 @@ func main() {
 	}
 
 	// Initialize a new database connection
-	DB := db.NewPostgresDB(cfg.DBConnString)
+	DB,err := db.NewPostgresDB(cfg.DBConnString)
 
 	// Create a new router with the database connection
 	router := routing.NewRouter(DB)

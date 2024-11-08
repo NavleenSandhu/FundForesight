@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { login, register } from '../controllers/authController';
+import { login, register,getUserId } from '../controllers/authController';
 
 const router = Router();
 
@@ -18,5 +18,12 @@ router.post('/register', register);
  * @access Public
  */
 router.post('/login', login);
+
+/**
+ * @route POST /api/v1/auth/getUserId
+ * @desc verify the user and get user id
+
+ */
+router.get('/getUserId',getUserId);
 
 export default router;

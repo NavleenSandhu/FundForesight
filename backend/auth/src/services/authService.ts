@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { addUser, getUserByEmail } from '../database/db';
+import { Payload } from '../models/payload';
 import { validateCredentials } from './credentialCheckService';
 
 // Ensure JWT_SECRET is loaded from environment variables and is a string
@@ -92,4 +93,21 @@ export const loginUser = async (email: string, password: string): Promise<string
         console.error(`Error during login: ${err.message}`);
         throw err;  // Propagate the error to the caller (controller)
     }
+}
+
+export const verifyToken = (token?:string) => { 
+    
+    
+    try {
+        if (!token) { 
+        throw new Error("You are not Authorized");
+    }
+        const result = jwt.verify(token, JWT_SECRET) as Payload ;
+        return result;
+    } catch (err: any) {
+        console.error(`Error during login: ${err.message}`);
+        throw err;
+    }
+    
+
 }

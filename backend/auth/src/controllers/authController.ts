@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { loginUser, registerUser } from '../services/authService';
+import { loginUser, registerUser, verifyToken } from '../services/authService';
 
 /**
  * Handles user registration.
@@ -42,3 +42,15 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         res.status(400).json({ error: error.message });
     }
 };
+
+export const getUserId = async (req: Request, res: Response): Promise<void> => { 
+    const token = req.header("auth_token")
+    try {
+        const{ user_id} = verifyToken(token);
+        res.status(200).json({user_id})
+    } catch (error:any) {
+        console.log(`Error while verifying `);
+        res.status(400).json({ error: error.message });
+    }
+    
+}
