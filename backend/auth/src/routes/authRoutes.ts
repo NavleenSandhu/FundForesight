@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { login, register,getUserId } from '../controllers/authController';
+import { getUserId, googleSignIn, login, register } from '../controllers/authController';
 
 const router = Router();
 
@@ -24,6 +24,8 @@ router.post('/login', login);
  * @desc verify the user and get user id
 
  */
-router.get('/getUserId',getUserId);
+router.get('/getUserId', getUserId);
+
+router.post('/googleAuth',googleSignIn);
 
 export default router;

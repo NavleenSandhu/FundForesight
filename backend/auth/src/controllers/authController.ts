@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { loginUser, registerUser, verifyToken } from '../services/authService';
+import { loginUser, registerUser, verifyToken, signinWithGoogle } from '../services/authService';
 
 /**
  * Handles user registration.
@@ -54,3 +54,17 @@ export const getUserId = async (req: Request, res: Response): Promise<void> => {
     }
     
 }
+
+export const googleSignIn = async (req: Request, res: Response): Promise<void> => {
+    const { email, username,google_id } = req.body;
+    try {
+        // Log in the user and return a JWT token
+        const token = await signinWithGoogle(email,username,google_id);
+        res.status(200).json({ token });
+    } catch (error: any) {
+        console.error(`Error during login: ${error.message}`);
+
+        // Send a proper error response with the message
+        res.status(400).json({ error: error.message });
+    }
+};
