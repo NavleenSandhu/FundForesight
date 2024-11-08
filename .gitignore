@@ -1,11 +1,20 @@
 .vscode
 
-Docs
+node_modules
 
-backend/auth/node_modules
-
-backend/auth/.env
-
-backend/budgets/.env
+.env
 
 backend/auth/dist
+
+mvnw
+
+mvnw.cmd
+
+backend/transactions/target
+backend/transactions/.mvn
+
+scripts
+
+Docs
+
+recoveryCode.txt
