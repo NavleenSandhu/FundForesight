@@ -29,6 +29,7 @@ public class PlaidAccountController {
     private PlaidService plaidService;
     private PlaidAccountRepository plaidAccountRepository;
 
+    @CrossOrigin("${API_GATEWAY_URL}")
     @GetMapping("/link-token")
     public ResponseEntity<?> getLinkToken(
             @RequestParam(name = "user_id", defaultValue = "0", required = false) int userId) {
@@ -46,6 +47,7 @@ public class PlaidAccountController {
         }
     }
 
+    @CrossOrigin("${API_GATEWAY_URL}")
     @PostMapping(value = "/addPlaidAccount", headers = { "Content-Type=application/json" })
     public ResponseEntity<?> addPlaidAccounts(@RequestBody Map<String, Object> body) {
         try {

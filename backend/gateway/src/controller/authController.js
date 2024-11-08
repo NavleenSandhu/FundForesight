@@ -37,8 +37,6 @@ const register = async (req, res) => {
   }
 };
 
-const google = () => {};
-
 module.exports = {
   login,
   register,
