@@ -74,7 +74,7 @@ const deleteUserBudget = async (token, budget_id) => {
   const res = await axios.delete(`${process.env.BUDGET_URL}/${budget_id}`);
 
   if (res.status != 204) {
-    throw new Error("Unable to fetch the data");
+    throw new Error("Unable to Delete the User");
   }
 };
 
