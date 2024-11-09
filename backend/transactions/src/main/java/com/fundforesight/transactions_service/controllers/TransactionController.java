@@ -66,7 +66,7 @@ public class TransactionController {
     public ResponseEntity<?> updateTransaction(@PathVariable int id, @RequestBody Transaction t) {
         try {
             transactionRepository.updateTransaction(t.getBudgetId(), t.getAmount(), t.getMerchantName(),
-                    t.getTransactionType(), id);
+                    t.getTransactionType(), id, t.getUserId());
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -75,9 +75,10 @@ public class TransactionController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteTransaction(@PathVariable int id) {
+    public ResponseEntity<?> deleteTransaction(@PathVariable int id, @RequestParam(name = "user_id", defaultValue="0", required = false) int userId) {
         try {
-            transactionRepository.deleteById(id);
+            transactionHelper.validateUserId(userId);
+            transactionRepository.deleteByTransactionAndUserId(id, userId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             System.err.println(e.getMessage());
