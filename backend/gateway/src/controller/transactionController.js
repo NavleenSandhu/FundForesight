@@ -21,9 +21,9 @@ const getTransactions = async (req, res) => {
 
 const addTransaction = async (req, res) => {
   try {
-    const transactions = req.body;
+    let transactions = req.body;
     const token = req.signedCookies.access_token;
-    const userId = getUserId(token);
+    const userId = await getUserId(token);
 
     transactions.forEach((transaction) => {
       transaction.userId = userId;
@@ -43,10 +43,12 @@ const updateTransaction = async (req, res) => {
     const transaction = req.body;
     const transactionId = req.params.id;
     const token = req.signedCookies.access_token;
-    const userId = getUserId(token);
+    const userId = await getUserId(token);
     transaction.userId = userId;
+    console.log(transaction);
+
     await updateUserTransaction(transaction, transactionId);
-    res.status(204).json({ message: "updated transaction" });
+    res.status(204);
   } catch (error) {
     console.log(error);
     res.status(400).json({ message: error.message });
@@ -56,11 +58,11 @@ const updateTransaction = async (req, res) => {
 const deleteTransaction = async (req, res) => {
   try {
     const token = req.signedCookies.access_token;
-    const userId = getUserId(token);
+    const userId = await getUserId(token);
     const transactionId = req.params.id;
 
     await deleteUserTransaction(transactionId, userId);
-    res.status(204).json({ message: "Deleted transaction" });
+    res.status(204);
   } catch (error) {
     console.log(error);
     res.status(400).json({ message: error.message });

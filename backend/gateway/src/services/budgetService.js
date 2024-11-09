@@ -66,12 +66,14 @@ const updateUserBudget = async (token, budget, budget_id) => {
   }
 };
 const deleteUserBudget = async (token, budget_id) => {
-  const user_id = getUserId(token);
+  const user_id = await getUserId(token);
   if (!user_id) {
     throw new Error("User validation failed");
   }
 
-  const res = await axios.delete(`${process.env.BUDGET_URL}/${budget_id}`);
+  const res = await axios.delete(
+    `${process.env.BUDGET_URL}/${budget_id}?user_id=${user_id}`
+  );
 
   if (res.status != 204) {
     throw new Error("Unable to Delete the User");
