@@ -7,7 +7,9 @@ const getUserTransactions = async (userId) => {
     if (!res.ok) {
       throw new HttpError("Unable to fetch the data", 500);
     }
-
+    if (data.length > 0 && data[0].user_id !== userId) {
+      throw new HttpError("Forbidden", 403);
+    }
     return data;
   } catch (error) {
     console.log(error.message);
