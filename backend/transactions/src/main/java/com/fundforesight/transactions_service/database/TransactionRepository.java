@@ -19,8 +19,11 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
     @Query("SELECT MAX(t.transactionDate) FROM Transaction t WHERE t.userId = :userId")
     Optional<Timestamp> findMostRecentTimestamp(@Param("userId") int userId);
 
-    @Query("UPDATE Transaction t SET t.budgetId = :budgetId, t.amount = :amount, t.merchantName = :merchantName, t.transactionType = :transactionType WHERE t.transactionId = :transactionId")
+    @Query("UPDATE Transaction t SET t.budgetId = :budgetId, t.amount = :amount, t.merchantName = :merchantName, t.transactionType = :transactionType WHERE t.transactionId = :transactionId AND t.userId = :userId")
     void updateTransaction(@Param("budgetId") int budgetId, @Param("amount") double amount,
             @Param("merchantName") String merchantName, @Param("transactionType") TransactionType transactionType,
-            @Param("transactionId") int transactionId);
+            @Param("transactionId") int transactionId, @Param("userId") int userId);
+
+    @Query("DELETE FROM Transaction t WHERE t.transactionId = :transactionId AND t.userId = :userId")
+    void deleteByTransactionAndUserId(@Param("transactionId") int transactionId, @Param("userId") int userId);
 }
