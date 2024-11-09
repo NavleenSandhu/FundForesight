@@ -111,9 +111,9 @@ func (handler *Handler) DeleteBudget(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	q := r.URL.Query()
 	// Get the budget_id from the URL and convert it to an integer
-	BudgetID, err1 := strconv.Atoi(vars["budget_id"])
+	BudgetID, err := strconv.Atoi(vars["budget_id"])
 	UserID, err2 := strconv.Atoi(q.Get("user_id"))
-	if err1 != nil {
+	if err != nil {
 		http.Error(w, "Invalid budget ID", http.StatusBadRequest) // Return 400 for invalid budget_id
 		return
 	}
