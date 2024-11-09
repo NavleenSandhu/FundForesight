@@ -67,9 +67,9 @@ func (repo *Repository) GetBudgetByBudgetID(BudgetID int) (*Budget, error) {
 
 // UpdateBudget updates an existing budget in the database
 func (repo *Repository) UpdateBudget(budget *Budget) error {
-	query := "UPDATE budgets SET user_id = $1, category_name = $2, initial_amount = $3, remaining_amount = $4, start_date = $5, end_date = $6 WHERE budget_id = $7"
+	query := "UPDATE budgets SET category_name = $1, initial_amount = $2, remaining_amount = $3, start_date = $4, end_date = $5 WHERE budget_id = $6 AND user_id = $7"
 	// Execute the update query
-	_, err := repo.DB.Exec(query, budget.UserID, budget.CategoryName, budget.InitialAmount, budget.RemainingAmount, budget.StartDate, budget.EndDate, budget.BudgetID)
+	_, err := repo.DB.Exec(query, budget.CategoryName, budget.InitialAmount, budget.RemainingAmount, budget.StartDate, budget.EndDate, budget.BudgetID, budget.UserID)
 	if err != nil {
 		log.Println("Error updating budget:", err)
 		return err
@@ -78,10 +78,10 @@ func (repo *Repository) UpdateBudget(budget *Budget) error {
 }
 
 // DeleteBudget deletes a budget by its budget_id
-func (repo *Repository) DeleteBudget(BudgetID int) error {
-	query := "DELETE FROM budgets WHERE budget_id=$1"
+func (repo *Repository) DeleteBudget(BudgetID int, UserID int) error {
+	query := "DELETE FROM budgets WHERE budget_id=$1 AND user_id=$2"
 	// Execute the delete query
-	_, err := repo.DB.Exec(query, BudgetID)
+	_, err := repo.DB.Exec(query, BudgetID, UserID)
 	if err != nil {
 		log.Println("Error deleting budget:", err)
 		return err

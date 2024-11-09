@@ -109,14 +109,20 @@ func (handler *Handler) UpdateBudget(w http.ResponseWriter, r *http.Request) {
 // DeleteBudget handles deleting a budget by budget_id
 func (handler *Handler) DeleteBudget(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
+	q := r.URL.Query()
 	// Get the budget_id from the URL and convert it to an integer
-	BudgetID, err := strconv.Atoi(vars["budget_id"])
-	if err != nil {
+	BudgetID, err1 := strconv.Atoi(vars["budget_id"])
+	UserID, err2 := strconv.Atoi(q.Get("user_id"))
+	if err1 != nil {
 		http.Error(w, "Invalid budget ID", http.StatusBadRequest) // Return 400 for invalid budget_id
 		return
 	}
+	if err2 != nil {
+		http.Error(w, "Invalid user ID", http.StatusBadRequest) // Return 400 for invalid budget_id
+		return
+	}
 	// Call the repository to delete the budget from the database
-	err = handler.Repo.DeleteBudget(BudgetID)
+	err = handler.Repo.DeleteBudget(BudgetID, UserID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError) // Return 500 on internal error
 		return
