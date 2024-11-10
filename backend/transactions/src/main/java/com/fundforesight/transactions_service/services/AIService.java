@@ -28,7 +28,7 @@ public class AIService {
 
     public JSONArray getResponse(String prompt, int size) throws IOException {
         JSONObject requestBody = new JSONObject();
-        requestBody.put("model", "gpt-4o mini");
+        requestBody.put("model", "gpt-4o");
         JSONArray messages = new JSONArray();
         messages.put(new JSONObject()
                 .put("role", "user")

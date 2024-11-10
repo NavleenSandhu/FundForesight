@@ -1,6 +1,7 @@
-import Login from '@/components/Login'
-import Register from '@/components/Register'
+import Login from '@/features/Auth/components/Login'
+import Register from '@/features/Auth/components/Register'
 import { Routes, Route } from 'react-router-dom'
+import Plaid from '../components/Plaid';
 
 export default function Auth() {
 
@@ -18,6 +19,7 @@ export default function Auth() {
                 <Routes>
                     <Route path='/login' element={<Login />} />
                     <Route path='/register' element={<Register />} />
+                    <Route path='/plaidAccount' element={<Plaid />} />
                 </Routes>
             </div>
         </div>

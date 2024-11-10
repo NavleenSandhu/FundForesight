@@ -8,6 +8,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.fundforesight.transactions_service.database.BudgetRepository;
+import com.fundforesight.transactions_service.models.Budget;
 import com.fundforesight.transactions_service.models.PlaidAccount;
 import com.fundforesight.transactions_service.models.Transaction;
 import com.fundforesight.transactions_service.utils.TransactionHelper;
@@ -34,6 +36,7 @@ import retrofit2.Response;
 public class PlaidService {
     private PlaidApi plaidClient;
     private TransactionHelper transactionHelper;
+    private BudgetRepository budgetRepository;
 
     public String createLinkToken(int userId) throws Exception {
         LinkTokenCreateRequestUser user = new LinkTokenCreateRequestUser().clientUserId(String.valueOf(userId));
@@ -73,12 +76,12 @@ public class PlaidService {
             if (response.isSuccessful() && response.body() != null) {
                 List<com.plaid.client.model.Transaction> plaidTransactions = response.body().getTransactions();
                 List<Transaction> transactions = new ArrayList<>();
-
+                int otherBudgetId = budgetRepository.findBudgetByUserIdAndCategory(userId, "Other");
                 // Convert Plaid transactions to your Transaction model
                 for (com.plaid.client.model.Transaction plaidTransaction : plaidTransactions) {
                     Transaction transaction = new Transaction();
                     transaction.setUserId(userId);
-                    transaction.setBudgetId(1);
+                    transaction.setBudgetId(otherBudgetId);
                     transaction.setAmount(Math.abs(plaidTransaction.getAmount()));
                     transaction.setMerchantName(plaidTransaction.getName());
                     // Parse transaction date

@@ -3,6 +3,7 @@ const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const { Strategy } = require("passport-google-oauth20");
 const session = require("express-session");
+const cors = require('cors');
 require("dotenv").config();
 
 const Router = require("./routes/gatewayRoutes.js");
@@ -10,6 +11,12 @@ const Router = require("./routes/gatewayRoutes.js");
 const app = express();
 const port = process.env.PORT;
 const secret = process.env.SECRET;
+
+
+//Remove in prod
+app.use(cors({ origin: [process.env.FRONTEND_URL], credentials: true }))
+//Remove in prod
+
 
 app.use(express.json());
 app.use(cookieParser(secret));
@@ -67,7 +74,7 @@ app.use(passport.session());
 
 app.use("/gateway/v1/api", Router);
 app.get(
-  "/gateway/v1/api/auth/google",
+  "/auth/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
@@ -87,5 +94,5 @@ app.get(
 );
 
 app.listen(port, () => {
-  console.log("app listening");
+  console.log(`Gateway is running on http://localhost:${port}`);
 });

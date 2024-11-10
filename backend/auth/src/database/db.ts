@@ -50,7 +50,7 @@ export const addUser = async (email: string, username: string, password_hash: st
         }
 
         // Log unexpected errors for debugging
-        console.error(`Error adding user: ${err.message}`);
+        console.error(`Error adding user: ${err}`);
 
         // Rethrow the error to propagate it to the caller
         throw err;
@@ -65,7 +65,7 @@ export const updateUserGoogleId = async (email: string, google_id: string) => {
         return res.rows[0].user_id;
     } catch (error:any) {
         // Log unexpected errors for debugging
-        console.error(`Error adding user: ${error.message}`);
+        console.error(`Error adding user: ${error}`);
 
         // Rethrow the error to propagate it to the caller
         throw error;
@@ -83,7 +83,7 @@ export const addUserWithGoogle = async (email: string, username: string, google_
         return res.rows[0].user_id;
     } catch (err: any) {
         // Log unexpected errors for debugging
-        console.error(`Error adding user: ${err.message}`);
+        console.error(`Error adding user: ${err}`);
 
         // Rethrow the error to propagate it to the caller
         throw err;
