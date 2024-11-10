@@ -3,10 +3,10 @@ const { getUserId } = require("./userService");
 const getUserTransactions = async (userId) => {
   try {
     const res = await fetch(`${process.env.TRANSACTION_URL}?user_id=${userId}`);
-    const data = res.json();
     if (!res.ok) {
       throw new HttpError("Unable to fetch the data", 500);
     }
+    const data = res.json();
     if (data.length > 0 && data[0].user_id !== userId) {
       throw new HttpError("Forbidden", 403);
     }

@@ -36,7 +36,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         const token = await loginUser(email, password);
         res.status(200).json({ token });
     } catch (error: any) {
-        console.error(`Error during login: ${error.message}`);
+        console.error(`Error during login: ${error}`);
 
         // Send a proper error response with the message
         res.status(400).json({ error: error.message });
@@ -49,7 +49,7 @@ export const getUserId = async (req: Request, res: Response): Promise<void> => {
         const{ user_id} = verifyToken(token);
         res.status(200).json({user_id})
     } catch (error:any) {
-        console.log(`Error while verifying `);
+        console.error(`Error while verifying: `, error);
         res.status(400).json({ error: error.message });
     }
     
@@ -62,7 +62,7 @@ export const googleSignIn = async (req: Request, res: Response): Promise<void> =
         const token = await signinWithGoogle(email,username,google_id);
         res.status(200).json({ token });
     } catch (error: any) {
-        console.error(`Error during login: ${error.message}`);
+        console.error(`Error during login: ${error}`);
 
         // Send a proper error response with the message
         res.status(400).json({ error: error.message });

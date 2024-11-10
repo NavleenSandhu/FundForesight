@@ -42,7 +42,7 @@ export const registerUser = async (email: string, username: string, password: st
 
         return token;
     } catch (err: any) {
-        console.error(`Error during registration: ${err.message}`);
+        console.error(`Error during registration: ${err}`);
         throw err;  // Propagate the error to the caller (controller)
     }
 }
@@ -66,11 +66,11 @@ export const loginUser = async (email: string, password: string): Promise<string
         const user = await getUserByEmail(email);
         if (!user) throw new Error(`No user found with email: ${email}`)
 
-        
+
 
         // Validate that the user exists and the password is correct
         if (!(await bcrypt.compare(password, user.password_hash || ""))) throw new Error('Invalid credentials');
-        
+
 
         // Prepare the JWT payload
         const payload = { user_id: user.user_id, email, username: user.username };
@@ -80,58 +80,58 @@ export const loginUser = async (email: string, password: string): Promise<string
 
         return token;
     } catch (err: any) {
-        console.error(`Error during login: ${err.message}`);
+        console.error(`Error during login: ${err}`);
         throw err;  // Propagate the error to the caller (controller)
     }
 }
 
-export const verifyToken = (token?:string) => { 
-    
-    
+export const verifyToken = (token?: string) => {
+
+
     try {
-        if (!token) { 
-        throw new Error("You are not Authorized");
-    }
-        const result = jwt.verify(token, JWT_SECRET) as Payload ;
+        if (!token) {
+            throw new Error("You are not Authorized");
+        }
+        const result = jwt.verify(token, JWT_SECRET) as Payload;
         return result;
     } catch (err: any) {
-        console.error(`Error during login: ${err.message}`);
+        console.error(`Error during login: ${err}`);
         throw err;
     }
-    
+
 
 }
 
 
-export const signinWithGoogle = async (email: string,username:string, google_id: string) => { 
+export const signinWithGoogle = async (email: string, username: string, google_id: string) => {
     try {
         // Fetch the newly registered user from the database
         const user = await getUserByEmail(email);
         // Add a check if no user is found (edge case handling)
-        
+
         let user_id;
-        if (!user) { 
+        if (!user) {
             user_id = await addUserWithGoogle(email, username, google_id)
-            
+
         } else if (!user.google_id) {
             user_id = await updateUserGoogleId(email, google_id);
-            
+
         }
 
 
-         // Prepare the JWT payload
+        // Prepare the JWT payload
         const payload = { user_id, email, username };
 
         // Sign the JWT token using the secret
         const token = jwt.sign(payload, JWT_SECRET);
 
         return token;
-        
-    } catch (error:any) {
-        console.log(error.message);
+
+    } catch (error: any) {
+        console.error(error);
         throw error;
-        
-        
+
+
     }
-     
+
 }
