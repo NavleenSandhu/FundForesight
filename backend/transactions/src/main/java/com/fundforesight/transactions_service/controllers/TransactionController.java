@@ -75,7 +75,8 @@ public class TransactionController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteTransaction(@PathVariable int id, @RequestParam(name = "user_id", defaultValue="0", required = false) int userId) {
+    public ResponseEntity<?> deleteTransaction(@PathVariable int id,
+            @RequestParam(name = "user_id", defaultValue = "0", required = false) int userId) {
         try {
             transactionHelper.validateUserId(userId);
             transactionRepository.deleteByTransactionAndUserId(id, userId);

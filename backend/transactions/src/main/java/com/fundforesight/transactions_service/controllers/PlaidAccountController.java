@@ -66,4 +66,18 @@ public class PlaidAccountController {
             return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/balance")
+    public ResponseEntity<?> getTotalBalance(
+            @RequestParam(name = "user_id", defaultValue = "0", required = false) int userId) {
+        try {
+            transactionHelper.validateUserId(userId);
+            List<String> accessTokens = plaidAccountRepository.findAccessTokensByUserId(userId);
+            double balance = plaidService.getBankBalance(accessTokens);
+            return new ResponseEntity<>(balance, HttpStatus.OK);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

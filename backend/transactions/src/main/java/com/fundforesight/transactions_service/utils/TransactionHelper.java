@@ -44,11 +44,7 @@ public class TransactionHelper {
             startDate = timestamp.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         }
         for (String accessToken : accessTokens) {
-            List<Transaction> transactions = plaidService.getPlaidTransactions(accessToken, userId, startDate);
-            if (transactionsInDbExist && timestampResult.isPresent()) {
-                Timestamp timestamp = timestampResult.get();
-                transactions.removeIf(transaction -> transaction.getTransactionDate().compareTo(timestamp) <= 0);
-            }
+            List<Transaction> transactions = plaidService.getPlaidTransactions(accessToken, userId, startDate, transactionsInDbExist, timestampResult);
             /*
              * Using a messaging service, send transactions to see if the budget is still
              * above a threshold, if not, the messaging service will trigger a notification

@@ -10,7 +10,7 @@ function App() {
     <Router>
       <Routes>
         <Route path='/auth/*' Component={Auth}></Route>
-        <Route path='/dashboard' Component={Dashboard}></Route>
+        <Route path='/dashboard/*' Component={Dashboard}></Route>
         <Route path='*' Component={NotFound}></Route>
       </Routes>
     </Router>

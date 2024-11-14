@@ -1,5 +1,5 @@
 const { getUserId } = require("../services/userService");
-const { getPlaidLinkToken, addPlaidAccountByPublicToken } = require("../services/plaidAccountService");
+const { getPlaidLinkToken, addPlaidAccountByPublicToken, getBankBalance } = require("../services/plaidAccountService");
 const HttpError = require("../utils/httpError");
 
 const getLinkToken = async (req, res) => {
@@ -35,4 +35,20 @@ const addPlaidAccount = async (req, res) => {
     }
 }
 
-module.exports = { getLinkToken, addPlaidAccount }
+const getBalance = async (req, res) => {
+    try {
+        const token = req.signedCookies.access_token;
+        const userId = await getUserId(token);
+        const balance = await getBankBalance(userId)
+        res.status(200).json({ balance })
+    } catch (error) {
+        console.log(error.message)
+        if (error instanceof HttpError) {
+            res.status(error.status).json({ message: error.message })
+        } else {
+            res.status(500).json({ message: error.message })
+        }
+    }
+}
+
+module.exports = { getLinkToken, addPlaidAccount, getBalance }

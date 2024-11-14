@@ -35,6 +35,7 @@ func (handler *Handler) CreateBudget(w http.ResponseWriter, r *http.Request) {
 	// Set response header and return status 201 for successful creation
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(budget)
 }
 
 // GetBudgets retrieves all budgets for a specific user

@@ -43,6 +43,7 @@ const createUserBudget = async (token, budget) => {
   if (res.status != 201) {
     throw new Error("Unable to create budget");
   }
+  return res.data
 };
 const updateUserBudget = async (token, budget, budget_id) => {
   const user_id = await getUserId(token);
