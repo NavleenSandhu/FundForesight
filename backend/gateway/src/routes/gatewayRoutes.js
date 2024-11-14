@@ -17,7 +17,8 @@ const {
 } = require("../controller/transactionController.js");
 const {
   getLinkToken,
-  addPlaidAccount
+  addPlaidAccount,
+  getBalance
 } = require("../controller/plaidAccountController.js");
 
 //auth routes
@@ -40,5 +41,6 @@ router.delete("/transaction/:id", deleteTransaction);
 //Plaid Account routes
 router.get("/plaidAccounts/link-token", getLinkToken)
 router.post("/plaidAccounts/addPlaidAccount", addPlaidAccount)
+router.get("/plaidAccounts/balance", getBalance)
 
 module.exports = router;

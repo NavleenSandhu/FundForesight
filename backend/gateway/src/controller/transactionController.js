@@ -45,10 +45,8 @@ const updateTransaction = async (req, res) => {
     const token = req.signedCookies.access_token;
     const userId = await getUserId(token);
     transaction.userId = userId;
-    console.log(transaction);
-
     await updateUserTransaction(transaction, transactionId);
-    res.status(204);
+    res.status(200).send("Updated");
   } catch (error) {
     console.log(error);
     res.status(400).json({ message: error.message });

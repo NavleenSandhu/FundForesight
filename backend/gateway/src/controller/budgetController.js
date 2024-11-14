@@ -10,8 +10,8 @@ const createBudget = async (req, res) => {
   try {
     const token = req.signedCookies.access_token;
 
-    await createUserBudget(token, req.body);
-    res.status(201).json("Created budget");
+    const budget = await createUserBudget(token, req.body);
+    res.status(201).json({ budget });
   } catch (error) {
     console.log(error);
     res.status(400).json({ message: error.message });
@@ -36,7 +36,7 @@ const updateBudget = async (req, res) => {
     const token = req.signedCookies.access_token;
     const budget_id = req.params.budget_id;
     await updateUserBudget(token, req.body, budget_id);
-    res.status(204).json("updated budget");
+    res.status(200).send("Updated");
   } catch (error) {
     console.log(error);
     res.status(400).json({ message: error.message });

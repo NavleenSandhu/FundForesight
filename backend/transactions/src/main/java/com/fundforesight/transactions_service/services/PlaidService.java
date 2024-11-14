@@ -5,15 +5,18 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.fundforesight.transactions_service.database.BudgetRepository;
-import com.fundforesight.transactions_service.models.Budget;
 import com.fundforesight.transactions_service.models.PlaidAccount;
 import com.fundforesight.transactions_service.models.Transaction;
 import com.fundforesight.transactions_service.utils.TransactionHelper;
+import com.plaid.client.model.AccountBalance;
 import com.plaid.client.model.AccountBase;
+import com.plaid.client.model.AccountType;
+import com.plaid.client.model.AccountsBalanceGetRequest;
 import com.plaid.client.model.AccountsGetRequest;
 import com.plaid.client.model.AccountsGetResponse;
 import com.plaid.client.model.CountryCode;
@@ -60,7 +63,7 @@ public class PlaidService {
     }
 
     public List<Transaction> getPlaidTransactions(String accessToken, int userId,
-            LocalDate startDate) throws Exception {
+            LocalDate startDate, boolean transactionsInDbExist, Optional<Timestamp> timestampResult) throws Exception {
         try {
             LocalDate endDate = LocalDate.now();
             TransactionsGetRequest request = new TransactionsGetRequest()
@@ -93,6 +96,10 @@ public class PlaidService {
                             .setTransactionType(plaidTransaction.getAmount() > 0 ? Transaction.TransactionType.EXPENSE
                                     : Transaction.TransactionType.INCOME);
                     transactions.add(transaction);
+                }
+                if (transactionsInDbExist && timestampResult.isPresent()) {
+                    Timestamp timestamp = timestampResult.get();
+                    transactions.removeIf(transaction -> transaction.getTransactionDate().compareTo(timestamp) <= 0);
                 }
                 if (transactions.size() > 0) {
                     transactionHelper.updateBudgetIds(transactions, plaidTransactions, userId);
@@ -131,6 +138,24 @@ public class PlaidService {
             plaidAccounts.add(plaidAccount);
         }
         return plaidAccounts;
+    }
+
+    public double getBankBalance(List<String> accessTokens) throws Exception {
+        double balance = 0;
+        for (String accessToken : accessTokens) {
+            AccountsBalanceGetRequest request = new AccountsBalanceGetRequest().accessToken(accessToken);
+            Response<AccountsGetResponse> response = plaidClient.accountsBalanceGet(request).execute();
+            List<AccountBase> accounts = response.body().getAccounts();
+            for (AccountBase account : accounts) {
+                if (account.getType().equals(AccountType.DEPOSITORY)) {
+                    AccountBalance accountBalance = account.getBalances();
+                    if (accountBalance.getAvailable() != null) {
+                        balance += accountBalance.getAvailable();
+                    }
+                }
+            }
+        }
+        return balance;
     }
 
 }

@@ -1,7 +1,7 @@
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { useCallback, useEffect, useState } from "react";
 import { usePlaidLink } from "react-plaid-link";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Plaid() {
     const [linkToken, setLinkToken] = useState<string | null>(null)
@@ -40,7 +40,7 @@ function Plaid() {
             // Create a default(Other) budget
             if (res.ok) {
                 setTransactionsAdded(true)
-                navigate('/dashboard')
+                navigate('/dashboard/home')
             }
         } catch (error) {
             console.error(error);
@@ -49,14 +49,11 @@ function Plaid() {
 
     const { open, ready } = usePlaidLink({ token: linkToken, onSuccess })
 
-    const handleSkip = () => {
-        navigate('/dashboard')
-    }
     return (
         <div className="flex flex-col justify-center items-center w-full lg:w-1/2 p-6 lg:p-12">
             <div className="w-full max-w-sm">
-                <h2 className="text-2xl font-semibold text-center text-gray-800">Link Your Bank Account</h2>
-                <p className="text-center text-gray-500 mt-2 mb-8">
+                <h2 className="text-2xl font-semibold text-center">Link Your Bank Account</h2>
+                <p className="text-center mt-2 mb-8">
                     Connect your bank account to start managing your finances with Fund Foresight.
                 </p>
 
@@ -64,18 +61,18 @@ function Plaid() {
                     <Button
                         onClick={() => open()}
                         disabled={!ready}
-                        className="w-full bg-black text-white py-2 rounded-md hover:bg-gray-800"
+                        variant={'default'}
                     >
                         Connect Bank Account
                     </Button>
 
-                    <Button
-                        onClick={handleSkip}
-                        variant="outline"
-                        className="w-full border-gray-300 text-gray-600 py-2 rounded-md hover:bg-gray-100"
+                    <Link to='/dashboard/home'
+                        className={buttonVariants({
+                            variant: 'outline'
+                        })}
                     >
                         Skip for Now
-                    </Button>
+                    </Link>
 
                     {transactionsAdded && (
                         <div className="mt-4 text-center text-green-600 font-medium">

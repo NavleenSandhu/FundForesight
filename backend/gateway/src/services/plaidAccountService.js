@@ -36,4 +36,22 @@ const addPlaidAccountByPublicToken = async (user_id, public_token) => {
     }
 }
 
-module.exports = { getPlaidLinkToken, addPlaidAccountByPublicToken }
+const getBankBalance = async (userId) => {
+    try {
+        const res = await fetch(`${process.env.PLAID_URL}/balance?user_id=${userId}`,
+            {
+                method: "GET"
+            }
+        )
+        const balance = await res.text()
+        if (!res.ok) {
+            throw new HttpError("Unable to fetch balance", 500)
+        }
+        return balance;
+    } catch (error) {
+        console.log(error.message);
+        throw error
+    }
+}
+
+module.exports = { getPlaidLinkToken, addPlaidAccountByPublicToken, getBankBalance }
