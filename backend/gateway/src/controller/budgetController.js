@@ -5,6 +5,7 @@ const {
   updateUserBudget,
   getAllUserBudgets,
 } = require("../services/budgetService");
+const HttpError = require("../utils/httpError");
 
 const createBudget = async (req, res) => {
   try {
@@ -50,8 +51,13 @@ const deleteBudget = async (req, res) => {
     await deleteUserBudget(token, budget_id);
     res.status(204).json({ message: "deleted budget" });
   } catch (error) {
-    console.log(error);
-    res.status(400).json({ message: error.message });
+    if (error.status === 409) {
+      res
+        .status(error.status)
+        .json({ message: "Can not delete budget with transactions" });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
   }
 };
 

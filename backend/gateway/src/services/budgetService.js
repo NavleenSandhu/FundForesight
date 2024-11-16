@@ -43,7 +43,7 @@ const createUserBudget = async (token, budget) => {
   if (res.status != 201) {
     throw new Error("Unable to create budget");
   }
-  return res.data
+  return res.data;
 };
 const updateUserBudget = async (token, budget, budget_id) => {
   const user_id = await getUserId(token);
@@ -75,6 +75,8 @@ const deleteUserBudget = async (token, budget_id) => {
   const res = await axios.delete(
     `${process.env.BUDGET_URL}/${budget_id}?user_id=${user_id}`
   );
+  if (res.status === 409)
+    throw new HttpError("Can not delete budget with transactions", res.status);
 
   if (res.status != 204) {
     throw new Error("Unable to Delete the User");

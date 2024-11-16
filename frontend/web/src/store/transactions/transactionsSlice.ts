@@ -10,10 +10,7 @@ export const fetchTransactions = createAsyncThunk('/transactions/fetchTransactio
         })
         if (res.status === 200) {
             const data = await res.json()
-            localStorage.setItem('transactions', JSON.stringify(data.transactions))
             return data.transactions
-        } else {
-            return JSON.parse(localStorage.getItem('transactions')!)
         }
     } catch (error: unknown) {
         console.error(error);
@@ -32,12 +29,9 @@ export const updateTransaction = createAsyncThunk('/transactions/updateTransacti
         })
 
         if (res.status === 200) {
-            const localTransactions: Transaction[] = JSON.parse(localStorage.getItem('transactions')!)
-            const updatedTransactions = localTransactions.map(t =>
-                t.transactionId === transaction.transactionId ? transaction : t
-            )
-            localStorage.setItem('transactions', JSON.stringify(updatedTransactions))
-            return updatedTransactions
+            
+           
+            return transaction
         }
     } catch (error: unknown) {
         console.error(error);
@@ -62,7 +56,7 @@ export const fetchBalance = createAsyncThunk('/transactions/getBalance', async (
 const transactionsSlice = createSlice({
     name: 'transactions',
     initialState: {
-        transactions: (JSON.parse(localStorage.getItem('transactions')!) || []) as Transaction[],
+        transactions: [] as Transaction[],
         balance: 0
     },
     reducers: {},
@@ -71,9 +65,10 @@ const transactionsSlice = createSlice({
             .addCase(fetchTransactions.fulfilled, (state, action: PayloadAction<Transaction[]>) => {
                 state.transactions = action.payload;
             })
-            .addCase(updateTransaction.fulfilled, (state, action: PayloadAction<Transaction[] | undefined>) => {
-                if (action.payload) {
-                    state.transactions = action.payload
+            .addCase(updateTransaction.fulfilled, (state, action: PayloadAction<Transaction | undefined>) => {
+                const transaction = action.payload;
+                if (transaction) {
+                    state.transactions = state.transactions.map(t => t.transactionId === transaction.transactionId ? transaction : t);
                 }
             })
             .addCase(fetchBalance.fulfilled, (state, action: PayloadAction<number>) => {
