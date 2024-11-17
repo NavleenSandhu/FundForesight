@@ -14,7 +14,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({ name, prompt, f
             <DialogTrigger asChild>
                 <Button>{name}</Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[425px]  w-3/4 rounded-md">
                 <DialogHeader>
                     <DialogTitle>{name}</DialogTitle>
                     <DialogDescription>{prompt}</DialogDescription>

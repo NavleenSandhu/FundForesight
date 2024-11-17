@@ -74,7 +74,7 @@ const BudgetDialog: React.FC<BudgetDialogProps> = ({ formType, budget, setBudget
             <DialogTrigger asChild>
                 <Button variant="default">{formType} budget</Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[425px] w-3/4 rounded-md">
                 <DialogHeader>
                     <DialogTitle>{formType} budget</DialogTitle>
                     {formType == 'Create' && <DialogDescription>Create a budget for next month.</DialogDescription>}

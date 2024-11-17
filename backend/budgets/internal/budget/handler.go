@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
+	"github.com/lib/pq"
 )
 
 type Handler struct {
@@ -125,7 +126,16 @@ func (handler *Handler) DeleteBudget(w http.ResponseWriter, r *http.Request) {
 	// Call the repository to delete the budget from the database
 	err = handler.Repo.DeleteBudget(BudgetID, UserID)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError) // Return 500 on internal error
+		// Check if the error is of type *pq.Error
+		if pqErr, ok := err.(*pq.Error); ok {
+			switch pqErr.Code {
+			case "23503": // foreign_key_violation
+				http.Error(w, err.Error(), http.StatusConflict)
+				// Handle the foreign key violation case
+			}
+		} else {
+			http.Error(w, err.Error(), http.StatusInternalServerError) // Return 500 on internal error
+		}
 		return
 	}
 	// Respond with status 204 for successful deletion
