@@ -1,15 +1,16 @@
 import { Button } from "@/components/ui/button"
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Budget } from "@/models/Budget"
 import { addBudget, editBudget } from "@/store/budgets/budgetsSlice"
 import { AppDispatch } from "@/store/store"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogFooter, DialogHeader, DialogClose, DialogDescription } from "@/components/ui/dialog"
 import React from "react"
 import { useForm } from "react-hook-form"
 import { useDispatch } from "react-redux"
 import { z } from "zod"
+
 
 interface BudgetDialogProps {
     formType: 'Create' | 'Edit',
@@ -19,6 +20,8 @@ interface BudgetDialogProps {
 
 const BudgetDialog: React.FC<BudgetDialogProps> = ({ formType, budget, setBudget }) => {
     const dispatch = useDispatch<AppDispatch>();
+    
+    
     const amountMessage = 'Amount has to be greater than 0'
     const budgetFormSchema = z.object({
         category_name: z.string().trim().min(1, 'This field is required'),
@@ -44,7 +47,7 @@ const BudgetDialog: React.FC<BudgetDialogProps> = ({ formType, budget, setBudget
     const handleBudgetSubmit = async (data: BudgetFormInputs) => {
         const now = new Date()
         const nextMonthBegin = formType === 'Create' ? new Date(Date.UTC(now.getFullYear() + (now.getMonth() === 11 ? 1 : 0), (now.getMonth() + 1) % 12, 1, 0, 0, 0)) : budget?.start_date
-        const nextMonthEnd = formType === 'Create' ? new Date(Date.UTC(nextMonthBegin!.getFullYear(), nextMonthBegin!.getMonth() + 1, 0, 23, 59, 59)) : budget?.end_date
+        const nextMonthEnd = formType === 'Create' ? new Date(Date.UTC(nextMonthBegin!.getFullYear(), nextMonthBegin!.getMonth() + 2, 0, 23, 59, 59)) : budget?.end_date
         const formBudget = {
             category_name: data.category_name,
             initial_amount: formType === 'Create' ? data.initial_amount : budget!.initial_amount,
@@ -119,6 +122,8 @@ const BudgetDialog: React.FC<BudgetDialogProps> = ({ formType, budget, setBudget
                 </Form>
             </DialogContent>
         </Dialog>
+
+       
     )
 }
 

@@ -2,10 +2,9 @@ import { Button, buttonVariants } from '@/components/ui/button'
 import { DialogHeader, DialogFooter, DialogTrigger, Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Transaction } from '@/models/Transaction'
-import { fetchBudgets } from '@/store/budgets/budgetsSlice'
 import { AppDispatch, RootState } from '@/store/store'
 import { updateTransaction } from '@/store/transactions/transactionsSlice'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { ArrowRightLeft } from 'lucide-react'
 interface MoveTransactionDialogProps {
@@ -19,11 +18,7 @@ const MoveTransactionDialog: React.FC<MoveTransactionDialogProps> = ({ transacti
         const updatedTransaction: Transaction = { ...transaction, budgetId: parseInt(selectedBudget) }
         dispatch(updateTransaction(updatedTransaction))
     }
-    useEffect(() => {
-        if (budgets.length === 0) {
-            dispatch(fetchBudgets());
-        }
-    }, [dispatch, budgets.length]);
+    
 
     return (
         <Dialog>
