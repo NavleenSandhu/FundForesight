@@ -14,8 +14,8 @@ const BudgetItem: React.FC<BudgetListItemProps> = ({ budget }) => {
         <div className="flex justify-between items-center rounded-lg shadow p-4 mb-2">
             <div>
                 <p className="font-semibold">{budget.category_name}</p>
-                <p className="text-sm">Start Date: {displayDate(budget.start_date)}</p>
-                <p className="text-sm">End Date: {displayDate(budget.end_date)}</p>
+                <p className="hidden md:block text-sm">Start Date: {displayDate(budget.start_date)}</p>
+                <p className="hidden md:block text-sm">End Date: {displayDate(budget.end_date)}</p>
             </div>
             <div className="text-center">
                 <p className="text-lg font-semibold">
@@ -29,7 +29,7 @@ const BudgetItem: React.FC<BudgetListItemProps> = ({ budget }) => {
                 </p>
             </div>
             <Button onClick={() => { navigate('/dashboard/budgets/viewBudget', { state: { budget } }) }}>View Budget</Button>
-        </div>
+        </div >
     )
 }
 
