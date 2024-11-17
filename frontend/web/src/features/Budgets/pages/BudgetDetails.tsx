@@ -1,16 +1,17 @@
-import { buttonVariants } from "@/components/ui/button";
-import { Budget } from "@/models/Budget";
-import { Link, useLocation, useNavigate } from "react-router-dom"
-import BudgetDialog from "../components/BudgetDialog";
-import { useState } from "react";
-import { displayDate } from "@/utils/dateUtils";
-import TransactionList from "@/features/Transactions/components/TransactionList";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/store/store";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
+import { buttonVariants } from "@/components/ui/button";
+import TransactionList from "@/features/Transactions/components/TransactionList";
+import { Budget } from "@/models/Budget";
 import { deleteBudget } from "@/store/budgets/budgetsSlice";
+import { AppDispatch, RootState } from "@/store/store";
+import { displayDate } from "@/utils/dateUtils";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import BudgetDialog from "../components/BudgetDialog";
 
 function BudgetDetails() {
+     
     const location = useLocation();
     const navigate = useNavigate();
     const { transactions } = useSelector((state: RootState) => state.transactions)
@@ -32,6 +33,7 @@ function BudgetDetails() {
     }
     return (
         <div className="container mx-auto p-6">
+            
             <Link to='/dashboard/budgets' className={buttonVariants({
                 variant: 'default'
             })}>Back to Budgets</Link>

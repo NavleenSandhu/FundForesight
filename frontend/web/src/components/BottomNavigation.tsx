@@ -1,6 +1,6 @@
-import { Home, BarChart, Repeat, Layers, User } from "lucide-react";
-import { buttonVariants } from "./ui/button";
+import { BarChart, Home, Layers, Repeat, User } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { buttonVariants } from "./ui/button";
 
 interface NavItem {
     icon: JSX.Element;
