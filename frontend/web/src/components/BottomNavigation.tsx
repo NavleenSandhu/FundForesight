@@ -1,6 +1,6 @@
-import { Home, BarChart, Repeat, Layers, User } from "lucide-react";
-import { buttonVariants } from "./ui/button";
+import { BarChart, Home, Layers, Repeat, User } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { buttonVariants } from "./ui/button";
 
 interface NavItem {
     icon: JSX.Element;
@@ -19,7 +19,7 @@ const navItems: NavItem[] = [
 function BottomNavigation() {
     const location = useLocation()
     return (
-        <div className="fixed bottom-0 left-0 right-0 p-4 shadow-lg flex justify-around items-center rounded-t-3xl md:hidden">
+        <div className="fixed bottom-0 left-0 right-0 p-4 shadow-lg flex justify-around items-center rounded-t-3xl md:hidden bg-white">
             {navItems.map((item, index) => (
                 <Link key={index} to={item.path} className={
                     buttonVariants({

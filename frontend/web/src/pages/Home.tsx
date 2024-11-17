@@ -14,7 +14,7 @@ function Home() {
         if (balance === 0) {
             dispatch(fetchBalance())
         }
-        // dispatch(fetchTransactions())
+        dispatch(fetchTransactions())
     }, [dispatch])
     return (
         <div className="p-6">
