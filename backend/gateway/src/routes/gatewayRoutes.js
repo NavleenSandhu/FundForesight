@@ -16,6 +16,12 @@ const {
   deleteTransaction,
 } = require("../controller/transactionController.js");
 const {
+  getSavings,
+  addSavings,
+  updateSaving,
+  deleteSaving
+} = require("../controller/savingController.js");
+const {
   getLinkToken,
   addPlaidAccount,
   getBalance
@@ -37,6 +43,12 @@ router.get("/transaction", getTransactions);
 router.post("/transaction", addTransaction);
 router.put("/transaction/:id", updateTransaction);
 router.delete("/transaction/:id", deleteTransaction);
+
+//savings routes
+router.get("/savings", getSavings);
+router.post("/savings", addSavings);
+router.put("/savings/:id", updateSaving);
+router.delete("/savings/:id", deleteSaving);
 
 //Plaid Account routes
 router.get("/plaidAccounts/link-token", getLinkToken)
