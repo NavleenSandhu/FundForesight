@@ -10,8 +10,8 @@ mvnw
 
 mvnw.cmd
 
-backend/transactions/target
-backend/transactions/.mvn
+target
+.mvn
 
 scripts
 
