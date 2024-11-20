@@ -28,7 +28,7 @@ const BudgetItem: React.FC<BudgetListItemProps> = ({ budget }) => {
                     Remaining: {((budget.remaining_amount / budget.initial_amount) * 100).toFixed(0)}%
                 </p>
             </div>
-            <Button onClick={() => { navigate('/dashboard/budgets/viewBudget', { state: { budget } }) }}>View Budget</Button>
+            <Button onClick={() => { navigate('/dashboard/budgets/viewBudget', { state: { budget_id: budget.budget_id } }) }}>View Budget</Button>
         </div >
     )
 }

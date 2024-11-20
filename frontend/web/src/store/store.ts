@@ -2,12 +2,12 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { Persistor, persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { budgetReducer } from './budgets/budgetsSlice';
-import transactionsReducer from './transactions/transactionsSlice';
+import { transactionsReducer } from './transactions/transactionsSlice';
 
 
 const rootReducer = combineReducers({
-    transactions: transactionsReducer,
-    budgets: budgetReducer
+  transactions: transactionsReducer,
+  budgets: budgetReducer
 });
 
 const persistConfig = {

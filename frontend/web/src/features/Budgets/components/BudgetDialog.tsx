@@ -2,52 +2,61 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Budget } from "@/models/Budget"
 import { addBudget, editBudget } from "@/store/budgets/budgetsSlice"
-import { AppDispatch } from "@/store/store"
+import { AppDispatch, RootState } from "@/store/store"
 import { zodResolver } from "@hookform/resolvers/zod"
 import React from "react"
 import { useForm } from "react-hook-form"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { z } from "zod"
+import { addMonths, startOfMonth, endOfMonth } from "date-fns"
 
 
 interface BudgetDialogProps {
     formType: 'Create' | 'Edit',
-    budget?: Budget,
-    setBudget?: (budget: Budget) => void
+    budget_id?: number,
 }
 
-const BudgetDialog: React.FC<BudgetDialogProps> = ({ formType, budget, setBudget }) => {
+const BudgetDialog: React.FC<BudgetDialogProps> = ({ formType, budget_id }) => {
     const dispatch = useDispatch<AppDispatch>();
-    
-    
     const amountMessage = 'Amount has to be greater than 0'
-    const budgetFormSchema = z.object({
+    const createBudgetSchema = z.object({
         category_name: z.string().trim().min(1, 'This field is required'),
-        ...(formType === 'Create' && {
-            initial_amount: z.string({ invalid_type_error: amountMessage })
-                .transform(val => parseFloat(val))
-                .refine(val => val > 0, amountMessage)
-        }),
-    })
+        initial_amount: z.string()
+            .transform(val => parseFloat(val))
+            .refine(val => val > 0, amountMessage)
+    });
+    const editBudgetSchema = z.object({
+        category_name: z.string().trim().min(1, 'This field is required'),
+    });
+
+    const budgetFormSchema = formType === 'Create' ? createBudgetSchema : editBudgetSchema;
 
     type BudgetFormInputs = {
         category_name: string,
         initial_amount: number
     }
+    const budget = useSelector((state: RootState) => state.budgets.budgets.find(budget => budget.budget_id === budget_id))
+
+    const defaultValues = formType === 'Create'
+        ? { category_name: "", initial_amount: 0 }
+        : { category_name: budget?.category_name || "" };
+
+
     const form = useForm<BudgetFormInputs>({
         resolver: zodResolver(budgetFormSchema),
-        defaultValues: {
-            category_name: budget ? budget.category_name : "",
-            initial_amount: formType === 'Create' ? 0 : undefined
-        }
-    })
+        defaultValues
+    });
+
+    if (!budget && formType !== 'Create') {
+        console.error("Budget not found!");
+        return;
+    }
 
     const handleBudgetSubmit = async (data: BudgetFormInputs) => {
         const now = new Date()
-        const nextMonthBegin = formType === 'Create' ? new Date(Date.UTC(now.getFullYear() + (now.getMonth() === 11 ? 1 : 0), (now.getMonth() + 1) % 12, 1, 0, 0, 0)) : budget?.start_date
-        const nextMonthEnd = formType === 'Create' ? new Date(Date.UTC(nextMonthBegin!.getFullYear(), nextMonthBegin!.getMonth() + 2, 0, 23, 59, 59)) : budget?.end_date
+        const nextMonthBegin = formType === 'Create' ? startOfMonth(addMonths(now, 1)) : budget?.start_date;
+        const nextMonthEnd = formType === 'Create' ? endOfMonth(addMonths(now, 2)) : budget?.end_date;
         const formBudget = {
             category_name: data.category_name,
             initial_amount: formType === 'Create' ? data.initial_amount : budget!.initial_amount,
@@ -55,8 +64,7 @@ const BudgetDialog: React.FC<BudgetDialogProps> = ({ formType, budget, setBudget
             start_date: nextMonthBegin!,
             end_date: nextMonthEnd!
         }
-        console.log(formBudget);
-        
+
         if (formType === 'Create') {
             dispatch(addBudget(formBudget))
             return
@@ -69,7 +77,6 @@ const BudgetDialog: React.FC<BudgetDialogProps> = ({ formType, budget, setBudget
             }
         }
         dispatch(editBudget(updatedBudget))
-        setBudget!(updatedBudget)
     }
 
     return (
@@ -123,7 +130,7 @@ const BudgetDialog: React.FC<BudgetDialogProps> = ({ formType, budget, setBudget
             </DialogContent>
         </Dialog>
 
-       
+
     )
 }
 
