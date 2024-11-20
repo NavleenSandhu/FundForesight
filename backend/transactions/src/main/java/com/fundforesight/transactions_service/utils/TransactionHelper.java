@@ -5,7 +5,9 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -16,6 +18,7 @@ import com.fundforesight.transactions_service.database.BudgetRepository;
 import com.fundforesight.transactions_service.database.TransactionRepository;
 import com.fundforesight.transactions_service.models.Budget;
 import com.fundforesight.transactions_service.models.Transaction;
+import com.fundforesight.transactions_service.models.Transaction.TransactionType;
 import com.fundforesight.transactions_service.services.AIService;
 import com.fundforesight.transactions_service.services.PlaidService;
 
@@ -44,12 +47,23 @@ public class TransactionHelper {
             startDate = timestamp.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         }
         for (String accessToken : accessTokens) {
-            List<Transaction> transactions = plaidService.getPlaidTransactions(accessToken, userId, startDate, transactionsInDbExist, timestampResult);
+            List<Transaction> transactions = plaidService.getPlaidTransactions(accessToken, userId, startDate,
+                    transactionsInDbExist, timestampResult);
             /*
              * Using a messaging service, send transactions to see if the budget is still
              * above a threshold, if not, the messaging service will trigger a notification
              */
             transactionRepository.saveAll(transactions);
+            Map<Integer, Double> totalAmounts = transactions.stream()
+                    .collect(Collectors.groupingBy(
+                            Transaction::getBudgetId,
+                            Collectors.summingDouble(
+                                    transaction -> transaction.getTransactionType() == TransactionType.EXPENSE
+                                            ? transaction.getAmount()
+                                            : -transaction.getAmount())));
+            totalAmounts.forEach((budgetId, totalAmount) -> {
+                budgetRepository.updateBudgetAmountById(budgetId, totalAmount);
+            });
         }
     }
 

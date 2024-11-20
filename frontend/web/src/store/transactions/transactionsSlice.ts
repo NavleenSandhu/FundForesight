@@ -29,8 +29,8 @@ export const updateTransaction = createAsyncThunk('/transactions/updateTransacti
         })
 
         if (res.status === 200) {
-            
-           
+
+
             return transaction
         }
     } catch (error: unknown) {
@@ -77,4 +77,4 @@ const transactionsSlice = createSlice({
     }
 })
 
-export default transactionsSlice.reducer;
+export const transactionsReducer = transactionsSlice.reducer;

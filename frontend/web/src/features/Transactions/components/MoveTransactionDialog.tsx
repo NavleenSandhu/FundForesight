@@ -7,6 +7,7 @@ import { updateTransaction } from '@/store/transactions/transactionsSlice'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { ArrowRightLeft } from 'lucide-react'
+import { editBudget } from '@/store/budgets/budgetsSlice'
 interface MoveTransactionDialogProps {
     transaction: Transaction
 }
@@ -15,10 +16,19 @@ const MoveTransactionDialog: React.FC<MoveTransactionDialogProps> = ({ transacti
     const [selectedBudget, setSelectedBudget] = useState(transaction.budgetId.toString())
     const dispatch = useDispatch<AppDispatch>()
     const updateBudgetId = () => {
-        const updatedTransaction: Transaction = { ...transaction, budgetId: parseInt(selectedBudget) }
+        const previousBudgetId = transaction.budgetId
+        const newBudgetId = parseInt(selectedBudget)
+        const updatedTransaction: Transaction = { ...transaction, budgetId: newBudgetId }
         dispatch(updateTransaction(updatedTransaction))
+        const transactionAmount = transaction.transactionType === 'EXPENSE' ? transaction.amount : - transaction.amount
+        // Update te amounts of the budgets
+        const prevBudget = budgets.find(budget => budget.budget_id === previousBudgetId)!
+        dispatch(editBudget({ ...prevBudget, remaining_amount: prevBudget.remaining_amount + transactionAmount }))
+
+        const newBudget = budgets.find(budget => budget.budget_id === newBudgetId)!
+        dispatch(editBudget({ ...newBudget, remaining_amount: newBudget.remaining_amount - transactionAmount }))
     }
-    
+
 
     return (
         <Dialog>

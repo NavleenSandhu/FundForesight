@@ -46,13 +46,13 @@ export const deleteBudget = createAsyncThunk('/budgets/deleteBudget', async (bud
         method: "DELETE",
         credentials: "include",
     })
-    
+
     if (res.status === 204) {
         return budget_id
-    } else { 
+    } else {
         const data = await res.json();
         console.log(data);
-        
+
         throw Error(data.message);
     }
 })
@@ -64,7 +64,7 @@ const budgetsSlice = createSlice({
         error: "",
     },
     reducers: {
-        removeError: (state) => { 
+        removeError: (state) => {
             state.error = "";
         },
     },
@@ -92,12 +92,12 @@ const budgetsSlice = createSlice({
                     state.budgets = state.budgets.filter(budget => budget.budget_id !== action.payload!)
                 }
             })
-            .addCase(deleteBudget.rejected, (state, action) => { 
-                state.error = action.error.message!; 
+            .addCase(deleteBudget.rejected, (state, action) => {
+                state.error = action.error.message!;
                 console.log(action.error);
-                
+
             })
     }
 })
 export const { removeError } = budgetsSlice.actions;
-export const  budgetReducer  = budgetsSlice.reducer;
+export const budgetReducer = budgetsSlice.reducer;
