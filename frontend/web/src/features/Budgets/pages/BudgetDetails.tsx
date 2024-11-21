@@ -8,6 +8,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import BudgetDialog from "../components/BudgetDialog";
 import { Budget } from "@/models/Budget";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { ArrowLeft } from "lucide-react";
 
 
 function BudgetDetails() {
@@ -31,24 +35,56 @@ function BudgetDetails() {
     }
 
     return (
-        <div className="container mx-auto p-6">
-
-            <Link to='/dashboard/budgets' className={buttonVariants({
-                variant: 'default'
-            })}>Back to Budgets</Link>
-            <h2>{budget.category_name}</h2>
-            <p>
-                Budget period: {displayDate(budget.start_date)} - {displayDate(budget.end_date)}
-            </p>
-            <p>Initial Amount: ${budget.initial_amount.toFixed(2)}</p>
-            <p>Remaining Amount: ${budget.remaining_amount.toFixed(2)}</p>
-            <div className="flex flex-col items-center space-y-4">
-                <BudgetDialog formType="Edit" budget_id={budget.budget_id} />
-                <ConfirmationDialog name="Delete budget" prompt={`Are you sure you want to delete "${budget.category_name}" budget?`} func={deleteBudgetById} />
+        <div className="container mx-auto p-6 space-y-6">
+            <div className="flex items-center justify-between">
+                <Link
+                    to="/dashboard/budgets"
+                    className={buttonVariants({
+                        variant: "default"
+                    })}>
+                    <ArrowLeft />
+                </Link>
+                <ConfirmationDialog
+                    name="Delete Budget"
+                    prompt={`Are you sure you want to delete "${budget.category_name}" budget?`}
+                    func={deleteBudgetById}
+                />
             </div>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle className="text-lg">{budget.category_name}</CardTitle>
+                    <CardDescription>
+                        Budget period: {displayDate(budget.start_date)} to {displayDate(budget.end_date)}
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className="flex flex-wrap gap-4">
+                        <div className="flex flex-col">
+                            <span className="text-muted-foreground text-sm">Initial Amount</span>
+                            <span className="text-lg font-semibold">${budget.initial_amount.toFixed(2)}</span>
+                        </div>
+                        <div className="flex flex-col">
+                            <span className="text-muted-foreground text-sm">Remaining Amount</span>
+                            <span className="text-lg font-semibold">
+                                ${budget.remaining_amount.toFixed(2)}
+                            </span>
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+
+            <div className="flex items-center justify-between">
+                <Badge variant="outline" className="text-xs">
+                    Transactions: {transactionsByBudget.length}
+                </Badge>
+                <BudgetDialog formType="Edit" budget_id={budget.budget_id} />
+            </div>
+
+            <Separator />
             <TransactionList transactions={transactionsByBudget} />
         </div>
-    )
+    );
 }
 
 export default BudgetDetails

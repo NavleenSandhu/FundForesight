@@ -1,4 +1,4 @@
-import { BarChart, Home, Layers, Repeat, User } from "lucide-react";
+import { CircleDollarSign, Home, Shapes, Repeat, User } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { buttonVariants } from "./ui/button";
 
@@ -10,9 +10,9 @@ interface NavItem {
 
 const navItems: NavItem[] = [
     { icon: <Home className="w-6 h-6" />, label: "Home", path: "/dashboard/home" },
-    { icon: <BarChart className="w-6 h-6" />, label: "Analytics", path: "/dashboard/analytics" },
     { icon: <Repeat className="w-6 h-6" />, label: "Transactions", path: "/dashboard/transactions" },
-    { icon: <Layers className="w-6 h-6" />, label: "Budgets", path: "/dashboard/budgets" },
+    { icon: <Shapes className="w-6 h-6" />, label: "Budgets", path: "/dashboard/budgets" },
+    { icon: <CircleDollarSign className="w-6 h-6" />, label: "Savings", path: "/dashboard/savingGoals" },
     { icon: <User className="w-6 h-6" />, label: "Profile", path: "/dashboard/profile" },
 ];
 
