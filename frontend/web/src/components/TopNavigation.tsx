@@ -12,14 +12,14 @@ function TopNavigation() {
                 <Link to='/dashboard/home' className={`${buttonVariants({ variant: isActive('/dashboard/home') })}`}>
                     Home
                 </Link>
-                <Link to='/dashboard/analytics' className={`${buttonVariants({ variant: isActive('/dashboard/analytics') })}`}>
-                    Analytics
-                </Link>
                 <Link to='/dashboard/transactions' className={`${buttonVariants({ variant: isActive('/dashboard/transactions') })} }`}>
                     Transactions
                 </Link>
                 <Link to='/dashboard/budgets' className={`${buttonVariants({ variant: isActive('/dashboard/budgets') })} }`}>
                     Budgets
+                </Link>
+                <Link to='/dashboard/savingGoals' className={`${buttonVariants({ variant: isActive('/dashboard/savingGoals') })}`}>
+                    Saving Goals
                 </Link>
                 <Link to='/dashboard/profile' className={`${buttonVariants({ variant: isActive('/dashboard/profile') })}}`}>
                     Profile
