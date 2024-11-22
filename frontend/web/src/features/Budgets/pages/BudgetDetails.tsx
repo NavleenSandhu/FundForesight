@@ -1,17 +1,19 @@
+import AlertBox from "@/components/AlertBox";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
+import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import TransactionList from "@/features/Transactions/components/TransactionList";
+import { Budget } from "@/models/Budget";
 import { deleteBudget } from "@/store/budgets/budgetsSlice";
 import { AppDispatch, RootState } from "@/store/store";
 import { displayDate } from "@/utils/dateUtils";
+import { ArrowLeft } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import BudgetDialog from "../components/BudgetDialog";
-import { Budget } from "@/models/Budget";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { ArrowLeft } from "lucide-react";
+
 
 
 function BudgetDetails() {
@@ -21,7 +23,7 @@ function BudgetDetails() {
     const dispatch = useDispatch<AppDispatch>();
     const budget_id: number = location.state.budget_id
     const budget: Budget = useSelector((state: RootState) => state.budgets.budgets.find(b => b.budget_id === budget_id))!
-
+    const { error } = useSelector((state: RootState) => state.budgets);
     if (!budget) {
         navigate('/dashboard/budgets');
         return null;
@@ -31,11 +33,13 @@ function BudgetDetails() {
     )
     const deleteBudgetById = () => {
         dispatch(deleteBudget(budget.budget_id))
-        navigate('/dashboard/budgets');
+       navigate('/dashboard/budgets');
     }
 
     return (
+
         <div className="container mx-auto p-6 space-y-6">
+            
             <div className="flex items-center justify-between">
                 <Link
                     to="/dashboard/budgets"
@@ -44,6 +48,7 @@ function BudgetDetails() {
                     })}>
                     <ArrowLeft />
                 </Link>
+                
                 <ConfirmationDialog
                     name="Delete Budget"
                     prompt={`Are you sure you want to delete "${budget.category_name}" budget?`}

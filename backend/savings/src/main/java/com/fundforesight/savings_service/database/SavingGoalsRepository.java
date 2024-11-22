@@ -25,7 +25,7 @@ public interface SavingGoalsRepository extends JpaRepository<SavingGoal, Integer
             @Param("currentAmount") double currentAmount, @Param("startDate") Date startDate,
             @Param("endDate") Date endDate, @Param("status") Status status, @Param("goalId") int goalId,
             @Param("userId") int userId);
-    
+
     @Modifying
     @Transactional
     @Query("DELETE FROM SavingGoal s WHERE s.goalId=:goalId AND s.userId=:userId")

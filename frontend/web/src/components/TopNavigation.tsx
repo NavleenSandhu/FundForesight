@@ -1,5 +1,5 @@
-import { buttonVariants } from './ui/button'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom';
+import { buttonVariants } from './ui/button';
 
 function TopNavigation() {
     const location = useLocation();
