@@ -35,7 +35,7 @@ public class SavingGoal {
     @Column(name = "goal_name")
     private String goalName;
 
-    @Column(name = "traget_amount")
+    @Column(name = "target_amount")
     private double targetAmount;
 
     @Column(name = "current_amount")

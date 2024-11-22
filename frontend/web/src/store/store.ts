@@ -3,11 +3,13 @@ import { Persistor, persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { budgetReducer } from './budgets/budgetsSlice';
 import { transactionsReducer } from './transactions/transactionsSlice';
+import { savingGoalsReducer } from './savingGoals/savingGoalsSlice';
 
 
 const rootReducer = combineReducers({
   transactions: transactionsReducer,
-  budgets: budgetReducer
+  budgets: budgetReducer,
+  savingGoals: savingGoalsReducer
 });
 
 const persistConfig = {

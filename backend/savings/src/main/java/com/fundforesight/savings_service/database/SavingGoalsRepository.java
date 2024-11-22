@@ -20,7 +20,7 @@ public interface SavingGoalsRepository extends JpaRepository<SavingGoal, Integer
 
     @Modifying
     @Transactional
-    @Query("UPDATE SavingGoal s SET s.goalName=:goalName, s.targetAmount=:targetAmount, s.currentAmount=:currentAmount, s.startDate=:startDate, s.endDate=:endDate, s.status=: status WHERE s.goalId=:goalId AND s.userId=:userId")
+    @Query("UPDATE SavingGoal s SET s.goalName=:goalName, s.targetAmount=:targetAmount, s.currentAmount=:currentAmount, s.startDate=:startDate, s.endDate=:endDate, s.status=:status WHERE s.goalId=:goalId AND s.userId=:userId")
     void updateSavingGoal(@Param("goalName") String goalName, @Param("targetAmount") double targetAmount,
             @Param("currentAmount") double currentAmount, @Param("startDate") Date startDate,
             @Param("endDate") Date endDate, @Param("status") Status status, @Param("goalId") int goalId,

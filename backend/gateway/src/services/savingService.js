@@ -1,7 +1,7 @@
 const HttpError = require("../utils/httpError")
 
 const getSavingGoals = async (userId) => {
-    const res = await fetch(`${process.env.SAVINGS_URL}?user_id${userId}`)
+    const res = await fetch(`${process.env.SAVINGS_URL}?user_id=${userId}`)
     if (res.status !== 200) {
         throw new HttpError("Cannot fetch savings", 400)
     }
@@ -20,6 +20,11 @@ const addSavingGoals = async (savingGoals) => {
     if (res.status !== 201) {
         throw new HttpError("Could not add savings", 400)
     }
+    const goals = await res.json()
+    if (goals.length === 1) {
+        return goals[0]
+    }
+    return goals
 }
 
 const updateSavingGoal = async (savingGoal, goalId) => {
