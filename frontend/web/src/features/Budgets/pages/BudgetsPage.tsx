@@ -1,3 +1,4 @@
+import AlertBox from '@/components/AlertBox';
 import { fetchBudgets } from '@/store/budgets/budgetsSlice';
 import { AppDispatch, RootState } from '@/store/store';
 import { useEffect } from 'react';
@@ -5,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { removeError } from '../../../store/budgets/budgetsSlice';
 import BudgetDialog from '../components/BudgetDialog';
 import BudgetList from '../components/BudgetList';
+
 
 function BudgetsPage() {
     const { budgets } = useSelector((state: RootState) => state.budgets);
@@ -22,7 +24,7 @@ function BudgetsPage() {
     }
     return (
         <div className="container mx-auto p-6">
-            {error}
+            <AlertBox message={ error} />
             <h1 className="text-2xl font-bold mb-4">Budgets</h1>
             <p className="text-sm mb-6">Manage and track your budgets here.</p>
             <BudgetDialog formType='Create' />
