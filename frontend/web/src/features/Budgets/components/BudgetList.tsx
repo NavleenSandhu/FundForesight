@@ -1,15 +1,9 @@
-import { AppDispatch, RootState } from "@/store/store"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import BudgetListItem from "./BudgetListItem"
-import { useEffect } from "react"
-import { fetchBudgets } from "@/store/budgets/budgetsSlice"
+import { RootState } from "@/store/store"
 
 function BudgetList() {
     const { budgets } = useSelector((state: RootState) => state.budgets)
-    const dispatch = useDispatch<AppDispatch>()
-    useEffect(() => {
-        dispatch(fetchBudgets())
-    }, [dispatch])
 
     return (
         <div className="space-y-4 p-4">

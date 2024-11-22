@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class SavingsController {
     private SavingGoalsRepository savingsRepository;
 
-    @GetMapping("/")
+    @GetMapping(value = {"/",""})
     public ResponseEntity<?> getSavingGoals(
             @RequestParam(name = "user_id", defaultValue = "0", required = true) int userId) {
         try {
@@ -40,8 +40,8 @@ public class SavingsController {
     @PostMapping(value = { "/", "" }, headers = { "Content-Type=application/json" })
     public ResponseEntity<?> addSavingGoals(@RequestBody List<SavingGoal> savingGoals) {
         try {
-            savingsRepository.saveAll(savingGoals);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            List<SavingGoal> goals = savingsRepository.saveAll(savingGoals);
+            return new ResponseEntity<>(goals, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
