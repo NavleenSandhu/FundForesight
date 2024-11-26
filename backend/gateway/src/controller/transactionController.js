@@ -10,7 +10,9 @@ const getTransactions = async (req, res) => {
   try {
     const token = req.signedCookies.access_token;
     const userId = await getUserId(token);
-    const transactions = await getUserTransactions(userId);
+    const startDate = req.query.startDate || "";
+    const endDate = req.query.endDate || "";
+    const transactions = await getUserTransactions(userId, startDate, endDate);
 
     res.status(200).json({ transactions });
   } catch (error) {
