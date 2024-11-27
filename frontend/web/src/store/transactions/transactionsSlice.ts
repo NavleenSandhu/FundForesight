@@ -1,10 +1,14 @@
 import { Transaction } from "@/models/Transaction";
+import { displayDate } from "@/utils/dateUtils";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { subDays } from "date-fns";
 
 const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL;
 export const fetchTransactions = createAsyncThunk('/transactions/fetchTransactions', async () => {
     try {
-        const res = await fetch(`${GATEWAY_URL}/transaction`, {
+        const now = new Date();
+        const date30DaysEarlier = subDays(now, 30);
+        const res = await fetch(`${GATEWAY_URL}/transaction?startDate=${displayDate(date30DaysEarlier)}&endDate=${displayDate(now)}`, {
             method: 'GET',
             credentials: "include"
         })
@@ -60,7 +64,9 @@ const transactionsSlice = createSlice({
         transactions: [] as Transaction[],
         loading: false,
         error: "",
-        balance: 0
+        balance: 0,
+        total30DayIncome : 0,
+        total30DayExpense:0
     },
     reducers: {
         removeError: (state) => {
@@ -74,11 +80,26 @@ const transactionsSlice = createSlice({
                 state.error = ""
             })
             .addCase(fetchTransactions.fulfilled, (state, action: PayloadAction<Transaction[]>) => {
-                state.transactions = action.payload;
+                const transactions = action.payload;
+                state.transactions = transactions;
+                state.total30DayIncome = transactions.reduce<number>((totalIncome, transaction) => { 
+                    if (transaction.transactionType === "INCOME") { 
+                        totalIncome += transaction.amount;
+
+                    }
+                    return totalIncome
+                 },0);
+                state.total30DayExpense = transactions.reduce<number>((totalExpense, transaction) => { 
+                    if (transaction.transactionType === "EXPENSE") { 
+                        totalExpense += transaction.amount;
+
+                    }
+                    return totalExpense
+                 },0);
                 state.loading = false
             })
             .addCase(fetchTransactions.rejected, (state, action) => {
-                state.error = action.error.message!
+                state.error = action.error.message!               
             })
             .addCase(updateTransaction.fulfilled, (state, action: PayloadAction<Transaction | undefined>) => {
                 const transaction = action.payload;

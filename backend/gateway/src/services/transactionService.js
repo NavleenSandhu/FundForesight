@@ -1,8 +1,10 @@
 const HttpError = require("../utils/httpError");
 const { getUserId } = require("./userService");
-const getUserTransactions = async (userId) => {
+const getUserTransactions = async (userId, startDate, endDate) => {
   try {
-    const res = await fetch(`${process.env.TRANSACTION_URL}?user_id=${userId}`);
+    const res = await fetch(
+      `${process.env.TRANSACTION_URL}?user_id=${userId}&start_date=${startDate}&end_date=${endDate}`
+    );
     if (!res.ok) {
       throw new HttpError("Unable to fetch the data", 500);
     }
