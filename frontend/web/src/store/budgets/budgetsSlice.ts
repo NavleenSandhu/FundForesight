@@ -2,16 +2,19 @@ import { Budget } from "@/models/Budget";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL;
-
 export const fetchBudgets = createAsyncThunk('/budgets/getBudgets', async () => {
     const res = await fetch(`${GATEWAY_URL}/budgets`, {
         method: "GET",
         credentials: "include"
     })
+    const data = await res.json()
     if (res.status === 200) {
-        const budgets = await res.json();
+        const budgets = data;
         return budgets
+    } else if (res.status === 401) {
+        throw new Error("Unauthorized")
     }
+    throw new Error(data.message)
 })
 
 export const addBudget = createAsyncThunk('/budgets/addBudget', async (budget: Omit<Budget, 'budget_id' | 'user_id'>) => {
@@ -23,10 +26,11 @@ export const addBudget = createAsyncThunk('/budgets/addBudget', async (budget: O
         },
         body: JSON.stringify(budget)
     })
+    const data = await res.json()
     if (res.status === 201) {
-        const data = await res.json()
         return data.budget as Budget
     }
+    throw new Error(data.message)
 })
 export const editBudget = createAsyncThunk('/budgets/editBudget', async (budget: Budget) => {
     const res = await fetch(`${GATEWAY_URL}/budgets/${budget.budget_id}`, {
@@ -40,6 +44,8 @@ export const editBudget = createAsyncThunk('/budgets/editBudget', async (budget:
     if (res.status === 200) {
         return budget
     }
+    const data = await res.json()
+    throw new Error(data.message)
 })
 export const deleteBudget = createAsyncThunk('/budgets/deleteBudget', async (budget_id: number) => {
     const res = await fetch(`${GATEWAY_URL}/budgets/${budget_id}`, {
@@ -49,12 +55,9 @@ export const deleteBudget = createAsyncThunk('/budgets/deleteBudget', async (bud
 
     if (res.status === 204) {
         return budget_id
-    } else {
-        const data = await res.json();
-        console.log(data);
-
-        throw Error(data.message);
     }
+    const data = await res.json()
+    throw new Error(data.message)
 })
 
 const budgetsSlice = createSlice({
@@ -72,11 +75,16 @@ const budgetsSlice = createSlice({
         builder
             .addCase(fetchBudgets.fulfilled, (state, action: PayloadAction<Budget[]>) => {
                 state.budgets = action.payload
+                state.error = ""
+            })
+            .addCase(fetchBudgets.rejected, (state, action) => {
+                state.error = action.error.message!
             })
             .addCase(addBudget.fulfilled, (state, action: PayloadAction<Budget | undefined>) => {
                 if (action.payload) {
                     state.budgets.push(action.payload)
                 }
+                state.error = ""
             })
             .addCase(editBudget.fulfilled, (state, action: PayloadAction<Budget | undefined>) => {
                 if (action.payload) {
@@ -85,12 +93,14 @@ const budgetsSlice = createSlice({
                         budget.budget_id === updatedBudget.budget_id ? updatedBudget : budget
                     )
                 }
+                state.error = ""
             })
             .addCase(deleteBudget.fulfilled, (state, action: PayloadAction<number | undefined>) => {
                 if (action.payload) {
 
                     state.budgets = state.budgets.filter(budget => budget.budget_id !== action.payload!)
                 }
+                state.error = ""
             })
             .addCase(deleteBudget.rejected, (state, action) => {
                 state.error = action.error.message!;

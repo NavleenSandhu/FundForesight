@@ -3,14 +3,20 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
 import { RootState } from "@/store/store"
 import { displayDate } from "@/utils/dateUtils"
+import { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { useLocation, useNavigate } from "react-router-dom"
 
 function BudgetsOverview() {
-    const { budgets } = useSelector((state: RootState) => state.budgets)
+    const { budgets, error } = useSelector((state: RootState) => state.budgets)
     const navigate = useNavigate()
     const location = useLocation()
-
+    useEffect(() => {
+        if(error === "Unauthorized"){
+            navigate("/auth/register")
+        }
+    }, [error, navigate])
+    
     return (
         <Card className="px-8">
             <CardHeader>

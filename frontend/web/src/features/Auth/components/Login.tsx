@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
+import { Label } from "@/components/ui/label";
 
 const minPasswordLen: number = 8
 const loginSchema = z.object({
@@ -47,8 +48,8 @@ function Login() {
     return (
         <div className="flex flex-col justify-center items-center w-full lg:w-1/2 p-6 lg:p-12">
             <div className="w-full max-w-sm">
-                <h2 className="text-2xl font-semibold text-center">Create an account</h2>
-                <p className="text-center mt-2 mb-8">Enter your email below to create your account</p>
+                <h2 className="text-2xl font-semibold text-center">Login</h2>
+                <p className="text-center mt-2 mb-8">Enter your email and password below to login</p>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(handleLogin)} className="space-y-6">
                         <FormField
@@ -56,10 +57,11 @@ function Login() {
                             name="email"
                             render={({ field }) => (
                                 <FormItem>
+                                    <Label htmlFor="email">Email</Label>
                                     <FormControl>
                                         <Input
+                                            id="email"
                                             type="email"
-                                            placeholder="Enter your email"
                                             {...field}
                                         />
                                     </FormControl>
@@ -72,10 +74,11 @@ function Login() {
                             name="password"
                             render={({ field }) => (
                                 <FormItem>
+                                    <Label htmlFor="password">Password</Label>
                                     <FormControl>
                                         <Input
+                                            id="password"
                                             type="password"
-                                            placeholder="Enter your password"
                                             {...field}
                                         />
                                     </FormControl>

@@ -22,7 +22,6 @@ function BudgetDetails() {
     const dispatch = useDispatch<AppDispatch>();
     const { budget_id, referer } = location.state
     const budget: Budget = useSelector((state: RootState) => state.budgets.budgets.find(b => b.budget_id === budget_id))!
-    const { error } = useSelector((state: RootState) => state.budgets);
     if (!budget) {
         navigate('/dashboard/budgets');
         return null;

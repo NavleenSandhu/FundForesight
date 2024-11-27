@@ -17,8 +17,8 @@ COPY . .
 # Build the Go app
 RUN go build -o api cmd/api/main.go
 
-# Expose port 6000 (or your desired port)
-EXPOSE 6000
+# Expose port 6500 (or your desired port)
+EXPOSE 6500
 
 # Command to run the executable
 CMD ["./api"]
