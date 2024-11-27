@@ -12,7 +12,8 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({ name, prompt, f
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant={'destructive'}>{name}</Button>
+                <Button className='hidden md:inline-block' variant={'destructive'}>{name}</Button>
+                
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]  w-3/4 rounded-md">
                 <DialogHeader>

@@ -16,8 +16,12 @@ export const fetchTransactions = createAsyncThunk('/transactions/fetchTransactio
             const data = await res.json()
             return data.transactions
         }
+        else {
+            throw new Error("An error occurred while fetching transactions.")
+        }
     } catch (error: unknown) {
         console.error(error);
+        throw new Error("An error occurred while fetching transactions.")
     }
 });
 
@@ -31,10 +35,7 @@ export const updateTransaction = createAsyncThunk('/transactions/updateTransacti
             },
             body: JSON.stringify(transaction)
         })
-
         if (res.status === 200) {
-
-
             return transaction
         }
     } catch (error: unknown) {
@@ -61,13 +62,23 @@ const transactionsSlice = createSlice({
     name: 'transactions',
     initialState: {
         transactions: [] as Transaction[],
+        loading: false,
+        error: "",
         balance: 0,
         total30DayIncome : 0,
         total30DayExpense:0
     },
-    reducers: {},
+    reducers: {
+        removeError: (state) => {
+            state.error = "";
+        }
+    },
     extraReducers: (builder) => {
         builder
+            .addCase(fetchTransactions.pending, (state) => {
+                state.loading = true
+                state.error = ""
+            })
             .addCase(fetchTransactions.fulfilled, (state, action: PayloadAction<Transaction[]>) => {
                 const transactions = action.payload;
                 state.transactions = transactions;
@@ -85,6 +96,10 @@ const transactionsSlice = createSlice({
                     }
                     return totalExpense
                  },0);
+                state.loading = false
+            })
+            .addCase(fetchTransactions.rejected, (state, action) => {
+                state.error = action.error.message!               
             })
             .addCase(updateTransaction.fulfilled, (state, action: PayloadAction<Transaction | undefined>) => {
                 const transaction = action.payload;

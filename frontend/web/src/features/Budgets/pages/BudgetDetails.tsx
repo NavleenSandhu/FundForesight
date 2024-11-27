@@ -1,4 +1,3 @@
-import AlertBox from "@/components/AlertBox";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -21,7 +20,7 @@ function BudgetDetails() {
     const navigate = useNavigate();
     const { transactions } = useSelector((state: RootState) => state.transactions)
     const dispatch = useDispatch<AppDispatch>();
-    const budget_id: number = location.state.budget_id
+    const { budget_id, referer } = location.state
     const budget: Budget = useSelector((state: RootState) => state.budgets.budgets.find(b => b.budget_id === budget_id))!
     const { error } = useSelector((state: RootState) => state.budgets);
     if (!budget) {
@@ -33,22 +32,22 @@ function BudgetDetails() {
     )
     const deleteBudgetById = () => {
         dispatch(deleteBudget(budget.budget_id))
-       navigate('/dashboard/budgets');
+        navigate('/dashboard/budgets');
     }
 
     return (
 
         <div className="container mx-auto p-6 space-y-6">
-            
+
             <div className="flex items-center justify-between">
                 <Link
-                    to="/dashboard/budgets"
+                    to={referer}
                     className={buttonVariants({
                         variant: "default"
                     })}>
                     <ArrowLeft />
                 </Link>
-                
+
                 <ConfirmationDialog
                     name="Delete Budget"
                     prompt={`Are you sure you want to delete "${budget.category_name}" budget?`}
@@ -64,7 +63,7 @@ function BudgetDetails() {
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <div className="flex flex-wrap gap-4">
+                    <div className="flex gap-4 justify-between md:justify-start">
                         <div className="flex flex-col">
                             <span className="text-muted-foreground text-sm">Initial Amount</span>
                             <span className="text-lg font-semibold">${budget.initial_amount.toFixed(2)}</span>

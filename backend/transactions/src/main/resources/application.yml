@@ -11,3 +11,5 @@ spring:
         properties:
             hibernate:
                 dialect: org.hibernate.dialect.PostgreSQLDialect
+notifications:
+    url: ${NOTIFICATIONS_URL}

@@ -1,4 +1,4 @@
-import { CircleDollarSign, Home, Shapes, Repeat, User } from "lucide-react";
+import { Home, Shapes, Repeat, User, PiggyBank } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { buttonVariants } from "./ui/button";
 
@@ -12,7 +12,7 @@ const navItems: NavItem[] = [
     { icon: <Home className="w-6 h-6" />, label: "Home", path: "/dashboard/home" },
     { icon: <Repeat className="w-6 h-6" />, label: "Transactions", path: "/dashboard/transactions" },
     { icon: <Shapes className="w-6 h-6" />, label: "Budgets", path: "/dashboard/budgets" },
-    { icon: <CircleDollarSign className="w-6 h-6" />, label: "Savings", path: "/dashboard/savingGoals" },
+    { icon: <PiggyBank className="w-6 h-6" />, label: "Savings", path: "/dashboard/savingGoals" },
     { icon: <User className="w-6 h-6" />, label: "Profile", path: "/dashboard/profile" },
 ];
 
@@ -23,7 +23,7 @@ function BottomNavigation() {
             {navItems.map((item, index) => (
                 <Link key={index} to={item.path} className={
                     buttonVariants({
-                        variant: location.pathname === item.path ? 'default' : 'outline'
+                        variant: location.pathname.startsWith(item.path) ? 'default' : 'outline'
                     })
                 }>{item.icon}
                     <span className="sr-only">{item.label}</span>
