@@ -6,6 +6,7 @@ import { Input } from "../../../components/ui/input";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
+import { Label } from "@/components/ui/label";
 const minUsernameLen: number = 3
 const maxUsernameLen: number = 40
 const minPasswordLen: number = 8
@@ -50,18 +51,19 @@ function Register() {
         <div className="flex flex-col justify-center items-center w-full lg:w-1/2 p-6 lg:p-12">
             <div className="w-full max-w-sm">
                 <h2 className="text-2xl font-semibold text-center">Create an account</h2>
-                <p className="text-center mt-2 mb-8">Sign up to start managing your finances with Fund Foresight</p>
+                <p className="text-center mt-2 mb-6">Sign up to start managing your finances with Fund Foresight</p>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(handleRegister)} className="space-y-6">
                         <FormField
                             control={form.control}
-                            name="username"
+                            name="email"
                             render={({ field }) => (
                                 <FormItem>
+                                    <Label htmlFor="email">Email</Label>
                                     <FormControl>
                                         <Input
-                                            type="text"
-                                            placeholder="Enter your username"
+                                            id="email"
+                                            type="email"
                                             {...field}
                                         />
                                     </FormControl>
@@ -71,13 +73,14 @@ function Register() {
                         />
                         <FormField
                             control={form.control}
-                            name="email"
+                            name="username"
                             render={({ field }) => (
                                 <FormItem>
+                                    <Label htmlFor="username">Username</Label>
                                     <FormControl>
                                         <Input
-                                            type="email"
-                                            placeholder="Enter your email"
+                                            id="username"
+                                            type="text"
                                             {...field}
                                         />
                                     </FormControl>
@@ -90,10 +93,11 @@ function Register() {
                             name="password"
                             render={({ field }) => (
                                 <FormItem>
+                                    <Label htmlFor="password">Password</Label>
                                     <FormControl>
                                         <Input
+                                            id="password"
                                             type="password"
-                                            placeholder="Enter your password"
                                             {...field}
                                         />
                                     </FormControl>
@@ -106,10 +110,10 @@ function Register() {
                         </Button>
                     </form>
                 </Form>
-                <p className="text-center mt-6 text-sm">
+                <p className="text-center mt-4 text-sm">
                     Already have an account?{" "}
                     <Link to="/auth/login" className={buttonVariants({
-                        variant:'link'
+                        variant: 'link'
                     })}>
                         Log In
                     </Link>

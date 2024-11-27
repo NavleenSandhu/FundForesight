@@ -1,3 +1,5 @@
+const HttpError  = require("../utils/httpError")
+
 // get user id from cookies
 const getUserId = async (token) => {
   const res = await fetch(`${process.env.AUTH_URL}/getUserId`, {
@@ -10,7 +12,7 @@ const getUserId = async (token) => {
   if (res.ok) {
     return data.user_id;
   } else {
-    throw new Error(data.error);
+    throw new HttpError("You are not logged in", 401);
   }
 };
 

@@ -1,49 +1,45 @@
 const HttpError = require("../utils/httpError");
 const { getUserId } = require("./userService");
-const axios = require("axios");
 const getUserBudget = async (token, budget_id) => {
   const user_id = await getUserId(token);
   if (!user_id) {
     throw new HttpError("User validation failed", 401);
   }
 
-  const res = await axios.get(
+  const res = await fetch(
     `${process.env.BUDGET_URL}/${budget_id}`,
-
-    {
-      headers: { "Content-Type": "application/json" },
-    }
-  );
+  )
 
   if (res.status != 200) {
     throw new HttpError("Unable to fetch the data", 500);
   }
-  if (res.data.user_id != user_id) {
+  const data = await res.json()
+  if (data.user_id != user_id) {
     throw new HttpError("forbidden", 403);
   }
-  return res.data;
+  return data;
 };
 const createUserBudget = async (token, budget) => {
   const user_id = await getUserId(token);
-
   if (!user_id) {
     throw new Error("User validation failed");
   }
   budget.user_id = user_id;
 
-  const res = await axios.post(
+  const res = await fetch(
     `${process.env.BUDGET_URL}`,
-
-    budget,
     {
+      method: "POST",
       headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(budget)
     }
   );
 
   if (res.status != 201) {
     throw new Error("Unable to create budget");
   }
-  return res.data;
+  const data = await res.json()
+  return data;
 };
 const updateUserBudget = async (token, budget, budget_id) => {
   const user_id = await getUserId(token);
@@ -53,12 +49,12 @@ const updateUserBudget = async (token, budget, budget_id) => {
   }
   budget.user_id = user_id;
 
-  const res = await axios.put(
+  const res = await fetch(
     `${process.env.BUDGET_URL}/${budget_id}`,
-
-    budget,
     {
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(budget),
     }
   );
 
@@ -72,8 +68,10 @@ const deleteUserBudget = async (token, budget_id) => {
     throw new Error("User validation failed");
   }
 
-  const res = await axios.delete(
-    `${process.env.BUDGET_URL}/${budget_id}?user_id=${user_id}`
+  const res = await fetch(
+    `${process.env.BUDGET_URL}/${budget_id}?user_id=${user_id}`, {
+    method: "DELETE"
+  }
   );
   if (res.status === 409)
     throw new HttpError("Can not delete budget with transactions", res.status);
@@ -88,13 +86,12 @@ const getAllUserBudgets = async (token) => {
   if (!user_id) {
     throw new Error("User validation failed");
   }
-
-  const res = await axios.get(`${process.env.BUDGET_URL}?user_id=${user_id}`);
-
+  const res = await fetch(`${process.env.BUDGET_URL}?user_id=${user_id}`);  
   if (res.status != 200) {
     throw new Error("Unable to fetch the data");
   }
-  return res.data;
+  const budgets = await res.json()
+  return budgets;
 };
 
 module.exports = {

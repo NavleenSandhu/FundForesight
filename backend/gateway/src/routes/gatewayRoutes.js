@@ -1,6 +1,10 @@
 const { Router } = require("express");
 const router = Router();
-const { login, register } = require("../controller/authController.js");
+const {
+  login,
+  logout,
+  register
+} = require("../controller/authController.js");
 const {
   getBudget,
   updateBudget,
@@ -29,6 +33,7 @@ const {
 
 //auth routes
 router.post("/login", login);
+router.post("/logout", logout);
 router.post("/register", register);
 
 //budget routes
