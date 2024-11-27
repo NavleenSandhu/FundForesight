@@ -9,6 +9,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { addSavingGoal, editSavingGoal } from "@/store/savingGoals/savingGoalsSlice";
 import { AppDispatch, RootState } from "@/store/store";
 import { z } from "zod";
+import { addDays } from 'date-fns'
+import { displayDate } from "@/utils/dateUtils";
+import { Label } from "@/components/ui/label";
 
 interface SavingGoalDialogProps {
     formType: "Create" | "Edit";
@@ -47,14 +50,14 @@ const SavingGoalDialog: React.FC<SavingGoalDialogProps> = ({ formType, goalId })
     const savingGoal = useSelector((state: RootState) =>
         state.savingGoals.savingGoals.find((goal) => goal.goalId === goalId)
     );
-
+    const today = new Date()
     const defaultValues =
         formType === "Create"
-            ? { goalName: "", targetAmount: 0, startDate: new Date().toISOString().split("T")[0], endDate: "" }
+            ? { goalName: "", targetAmount: 0, startDate: displayDate(today), endDate: displayDate(addDays(today, 30)) }
             : {
                 goalName: savingGoal?.goalName || "",
                 targetAmount: savingGoal?.targetAmount || 0,
-                endDate: new Date(savingGoal!.endDate).toISOString().split("T")[0] || "",
+                endDate: displayDate(new Date(savingGoal!.endDate)) || "",
             };
 
     const form = useForm<SavingGoalFormInputs>({
@@ -87,7 +90,7 @@ const SavingGoalDialog: React.FC<SavingGoalDialogProps> = ({ formType, goalId })
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="default">{formType} Saving Goal</Button>
+                <Button variant="default">{formType} Goal</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px] w-3/4 rounded-md">
                 <DialogHeader>
@@ -103,8 +106,9 @@ const SavingGoalDialog: React.FC<SavingGoalDialogProps> = ({ formType, goalId })
                             name="goalName"
                             render={({ field }) => (
                                 <FormItem>
+                                    <Label htmlFor="goalName">Goal Name</Label>
                                     <FormControl>
-                                        <Input placeholder="Goal Name" {...field} />
+                                        <Input id="goalName" placeholder="eg. Car, House" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -115,9 +119,10 @@ const SavingGoalDialog: React.FC<SavingGoalDialogProps> = ({ formType, goalId })
                             name="targetAmount"
                             render={({ field }) => (
                                 <FormItem>
+                                    <Label htmlFor="targetAmount">Target Amount</Label>
                                     <FormControl>
                                         <Input
-                                            placeholder="Target Amount"
+                                            id="targetAmount"
                                             type="number"
                                             step={0.01}
                                             min={0}
@@ -135,8 +140,9 @@ const SavingGoalDialog: React.FC<SavingGoalDialogProps> = ({ formType, goalId })
                                 name="startDate"
                                 render={({ field }) => (
                                     <FormItem>
+                                        <Label htmlFor="startDate">Start Date</Label>
                                         <FormControl>
-                                            <Input type="date" {...field} />
+                                            <Input id="startDate" type="date" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -148,8 +154,9 @@ const SavingGoalDialog: React.FC<SavingGoalDialogProps> = ({ formType, goalId })
                             name="endDate"
                             render={({ field }) => (
                                 <FormItem>
+                                    <Label htmlFor="endDate">End Date</Label>
                                     <FormControl>
-                                        <Input type="date" {...field} />
+                                        <Input id="endDate" type="date" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

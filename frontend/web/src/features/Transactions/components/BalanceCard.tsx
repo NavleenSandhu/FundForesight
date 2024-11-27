@@ -1,15 +1,11 @@
 import { Skeleton } from '@/components/ui/skeleton';
-import { Transaction } from '@/models/Transaction';
-import React from 'react'
-import TransactionItemSkeleton from './TransactionItemSkeleton';
+import { RootState } from '@/store/store';
+import { useSelector } from 'react-redux';
 
-interface BalanceCardProps {
-    transactions: Transaction[],
-    balance: number
-}
 
-const BalanceCard: React.FC<BalanceCardProps> = ({ transactions, balance }) => {
-    if (!transactions || transactions.length === 0) {
+const BalanceCard = () => {
+    const { transactions, balance, error, loading } = useSelector((state: RootState) => state.transactions);
+    if (loading && transactions && transactions.length === 0) {
         return (
             <div className="p-6 h-screen">
                 <div className="rounded-lg shadow-lg p-6 text-center bg-card">
@@ -30,11 +26,7 @@ const BalanceCard: React.FC<BalanceCardProps> = ({ transactions, balance }) => {
                         </div>
                     </div>
                 </div>
-                <div className="mt-4 h-96 space-y-4 p-2 rounded-lg">
-                    {[...Array(5)].map((_, index) => (
-                        <TransactionItemSkeleton key={index} />
-                    ))}
-                </div>
+
             </div>
         )
     }
@@ -55,12 +47,11 @@ const BalanceCard: React.FC<BalanceCardProps> = ({ transactions, balance }) => {
 
     return (
         <div>
-            <h1 className="text-center text-2xl font-semibold mb-4 text-primary">Transactions</h1>
             <div className="rounded-lg shadow-lg p-6 text-center bg-card">
                 {
                     balance ?
                         <>
-                            <p className="text-lg font-bold text-primary">Total Balance</p>
+                            <p className="text-xl font-semibold text-primary">Total Balance</p>
                             <p className={`text-3xl font-bold ${balance >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
                                 ${balance}
                             </p>

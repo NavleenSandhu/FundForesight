@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
 import { z } from "zod"
 import { addMonths, startOfMonth, endOfMonth } from "date-fns"
+import { Label } from "@/components/ui/label"
 
 
 interface BudgetDialogProps {
@@ -96,8 +97,9 @@ const BudgetDialog: React.FC<BudgetDialogProps> = ({ formType, budget_id }) => {
                             name='category_name'
                             render={({ field }) => (
                                 <FormItem>
+                                    <Label htmlFor="categoryName">Category Name</Label>
                                     <FormControl>
-                                        <Input placeholder="Category Name" {...field} />
+                                        <Input id="categoryName" placeholder="eg. Groceries, Rent" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -108,8 +110,9 @@ const BudgetDialog: React.FC<BudgetDialogProps> = ({ formType, budget_id }) => {
                             name="initial_amount"
                             render={({ field }) => (
                                 <FormItem>
+                                    <Label htmlFor="amount">Amount</Label>
                                     <FormControl>
-                                        <Input placeholder="Amount"
+                                        <Input id="amount"
                                             type="number"
                                             step={0.01}
                                             min={0}
