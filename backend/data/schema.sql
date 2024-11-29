@@ -41,7 +41,11 @@ CREATE TABLE user_preferences (
     preference_id SERIAL PRIMARY KEY,
     user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
     currency VARCHAR(10) DEFAULT 'USD',
-    receive_notifications BOOLEAN DEFAULT TRUE
+    receive_notifications BOOLEAN DEFAULT TRUE,
+    country_code VARCHAR(2) NOT NULL CHECK (country_code IN (
+        'US', 'GB', 'ES', 'NL', 'FR', 'IE', 'CA', 'DE', 
+        'IT', 'PL', 'DK', 'NO', 'SE', 'EE', 'LT', 'LV', 'PT', 'BE'
+    ))
 );
 
 CREATE TABLE plaid_accounts (

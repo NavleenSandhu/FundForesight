@@ -11,12 +11,13 @@ function BudgetsOverview() {
     const { budgets, error } = useSelector((state: RootState) => state.budgets)
     const navigate = useNavigate()
     const location = useLocation()
+
     useEffect(() => {
-        if(error === "Unauthorized"){
-            navigate("/auth/register")
+        if (error === "Unauthorized") {
+            navigate("/auth/login")
         }
     }, [error, navigate])
-    
+
     return (
         <Card className="px-8">
             <CardHeader>
