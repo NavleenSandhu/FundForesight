@@ -1,13 +1,18 @@
 // src/pages/Login.tsx
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { FcGoogle } from "react-icons/fc";
-import { Link, useNavigate } from "react-router-dom";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { AppDispatch } from "@/store/store";
+import { removeAllErrors } from "@/utils/removeErrors";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { FcGoogle } from "react-icons/fc";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { z } from "zod";
+import AlertBox from '../../../components/AlertBox';
 
 const minPasswordLen: number = 8
 const loginSchema = z.object({
@@ -18,6 +23,8 @@ const loginSchema = z.object({
 type LoginFormInputs = z.infer<typeof loginSchema>;
 
 function Login() {
+    const dispatch = useDispatch<AppDispatch>();
+    const [error, setError] = useState("");
     const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL
     const navigate = useNavigate()
     const form = useForm<LoginFormInputs>({
@@ -29,6 +36,7 @@ function Login() {
     });
 
     const handleLogin = async (data: LoginFormInputs) => {
+        setError("");
         const res = await fetch(`${GATEWAY_URL}/login`, {
             method: 'POST',
             credentials: "include",
@@ -38,15 +46,20 @@ function Login() {
             body: JSON.stringify(data)
         })
         if (res.status === 200) {
-            navigate("/auth/plaidAccount");
+            removeAllErrors(dispatch);
+            navigate("/dashboard/home");
         }
+        
         else {
+            const errorMessage = await res.json();
+            setError(errorMessage.message);
             console.error("Error while Login");
         }
     };
 
     return (
         <div className="flex flex-col justify-center items-center w-full lg:w-1/2 p-6 lg:p-12">
+            { error && <AlertBox message={error}></AlertBox> }
             <div className="w-full max-w-sm">
                 <h2 className="text-2xl font-semibold text-center">Login</h2>
                 <p className="text-center mt-2 mb-8">Enter your email and password below to login</p>

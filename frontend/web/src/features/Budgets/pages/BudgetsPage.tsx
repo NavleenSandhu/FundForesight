@@ -1,9 +1,8 @@
 import AlertBox from '@/components/AlertBox';
-import { fetchBudgets } from '@/store/budgets/budgetsSlice';
+import { fetchBudgets, removeBudgetError } from '@/store/budgets/budgetsSlice';
 import { AppDispatch, RootState } from '@/store/store';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeError } from '../../../store/budgets/budgetsSlice';
 import BudgetDialog from '../components/BudgetDialog';
 import BudgetList from '../components/BudgetList';
 
@@ -20,7 +19,7 @@ function BudgetsPage() {
     }, [dispatch, budgets.length]);
 
     if (error) { 
-        setTimeout(() => { dispatch(removeError()) }, 5000);
+        setTimeout(() => { dispatch(removeBudgetError()) }, 5000);
     }
     return (
         <div className="container mx-auto p-6">
