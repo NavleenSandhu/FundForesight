@@ -67,7 +67,7 @@ const savingGoalsSlice = createSlice({
         error: "",
     },
     reducers: {
-        removeError: (state) => {
+        removeSavingError: (state) => {
             state.error = "";
         },
     },
@@ -77,11 +77,15 @@ const savingGoalsSlice = createSlice({
                 if (action.payload) {
                     state.savingGoals = action.payload;
                 }
+            }).addCase(fetchSavingGoals.rejected, (state, action) => { 
+                state.error = action.error.message || "Unable to fetch saving goals";
             })
             .addCase(addSavingGoal.fulfilled, (state, action: PayloadAction<SavingGoal | SavingGoal[] | undefined>) => {
                 if (action.payload) {
                     state.savingGoals = state.savingGoals.concat(action.payload);
                 }
+            }).addCase(addSavingGoal.rejected, (state, action) => { 
+                state.error = action.error.message || "Unable to add saving goals";
             })
             .addCase(editSavingGoal.fulfilled, (state, action: PayloadAction<SavingGoal | undefined>) => {
                 if (action.payload) {
@@ -90,6 +94,8 @@ const savingGoalsSlice = createSlice({
                         goal.goalId === updatedSavingGoal.goalId ? updatedSavingGoal : goal
                     );
                 }
+            }).addCase(editSavingGoal.rejected, (state, action) => { 
+                state.error = action.error.message || "Unable to edit saving goals";
             })
             .addCase(deleteSavingGoal.fulfilled, (state, action: PayloadAction<number | undefined>) => {
                 if (action.payload) {
@@ -102,5 +108,5 @@ const savingGoalsSlice = createSlice({
     },
 });
 
-export const { removeError } = savingGoalsSlice.actions;
+export const { removeSavingError } = savingGoalsSlice.actions;
 export const savingGoalsReducer = savingGoalsSlice.reducer;

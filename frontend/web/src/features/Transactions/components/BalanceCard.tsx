@@ -7,7 +7,7 @@ const BalanceCard = () => {
     const { transactions, balance, error, loading } = useSelector((state: RootState) => state.transactions);
     if (loading && transactions && transactions.length === 0) {
         return (
-            <div className="p-6 h-screen">
+            <div className="p-6 h-screen z-30">
                 <div className="rounded-lg shadow-lg p-6 text-center bg-card">
                     <div className="flex flex-col items-center space-y-4">
                         <div className="w-36">

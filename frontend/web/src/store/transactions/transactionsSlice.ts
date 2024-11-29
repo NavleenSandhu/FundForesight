@@ -75,10 +75,6 @@ const transactionsSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchTransactions.pending, (state) => {
-                state.loading = true
-                state.error = ""
-            })
             .addCase(fetchTransactions.fulfilled, (state, action: PayloadAction<Transaction[]>) => {
                 const transactions = action.payload;
                 state.transactions = transactions;
@@ -99,16 +95,20 @@ const transactionsSlice = createSlice({
                 state.loading = false
             })
             .addCase(fetchTransactions.rejected, (state, action) => {
-                state.error = action.error.message!               
+                state.error = action.error.message || "failed to fetch transactions";             
             })
             .addCase(updateTransaction.fulfilled, (state, action: PayloadAction<Transaction | undefined>) => {
                 const transaction = action.payload;
                 if (transaction) {
                     state.transactions = state.transactions.map(t => t.transactionId === transaction.transactionId ? transaction : t);
                 }
+            }).addCase(updateTransaction.rejected, (state, action) => {
+                state.error = action.error.message || "failed to update transactions";             
             })
             .addCase(fetchBalance.fulfilled, (state, action: PayloadAction<number>) => {
                 state.balance = action.payload
+            }).addCase(fetchBalance.rejected, (state, action) => {
+                state.error = action.error.message || "failed to fetch Balance";             
             })
     }
 })

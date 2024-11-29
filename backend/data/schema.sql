@@ -34,7 +34,7 @@ CREATE TABLE savings_goals (
     current_amount DECIMAL(10, 2) DEFAULT 0,
     start_date DATE NOT NULL,
     end_date DATE,
-    status VARCHAR(50) CHECK (status IN ('ACTIVE', 'COMPLETED', 'CANCELLED'))
+    status VARCHAR(50)  CHECK (status IN ('ACTIVE', 'COMPLETED', 'CANCELLED'))
 );
 
 CREATE TABLE user_preferences (

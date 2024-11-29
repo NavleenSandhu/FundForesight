@@ -67,7 +67,7 @@ const budgetsSlice = createSlice({
         error: "",
     },
     reducers: {
-        removeError: (state) => {
+        removeBudgetError: (state) => {
             state.error = "";
         },
     },
@@ -78,13 +78,16 @@ const budgetsSlice = createSlice({
                 state.error = ""
             })
             .addCase(fetchBudgets.rejected, (state, action) => {
-                state.error = action.error.message!
+                state.error = action.error.message || "Failed to fetch Budgets"
             })
             .addCase(addBudget.fulfilled, (state, action: PayloadAction<Budget | undefined>) => {
                 if (action.payload) {
                     state.budgets.push(action.payload)
                 }
                 state.error = ""
+            }).addCase(addBudget.rejected, (state, action) => {
+                state.error = action.error.message || "Failed to add budget";
+                
             })
             .addCase(editBudget.fulfilled, (state, action: PayloadAction<Budget | undefined>) => {
                 if (action.payload) {
@@ -94,6 +97,8 @@ const budgetsSlice = createSlice({
                     )
                 }
                 state.error = ""
+            }).addCase(editBudget.rejected, (state, action) => { 
+                state.error = action.error.message || "Failed to edit budget";
             })
             .addCase(deleteBudget.fulfilled, (state, action: PayloadAction<number | undefined>) => {
                 if (action.payload) {
@@ -109,5 +114,5 @@ const budgetsSlice = createSlice({
             })
     }
 })
-export const { removeError } = budgetsSlice.actions;
+export const { removeBudgetError } = budgetsSlice.actions;
 export const budgetReducer = budgetsSlice.reducer;
