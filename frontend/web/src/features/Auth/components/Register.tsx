@@ -1,12 +1,12 @@
+import { Label } from "@/components/ui/label";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
-import { Button, buttonVariants } from "../../../components/ui/button";
-import { Form, FormField, FormItem, FormControl, FormMessage } from "../../../components/ui/form";
-import { Input } from "../../../components/ui/input";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
-import { Label } from "@/components/ui/label";
+import { z } from "zod";
+import { Button, buttonVariants } from "../../../components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "../../../components/ui/form";
+import { Input } from "../../../components/ui/input";
 const minUsernameLen: number = 3
 const maxUsernameLen: number = 40
 const minPasswordLen: number = 8
@@ -48,8 +48,8 @@ function Register() {
         }
     };
     return (
-        <div className="flex flex-col justify-center items-center w-full lg:w-1/2 p-6 lg:p-12">
-            <div className="w-full max-w-sm">
+        <div className="flex flex-col justify-center items-center w-full lg:w-1/2 py-6">
+            <div className="w-full">
                 <h2 className="text-2xl font-semibold text-center">Create an account</h2>
                 <p className="text-center mt-2 mb-6">Sign up to start managing your finances with Fund Foresight</p>
                 <Form {...form}>
