@@ -1,21 +1,29 @@
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import './App.css'
 import Auth from './features/Auth/pages/Auth'
 import Dashboard from './pages/Dashboard'
-import Home from './pages/Home'
 import NotFound from './pages/NotFound'
 
 function App() {
+  const location = useLocation();
+  
+  const navigate = useNavigate();
+  useEffect(() => { 
+     if (location.pathname === "/") { 
+    navigate("/dashboard/home");
+  }
+  },[]);
+ 
 
   return (
-    <Router>
+
       <Routes>
-        <Route path='/' Component={Home}></Route>
         <Route path='/auth/*' Component={Auth}></Route>
         <Route path='/dashboard/*' Component={Dashboard}></Route>
         <Route path='*' Component={NotFound}></Route>
       </Routes>
-    </Router>
+
   )
 }
 
