@@ -5,10 +5,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fundforesight.notification_service.database.NotificationRepository;
 import com.fundforesight.notification_service.database.NotificationUserRepository;
+import com.fundforesight.notification_service.database.UserPreferenceRepository;
 import com.fundforesight.notification_service.models.Budget;
 import com.fundforesight.notification_service.models.Notification;
 import com.fundforesight.notification_service.models.NotificationUser;
 import com.fundforesight.notification_service.models.Transaction;
+import com.fundforesight.notification_service.models.UserPreference;
 import com.fundforesight.notification_service.services.BudgetsApiService;
 import com.fundforesight.notification_service.services.TransactionsApiService;
 import com.fundforesight.notification_service.utils.NotificationHelper;
@@ -39,6 +41,7 @@ public class NotificationController {
     private NotificationUserRepository userRepository;
     private TransactionsApiService transactionsApiService;
     private BudgetsApiService budgetsApiService;
+    private UserPreferenceRepository preferenceRepository;
 
     @GetMapping(value = { "/", "" })
     public ResponseEntity<?> getNotificationsByUserId(
@@ -72,6 +75,16 @@ public class NotificationController {
 
         // Fetch the user ID and the transactions
         int userId = userOptional.get().getUserId();
+
+        Optional<UserPreference> dbUserOptional = preferenceRepository.findByUserId(userId);
+        if (!dbUserOptional.isPresent()) {
+            return new ResponseEntity<>("Could not validate item id", HttpStatus.BAD_REQUEST);
+        } else {
+            UserPreference dbUser = dbUserOptional.get();
+            if (!dbUser.getReceiveNotifications()) {
+                return new ResponseEntity<>("Not required for this user", HttpStatus.MOVED_PERMANENTLY);
+            }
+        }
         Integer newTransactionsCount = (Integer) map.get("new_transactions");
         if (newTransactionsCount == null || newTransactionsCount <= 0) {
             return new ResponseEntity<>("No new transactions to process", HttpStatus.BAD_REQUEST);
