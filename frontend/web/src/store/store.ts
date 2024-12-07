@@ -4,12 +4,14 @@ import storage from "redux-persist/lib/storage";
 import { budgetReducer } from './budgets/budgetsSlice';
 import { savingGoalsReducer } from './savingGoals/savingGoalsSlice';
 import { transactionsReducer } from './transactions/transactionsSlice';
+import { profilesReducer } from './profiles/profilesSlice';
 
 
 const rootReducer = combineReducers({
   budgets: budgetReducer,
   transactions: transactionsReducer,
   savingGoals: savingGoalsReducer,
+  profile: profilesReducer
 });
 
 

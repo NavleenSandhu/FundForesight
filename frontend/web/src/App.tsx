@@ -6,25 +6,25 @@ import Dashboard from './pages/Dashboard'
 import NotFound from './pages/NotFound'
 
 function App() {
-  const location = useLocation();
-  
-  const navigate = useNavigate();
-  useEffect(() => { 
-     if (location.pathname === "/") { 
-    navigate("/dashboard/home");
-  }
-  },[]);
- 
+	const location = useLocation();
 
-  return (
+	const navigate = useNavigate();
+	useEffect(() => {
+		if (location.pathname === "/") {
+			navigate("/dashboard/home");
+		}
+	}, []);
 
-      <Routes>
-        <Route path='/auth/*' Component={Auth}></Route>
-        <Route path='/dashboard/*' Component={Dashboard}></Route>
-        <Route path='*' Component={NotFound}></Route>
-      </Routes>
 
-  )
+	return (
+
+		<Routes>
+			<Route path='/auth/*' Component={Auth}></Route>
+			<Route path='/dashboard/*' Component={Dashboard}></Route>
+			<Route path='*' Component={NotFound}></Route>
+		</Routes>
+
+	)
 }
 
 export default App

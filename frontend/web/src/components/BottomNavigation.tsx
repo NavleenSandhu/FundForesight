@@ -1,6 +1,7 @@
-import { Home, Shapes, Repeat, User, PiggyBank } from "lucide-react";
+import { Home, Shapes, Repeat, PiggyBank } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { buttonVariants } from "./ui/button";
+import DropDown from "./DropDown";
 
 interface NavItem {
     icon: JSX.Element;
@@ -13,7 +14,6 @@ const navItems: NavItem[] = [
     { icon: <Repeat className="w-6 h-6" />, label: "Transactions", path: "/dashboard/transactions" },
     { icon: <Shapes className="w-6 h-6" />, label: "Budgets", path: "/dashboard/budgets" },
     { icon: <PiggyBank className="w-6 h-6" />, label: "Savings", path: "/dashboard/savingGoals" },
-    { icon: <User className="w-6 h-6" />, label: "Profile", path: "/dashboard/profile" },
 ];
 
 function BottomNavigation() {
@@ -30,6 +30,7 @@ function BottomNavigation() {
                 </Link>
             ))
             }
+            <DropDown />
         </div >
     )
 }

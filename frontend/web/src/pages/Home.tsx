@@ -4,6 +4,7 @@ import SavingsOverview from "@/features/SavingGoals/components/SavingsOverview";
 import BalanceCard from "@/features/Transactions/components/BalanceCard";
 import TransactionsOverview from "@/features/Transactions/components/TransactionsOverview";
 import { fetchBudgets } from "@/store/budgets/budgetsSlice";
+import { fetchProfile } from "@/store/profiles/profilesSlice";
 import { fetchSavingGoals } from "@/store/savingGoals/savingGoalsSlice";
 import { AppDispatch } from "@/store/store";
 import { fetchBalance, fetchTransactions } from "@/store/transactions/transactionsSlice";
@@ -17,6 +18,7 @@ function Home() {
         dispatch(fetchBalance())
         dispatch(fetchTransactions())
         dispatch(fetchSavingGoals())
+        dispatch(fetchProfile())
     }, [dispatch])
     return (
         <Tabs defaultValue="overview">
