@@ -40,15 +40,24 @@ function Register() {
     });
 
     const handleRegister = async (data: RegisterFormInputs) => {
-        const res = await fetch(`${GATEWAY_URL}/register`, {
+        const { email, password, username, countryCode } = data
+        const registerRes = await fetch(`${GATEWAY_URL}/register`, {
             method: "POST",
             credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify({ email, password, username }),
         });
-        if (res.status === 201) {
+        const profileRes = await fetch(`${GATEWAY_URL}/profiles`, {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ countryCode }),
+        });
+        if (registerRes.status === 201 && profileRes.status === 201) {
             navigate("/auth/plaidAccount");
         } else {
             console.error("Error while registering");

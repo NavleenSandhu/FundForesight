@@ -12,9 +12,11 @@ import org.springframework.stereotype.Service;
 
 import com.fundforesight.transactions_service.database.BudgetRepository;
 import com.fundforesight.transactions_service.database.NotificationUserRepository;
+import com.fundforesight.transactions_service.database.UserPreferenceRepository;
 import com.fundforesight.transactions_service.models.NotificationUser;
 import com.fundforesight.transactions_service.models.PlaidAccount;
 import com.fundforesight.transactions_service.models.Transaction;
+import com.fundforesight.transactions_service.models.UserPreference;
 import com.fundforesight.transactions_service.utils.TransactionHelper;
 import com.plaid.client.model.*;
 import com.plaid.client.request.PlaidApi;
@@ -29,6 +31,7 @@ public class PlaidService {
     private TransactionHelper transactionHelper;
     private BudgetRepository budgetRepository;
     private NotificationUserRepository userRepository;
+    private UserPreferenceRepository userPreferenceRepository;
     private Environment env;
 
     /**
@@ -41,12 +44,19 @@ public class PlaidService {
      */
     public String createLinkToken(int userId) throws Exception {
         // Configure the link token request with user and application details.
+        Optional<UserPreference> userPreferenceOpt = userPreferenceRepository.findByUserId(userId);
+        UserPreference userPreference;
+        if (userPreferenceOpt.isPresent()) {
+            userPreference = userPreferenceOpt.get();
+        } else {
+            throw new RuntimeException("Cannot find country code for user");
+        }
         LinkTokenCreateRequestUser user = new LinkTokenCreateRequestUser().clientUserId(String.valueOf(userId));
         LinkTokenCreateRequest request = new LinkTokenCreateRequest()
                 .clientName("Fund Foresight Inc")
                 .user(user)
                 .products(List.of(Products.TRANSACTIONS))
-                .countryCodes(List.of(CountryCode.CA))
+                .countryCodes(List.of(CountryCode.fromValue(userPreference.getCountryCode().toString())))
                 .language("en")
                 .webhook(env.getProperty("notifications.url"));
 

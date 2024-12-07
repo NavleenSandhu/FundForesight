@@ -1,7 +1,7 @@
-const HttpError  = require("../utils/httpError")
+const HttpError = require("../utils/httpError")
 
 // get user id from cookies
-const getUserId = async (token) => {
+const getUser = async (token) => {
   const res = await fetch(`${process.env.AUTH_URL}/getUserId`, {
     headers: {
       auth_token: token,
@@ -10,10 +10,15 @@ const getUserId = async (token) => {
   const data = await res.json();
 
   if (res.ok) {
-    return data.user_id;
+    return data
   } else {
     throw new HttpError("You are not logged in", 401);
   }
+}
+
+const getUserId = async (token) => {
+  const user = await getUser(token)
+  return user.user_id
 };
 
 const getLoginToken = async (email, password) => {

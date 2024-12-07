@@ -12,7 +12,6 @@ const {
   createBudget,
   getAllBudgets,
 } = require("../controller/budgetController.js");
-
 const {
   getTransactions,
   addTransaction,
@@ -25,6 +24,12 @@ const {
   updateSaving,
   deleteSaving
 } = require("../controller/savingController.js");
+const {
+  getProfile,
+  addProfile,
+  updateProfile,
+  deleteProfile
+} = require("../controller/profilesController.js")
 const {
   getLinkToken,
   addPlaidAccount,
@@ -54,6 +59,12 @@ router.get("/savings", getSavings);
 router.post("/savings", addSavings);
 router.put("/savings/:id", updateSaving);
 router.delete("/savings/:id", deleteSaving);
+
+//savings routes
+router.get("/profiles", getProfile);
+router.post("/profiles", addProfile);
+router.put("/profiles/:id", updateProfile);
+router.delete("/profiles/:id", deleteProfile);
 
 //Plaid Account routes
 router.get("/plaidAccounts/link-token", getLinkToken)
