@@ -9,7 +9,7 @@ const getLinkToken = async (req, res) => {
         const linkToken = await getPlaidLinkToken(userId)
         res.status(200).json({ linkToken })
     } catch (error) {
-        console.log(error.message)
+        console.error(error)
         if (error instanceof HttpError) {
             res.status(error.status).json({ message: error.message })
         } else {
@@ -26,7 +26,7 @@ const addPlaidAccount = async (req, res) => {
         await addPlaidAccountByPublicToken(userId, publicToken)
         res.status(200).json({ message: "Transactions Added" })
     } catch (error) {
-        console.log(error.message)
+        console.error(error)
         if (error instanceof HttpError) {
             res.status(error.status).json({ message: error.message })
         } else {
@@ -42,7 +42,7 @@ const getBalance = async (req, res) => {
         const balance = await getBankBalance(userId)
         res.status(200).json({ balance })
     } catch (error) {
-        console.log(error.message)
+        console.error(error)
         if (error instanceof HttpError) {
             res.status(error.status).json({ message: error.message })
         } else {

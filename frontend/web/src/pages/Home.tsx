@@ -1,4 +1,4 @@
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import BudgetsOverview from "@/features/Budgets/components/BudgetsOverview";
 import SavingsOverview from "@/features/SavingGoals/components/SavingsOverview";
 import BalanceCard from "@/features/Transactions/components/BalanceCard";
@@ -7,7 +7,6 @@ import { fetchBudgets } from "@/store/budgets/budgetsSlice";
 import { fetchSavingGoals } from "@/store/savingGoals/savingGoalsSlice";
 import { AppDispatch } from "@/store/store";
 import { fetchBalance, fetchTransactions } from "@/store/transactions/transactionsSlice";
-import { TabsContent } from "@radix-ui/react-tabs";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
