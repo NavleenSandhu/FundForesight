@@ -6,6 +6,7 @@ const {
 } = require("../services/profilesService");
 const { getUserId } = require("../services/userService");
 const HttpError = require("../utils/httpError");
+const { getCurrencyByCountryCode } = require("../utils/currencyUtils")
 
 const getProfile = async (req, res) => {
     try {
@@ -28,6 +29,7 @@ const addProfile = async (req, res) => {
         const token = req.signedCookies.access_token;
         const userId = await getUserId(token);
         profileData.userId = userId;
+        profile.currency = getCurrencyByCountryCode(profile.countryCode)
         const profile = await addUserProfile(profileData);
         res.status(201).json(profile);
     } catch (error) {

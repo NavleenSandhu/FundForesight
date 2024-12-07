@@ -11,7 +11,7 @@ import { displayDate } from "@/utils/dateUtils";
 import { ArrowLeft } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import BudgetDialog from "../components/BudgetDialog";
+import EditBudgetDialog from "../components/EditBudgetDialog";
 
 
 
@@ -81,7 +81,7 @@ function BudgetDetails() {
                 <Badge variant="outline" className="text-xs">
                     Transactions: {transactionsByBudget.length}
                 </Badge>
-                <BudgetDialog formType="Edit" budget_id={budget.budget_id} />
+                <EditBudgetDialog budget_id={budget.budget_id} />
             </div>
 
             <Separator />

@@ -25,7 +25,8 @@ const BudgetDialog: React.FC<BudgetDialogProps> = ({ formType, budget_id }) => {
         category_name: z.string().trim().min(1, 'This field is required'),
         initial_amount: z.string()
             .transform(val => parseFloat(val))
-            .refine(val => val > 0, amountMessage)
+            .refine(val => val > 0, amountMessage),
+        month: z.string().min(1, "This field is required")
     });
     const editBudgetSchema = z.object({
         category_name: z.string().trim().min(1, 'This field is required'),
@@ -35,12 +36,13 @@ const BudgetDialog: React.FC<BudgetDialogProps> = ({ formType, budget_id }) => {
 
     type BudgetFormInputs = {
         category_name: string,
-        initial_amount: number
+        initial_amount: number,
+        month: 'Current' | 'Next'
     }
     const budget = useSelector((state: RootState) => state.budgets.budgets.find(budget => budget.budget_id === budget_id))
 
     const defaultValues = formType === 'Create'
-        ? { category_name: "", initial_amount: 0 }
+        ? { category_name: "", initial_amount: 0, month: 'Current' }
         : { category_name: budget?.category_name || "" };
 
 
@@ -123,6 +125,19 @@ const BudgetDialog: React.FC<BudgetDialogProps> = ({ formType, budget_id }) => {
                                 </FormItem>
                             )}
                         />}
+                        {formType === 'Create' && <FormField
+                            control={form.control}
+                            name="month"
+                            render={({ field }) => (
+                                <FormItem>
+
+                                </FormItem>
+                            )}
+                        >
+
+                        </FormField>
+
+                        }
                         <DialogFooter>
                             <DialogClose asChild>
                                 <Button type="submit">{formType}</Button>
