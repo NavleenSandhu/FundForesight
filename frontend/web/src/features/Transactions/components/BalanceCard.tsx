@@ -1,9 +1,15 @@
 import { Skeleton } from '@/components/ui/skeleton';
 import { RootState } from '@/store/store';
+import { IoIosTrendingDown, IoIosTrendingUp } from "react-icons/io";
 import { useSelector } from 'react-redux';
 
-
 const BalanceCard = () => {
+    const cardStyle = {
+    background: 'linear-gradient(45deg, rgba(109, 128, 254, 1) 0%, rgba(35, 210, 253, 1) 100%)',
+
+
+  };
+
     const { transactions, balance, error, loading } = useSelector((state: RootState) => state.transactions);
     if (loading && transactions && transactions.length === 0) {
         return (
@@ -47,24 +53,31 @@ const BalanceCard = () => {
 
     return (
         <div>
-            <div className="rounded-lg shadow-lg p-6 text-center bg-card">
+            <div className="rounded-lg shadow-lg shadow-slate-500 p-6 text-center" style={cardStyle}>
                 {
                     balance ?
                         <>
-                            <p className="text-xl font-semibold text-primary">Total Balance</p>
-                            <p className={`text-3xl font-bold ${balance >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                            <p className="text-xl font-semibold text-secondary">Total Balance</p>
+                            <p className={`text-3xl font-bold text-white`}>
                                 ${balance}
                             </p>
                         </> : ''
                 }
                 <div className="flex justify-between mt-4">
-                    <div>
-                        <p className="text-primary">Income</p>
-                        <p className="text-emerald-400">${income.toFixed(2)}</p>
+                    <div className=' bg-secondary py-1 px-5 shadow-sm shadow-slate-700 rounded-sm'>
+                        <div className='flex justify-center items-end gap-1'>
+                            <p className="text-primary inline">Income</p>
+                            <IoIosTrendingUp />
+                        </div>
+                        
+                        <p className="text-emerald-400 font-bold text-lg">${income.toFixed(2)}</p>
                     </div>
-                    <div>
-                        <p className="text-primary">Expense</p>
-                        <p className="text-red-400">${expense.toFixed(2)}</p>
+                    <div className=' bg-secondary py-1 px-5 shadow-sm shadow-slate-700 rounded-sm'>
+                       <div className='flex items-center gap-1 m-0 p-0'>
+                            <p className="text-primary inline">Expense</p>
+                            <IoIosTrendingDown />
+                        </div>
+                        <p className="text-red-400 font-bold text-lg">${expense.toFixed(2)}</p>
                     </div>
                 </div>
             </div>

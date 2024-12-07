@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
+import DropDown from './DropDown';
 import { buttonVariants } from './ui/button';
-
 function TopNavigation() {
     const location = useLocation();
     const isActive = (path: string) => location.pathname.startsWith(path) ? 'default' : 'outline'
@@ -21,9 +21,10 @@ function TopNavigation() {
                 <Link to='/dashboard/savingGoals' className={`${buttonVariants({ variant: isActive('/dashboard/savingGoals') })}`}>
                     Saving Goals
                 </Link>
-                <Link to='/dashboard/profile' className={`${buttonVariants({ variant: isActive('/dashboard/profile') })}}`}>
-                    Profile
-                </Link>
+            </div>
+            <div className='ml-auto mt-auto mb-auto'>
+
+                <DropDown ></DropDown>
             </div>
         </div>
     )

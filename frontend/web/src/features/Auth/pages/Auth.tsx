@@ -1,6 +1,7 @@
-import Login from '@/features/Auth/components/Login'
-import Register from '@/features/Auth/components/Register'
-import { Routes, Route } from 'react-router-dom'
+import Login from '@/features/Auth/components/Login';
+import Register from '@/features/Auth/components/Register';
+
+import { Route, Routes } from 'react-router-dom';
 import Plaid from '../components/Plaid';
 
 export default function Auth() {
@@ -15,8 +16,9 @@ export default function Auth() {
                     <span className="font-semibold">Fund Foresight Team</span>
                 </div>
             </div>
-            <div className="flex-1 flex items-center justify-center p-8">
+            <div className="flex-1 flex items-center justify-center py-8">
                 <Routes>
+                    
                     <Route path='/login' element={<Login />} />
                     <Route path='/register' element={<Register />} />
                     <Route path='/plaidAccount' element={<Plaid />} />

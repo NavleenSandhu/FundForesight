@@ -1,7 +1,11 @@
+import { Label } from "@/components/ui/label";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
+import { Link, useNavigate } from "react-router-dom";
+import { z } from "zod";
 import { Button, buttonVariants } from "../../../components/ui/button";
-import { Form, FormField, FormItem, FormControl, FormMessage } from "../../../components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "../../../components/ui/form";
 import { Input } from "../../../components/ui/input";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { z } from "zod";
@@ -56,8 +60,8 @@ function Register() {
     };
 
     return (
-        <div className="flex flex-col justify-center items-center w-full lg:w-1/2 p-6 lg:p-12">
-            <div className="w-full max-w-sm">
+        <div className="flex flex-col justify-center items-center w-full lg:w-1/2 py-6">
+            <div className="w-full">
                 <h2 className="text-2xl font-semibold text-center">Create an account</h2>
                 <p className="text-center mt-2 mb-6">
                     Sign up to start managing your finances with Fund Foresight

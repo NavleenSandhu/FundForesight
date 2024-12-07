@@ -69,7 +69,7 @@ const transactionsSlice = createSlice({
         total30DayExpense:0
     },
     reducers: {
-        removeError: (state) => {
+        removeTransactionError: (state) => {
             state.error = "";
         }
     },
@@ -113,4 +113,5 @@ const transactionsSlice = createSlice({
     }
 })
 
+export const { removeTransactionError } = transactionsSlice.actions;
 export const transactionsReducer = transactionsSlice.reducer;
