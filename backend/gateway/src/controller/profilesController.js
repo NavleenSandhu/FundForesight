@@ -15,6 +15,7 @@ const getProfile = async (req, res) => {
         const profile = await getUserProfile(userId);
         res.status(200).json({ profile });
     } catch (error) {
+        console.error(error)
         if (error instanceof HttpError) {
             res.status(error.status).json({ message: error.message });
             return;
@@ -29,10 +30,11 @@ const addProfile = async (req, res) => {
         const token = req.signedCookies.access_token;
         const userId = await getUserId(token);
         profileData.userId = userId;
-        profile.currency = getCurrencyByCountryCode(profile.countryCode)
+        profileData.currency = getCurrencyByCountryCode(profileData.countryCode)
         const profile = await addUserProfile(profileData);
         res.status(201).json(profile);
     } catch (error) {
+        console.error(error)
         if (error instanceof HttpError) {
             res.status(error.status).json({ message: error.message });
             return;
@@ -49,6 +51,7 @@ const updateProfile = async (req, res) => {
         await updateUserProfile(profileData, userId);
         res.status(200).json({ message: "Profile updated" });
     } catch (error) {
+        console.error(error)
         if (error instanceof HttpError) {
             res.status(error.status).json({ message: error.message });
             return;
@@ -64,6 +67,7 @@ const deleteProfile = async (req, res) => {
         await deleteUserProfile(userId);
         res.status(204).send("Deleted");
     } catch (error) {
+        console.error(error)
         if (error instanceof HttpError) {
             res.status(error.status).json({ message: error.message });
             return;

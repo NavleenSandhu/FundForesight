@@ -9,6 +9,7 @@ const getSavings = async (req, res) => {
         const savings = await getSavingGoals(userId)
         res.status(200).json({ savings })
     } catch (error) {
+        console.error(error);
         if (error instanceof HttpError) {
             res.status(error.status).json({ message: error.message })
             return
@@ -28,6 +29,7 @@ const addSavings = async (req, res) => {
         const goals = await addSavingGoals(savingGoals)
         res.status(201).json(goals)
     } catch (error) {
+        console.error(error);
         if (error instanceof HttpError) {
             res.status(error.status).json({ message: error.message })
             return
@@ -46,6 +48,7 @@ const updateSaving = async (req, res) => {
         await updateSavingGoal(savingGoal, goalId)
         res.status(200).json({ message: "Goal updated" })
     } catch (error) {
+        console.error(error);
         if (error instanceof HttpError) {
             res.status(error.status).json({ message: error.message })
             return
@@ -61,6 +64,7 @@ const deleteSaving = async (req, res) => {
         await deleteSavingGoal(goalId, userId)
         res.status(204).send("Deleted")
     } catch (error) {
+        console.error(error);
         if (error instanceof HttpError) {
             res.status(error.status).json({ message: error.message })
             return

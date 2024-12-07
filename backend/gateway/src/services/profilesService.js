@@ -1,7 +1,9 @@
 const HttpError = require("../utils/httpError");
 
 const getUserProfile = async (userId) => {
-    const res = await fetch(`${process.env.PROFILES_URL}?user_id=${userId}`);
+    const res = await fetch(`${process.env.PROFILES_URL}?user_id=${userId}`, {
+        method: "GET"
+    });
     if (res.status !== 200) {
         throw new HttpError("Cannot fetch user profile", 400);
     }
@@ -25,7 +27,10 @@ const addUserProfile = async (profileData) => {
 };
 
 const updateUserProfile = async (profileData, userId) => {
-    const res = await fetch(`${process.env.PROFILES_URL}/${userId}`, {
+    if (profileData.userId !== userId) {
+        throw new HttpError("You are not allowed to make changes", 403)
+    }
+    const res = await fetch(`${process.env.PROFILES_URL}/${profileData.preferenceId}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
