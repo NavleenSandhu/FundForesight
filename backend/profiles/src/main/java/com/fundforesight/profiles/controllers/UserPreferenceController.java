@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fundforesight.profiles.database.UserPreferenceRepository;
@@ -20,12 +21,13 @@ import com.fundforesight.profiles.models.UserPreference;
 @RestController
 @RequestMapping("/userPreferences")
 public class UserPreferenceController {
-@Autowired
+    @Autowired
     private UserPreferenceRepository userPreferenceRepository;
 
     // Get user preference by user ID
-    @GetMapping("/{userId}")
-    public ResponseEntity<UserPreference> getUserPreferenceByUserId(@PathVariable int userId) {
+    @GetMapping("")
+    public ResponseEntity<UserPreference> getUserPreferenceByUserId(
+            @RequestParam(name = "user_id", required = true) int userId) {
         Optional<UserPreference> userPreference = userPreferenceRepository.findByUserId(userId);
         if (userPreference.isPresent()) {
             return ResponseEntity.ok(userPreference.get());
@@ -35,7 +37,7 @@ public class UserPreferenceController {
     }
 
     // Add a new user preference
-    @PostMapping
+    @PostMapping("")
     public ResponseEntity<UserPreference> addUserPreference(@RequestBody UserPreference userPreference) {
         UserPreference savedPreference = userPreferenceRepository.save(userPreference);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPreference);

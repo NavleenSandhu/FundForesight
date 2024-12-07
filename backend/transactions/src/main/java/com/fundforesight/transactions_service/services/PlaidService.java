@@ -2,6 +2,7 @@ package com.fundforesight.transactions_service.services;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -153,6 +154,8 @@ public class PlaidService {
                 if (transactionsInDbExist && timestampResult.isPresent()) {
                     Timestamp timestamp = timestampResult.get();
                     transactions.removeIf(transaction -> transaction.getTransactionDate().compareTo(timestamp) <= 0);
+                    plaidTransactions.removeIf(transaction -> transaction.getDate()
+                            .compareTo(timestamp.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()) <= 0);
                 }
 
                 // Update budget IDs for categorized transactions using AI.
@@ -194,7 +197,7 @@ public class PlaidService {
             throw new RuntimeException("Could not fetch accounts: " + response.code());
         }
 
-        // Add item id to notification user table to be able to retreive user id with
+        // Add item id to notification user table to be able to retrieve user id with
         // item id later
         userRepository.save(new NotificationUser(response.body().getItem().getItemId(), userId));
         // Convert Plaid accounts to the application's PlaidAccount model.

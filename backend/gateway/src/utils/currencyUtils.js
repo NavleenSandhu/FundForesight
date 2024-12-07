@@ -20,7 +20,7 @@ const countries = [
 ]
 
 const getCurrencyByCountryCode = (countryCode) => {
-    return countriesAndCurrencies[countryCode];
+    return countries.find(c => c.country === countryCode).currency;
 }
 
 module.exports = { getCurrencyByCountryCode }

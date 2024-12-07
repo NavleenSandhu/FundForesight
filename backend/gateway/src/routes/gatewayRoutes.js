@@ -64,7 +64,7 @@ router.delete("/savings/:id", deleteSaving);
 router.get("/profiles", getProfile);
 router.post("/profiles", addProfile);
 router.put("/profiles/:id", updateProfile);
-router.delete("/profiles/:id", deleteProfile);
+router.delete("/profiles", deleteProfile);
 
 //Plaid Account routes
 router.get("/plaidAccounts/link-token", getLinkToken)

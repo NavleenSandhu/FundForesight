@@ -16,7 +16,7 @@ const getTransactions = async (req, res) => {
 
     res.status(200).json({ transactions });
   } catch (error) {
-    console.log(error.message);
+    console.error(error);
     res.status(400).json({ message: error.message });
   }
 };
@@ -35,7 +35,7 @@ const addTransaction = async (req, res) => {
 
     res.status(201).json({ message: "Added transaction" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(400).json({ message: error.message });
   }
 };
@@ -50,7 +50,7 @@ const updateTransaction = async (req, res) => {
     await updateUserTransaction(transaction, transactionId);
     res.status(200).send("Updated");
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(400).json({ message: error.message });
   }
 };
@@ -64,7 +64,7 @@ const deleteTransaction = async (req, res) => {
     await deleteUserTransaction(transactionId, userId);
     res.status(204);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(400).json({ message: error.message });
   }
 };
