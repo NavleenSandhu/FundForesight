@@ -12,7 +12,7 @@ export const fetchProfile = createAsyncThunk('/profiles', async () => {
         const data = await res.json();
         return data.profile as Profile;
     }
-    throw new Error("Could not fetch profile")
+    throw new Error("Could not fetch preferences")
 })
 
 export const addProfile = createAsyncThunk('/profiles/add', async (countryCode: string) => {
@@ -28,7 +28,7 @@ export const addProfile = createAsyncThunk('/profiles/add', async (countryCode: 
         const profile = await res.json();
         return profile as Profile;
     }
-    throw new Error("Could not add profile")
+    throw new Error("Could not add profile preferences")
 })
 export const editProfile = createAsyncThunk('/profiles/edit', async (profile: Profile) => {
     const res = await fetch(`${GATEWAY_URL}/profiles/${profile.preferenceId}`, {
@@ -42,13 +42,14 @@ export const editProfile = createAsyncThunk('/profiles/edit', async (profile: Pr
     if (res.status === 200) {
         return profile;
     }
-    throw new Error("Could not edit profile")
+    throw new Error("Could not edit preference")
 })
 
 const profilesSlice = createSlice({
     name: 'profile',
     initialState: {
         profile: {} as Profile,
+        loading: false,
         error: ""
     },
     reducers: {
@@ -60,9 +61,15 @@ const profilesSlice = createSlice({
         builder
             .addCase(fetchProfile.fulfilled, (state, action: PayloadAction<Profile | undefined>) => {
                 state.profile = action.payload!
+                state.error = ""
+                state.loading = false
             })
             .addCase(fetchProfile.rejected, (state, action) => {
                 state.error = action.error.message!
+                state.loading = false
+            })
+            .addCase(fetchProfile.pending, (state) => {
+                state.loading = true
             })
             .addCase(addProfile.fulfilled, (state, action: PayloadAction<Profile | undefined>) => {
                 state.profile = action.payload!

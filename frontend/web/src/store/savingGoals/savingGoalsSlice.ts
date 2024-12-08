@@ -13,6 +13,7 @@ export const fetchSavingGoals = createAsyncThunk('/savings/getSavingGoals', asyn
         const data = await res.json();
         return data.savings as SavingGoal[];
     }
+    throw new Error("An error occurred while fetching saving goals")
 });
 
 export const addSavingGoal = createAsyncThunk('/savings/addSavingGoal', async (savingGoal: Omit<SavingGoal, 'goalId' | 'userId'>) => {
@@ -64,6 +65,7 @@ const savingGoalsSlice = createSlice({
     name: 'savingGoals',
     initialState: {
         savingGoals: [] as SavingGoal[],
+        loading: false,
         error: "",
     },
     reducers: {
@@ -76,15 +78,19 @@ const savingGoalsSlice = createSlice({
             .addCase(fetchSavingGoals.fulfilled, (state, action: PayloadAction<SavingGoal[] | undefined>) => {
                 if (action.payload) {
                     state.savingGoals = action.payload;
+                    state.error = ""
+                    state.loading = false
                 }
-            }).addCase(fetchSavingGoals.rejected, (state, action) => { 
+            }).addCase(fetchSavingGoals.rejected, (state, action) => {
                 state.error = action.error.message || "Unable to fetch saving goals";
-            })
-            .addCase(addSavingGoal.fulfilled, (state, action: PayloadAction<SavingGoal | SavingGoal[] | undefined>) => {
+                state.loading = false
+            }).addCase(fetchSavingGoals.pending, (state)=>{
+                state.loading = true
+            }).addCase(addSavingGoal.fulfilled, (state, action: PayloadAction<SavingGoal | SavingGoal[] | undefined>) => {
                 if (action.payload) {
                     state.savingGoals = state.savingGoals.concat(action.payload);
                 }
-            }).addCase(addSavingGoal.rejected, (state, action) => { 
+            }).addCase(addSavingGoal.rejected, (state, action) => {
                 state.error = action.error.message || "Unable to add saving goals";
             })
             .addCase(editSavingGoal.fulfilled, (state, action: PayloadAction<SavingGoal | undefined>) => {
@@ -94,7 +100,7 @@ const savingGoalsSlice = createSlice({
                         goal.goalId === updatedSavingGoal.goalId ? updatedSavingGoal : goal
                     );
                 }
-            }).addCase(editSavingGoal.rejected, (state, action) => { 
+            }).addCase(editSavingGoal.rejected, (state, action) => {
                 state.error = action.error.message || "Unable to edit saving goals";
             })
             .addCase(deleteSavingGoal.fulfilled, (state, action: PayloadAction<number | undefined>) => {

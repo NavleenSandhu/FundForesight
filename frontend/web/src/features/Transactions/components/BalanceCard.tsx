@@ -4,13 +4,9 @@ import { IoIosTrendingDown, IoIosTrendingUp } from "react-icons/io";
 import { useSelector } from 'react-redux';
 
 const BalanceCard = () => {
-    const cardStyle = {
-    background: 'linear-gradient(45deg, rgba(109, 128, 254, 1) 0%, rgba(35, 210, 253, 1) 100%)',
+    const cardStyle = { background: 'linear-gradient(45deg, rgba(109, 128, 254, 1) 0%, rgba(35, 210, 253, 1) 100%)' };
 
-
-  };
-
-    const { transactions, balance, error, loading } = useSelector((state: RootState) => state.transactions);
+    const { transactions, total30DayExpense, total30DayIncome, balance, loading } = useSelector((state: RootState) => state.transactions);
     if (loading && transactions && transactions.length === 0) {
         return (
             <div className="p-6 h-screen z-30">
@@ -37,18 +33,6 @@ const BalanceCard = () => {
         )
     }
 
-    const income = transactions?.reduce<number>((totalIncome, transaction) => {
-        if (transaction.transactionType === 'INCOME') {
-            totalIncome += transaction.amount;
-        }
-        return totalIncome;
-    }, 0);
-    const expense = transactions?.reduce<number>((totalExpense, transaction) => {
-        if (transaction.transactionType === 'EXPENSE') {
-            totalExpense += transaction.amount;
-        }
-        return totalExpense;
-    }, 0);
 
 
     return (
@@ -69,15 +53,15 @@ const BalanceCard = () => {
                             <p className="text-primary inline">Income</p>
                             <IoIosTrendingUp />
                         </div>
-                        
-                        <p className="text-emerald-400 font-bold text-lg">${income.toFixed(2)}</p>
+
+                        <p className="text-emerald-400 font-bold text-lg">${total30DayIncome.toFixed(2)}</p>
                     </div>
                     <div className=' bg-secondary py-1 px-5 shadow-sm shadow-slate-700 rounded-sm'>
-                       <div className='flex items-center gap-1 m-0 p-0'>
+                        <div className='flex items-center gap-1 m-0 p-0'>
                             <p className="text-primary inline">Expense</p>
                             <IoIosTrendingDown />
                         </div>
-                        <p className="text-red-400 font-bold text-lg">${expense.toFixed(2)}</p>
+                        <p className="text-red-400 font-bold text-lg">${total30DayExpense.toFixed(2)}</p>
                     </div>
                 </div>
             </div>
