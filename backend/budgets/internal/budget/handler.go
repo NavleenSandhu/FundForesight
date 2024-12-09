@@ -39,7 +39,29 @@ func (handler *Handler) CreateBudget(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(budget)
 }
 
-// GetBudgets retrieves all budgets for a specific user
+// GetAllBudgetsByDates retrieves all budgets between two dates
+func (handler *Handler) GetAllBudgetsByDates(w http.ResponseWriter, r *http.Request) {
+	q := r.URL.Query()
+	// Get the start_date and end_date query parameters
+	startDate := q.Get("start_date")
+	endDate := q.Get("end_date")
+	if startDate == "" || endDate == "" {
+		http.Error(w, "start_date and end_date are required", http.StatusBadRequest) // Return 400 if dates are missing
+		return
+	}
+	// Fetch budgets from the repository for the specified date range
+	budgets, err := handler.Repo.GetBudgetsBetweenDates(startDate, endDate)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError) // Return 500 on internal error
+		return
+	}
+	// Respond with the budgets in JSON format
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(budgets)
+}
+
+// GetBudgets retrieves all budgets for a specific user between two dates
 func (handler *Handler) GetBudgets(w http.ResponseWriter, r *http.Request) {
 	q := r.URL.Query()
 	// Get the user_id query parameter and convert it to an integer
@@ -48,8 +70,15 @@ func (handler *Handler) GetBudgets(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest) // Return 400 for invalid user_id
 		return
 	}
-	// Fetch budgets from the repository for the specified user
-	budgets, err := handler.Repo.GetAllBudgetsForAUser(UserID)
+	// Get the start_date and end_date query parameters
+	startDate := q.Get("start_date")
+	endDate := q.Get("end_date")
+	if startDate == "" || endDate == "" {
+		http.Error(w, "start_date and end_date are required", http.StatusBadRequest) // Return 400 if dates are missing
+		return
+	}
+	// Fetch budgets from the repository for the specified user and date range
+	budgets, err := handler.Repo.GetBudgetsForUserBetweenDates(UserID, startDate, endDate)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError) // Return 500 on internal error
 		return

@@ -17,4 +17,8 @@ public class Budget {
     private double remaining_amount;
     private LocalDate start_date;
     private LocalDate end_date;
+
+    public double getExpenditure() {
+        return initial_amount - remaining_amount;
+    }
 }

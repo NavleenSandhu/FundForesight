@@ -54,7 +54,7 @@ function Home() {
             return () => clearTimeout(timeout);
         }
     }, [savingGoalsError, dispatch]);
-    
+
     useEffect(() => {
         if (profileError) {
             const timeout = setTimeout(() => dispatch(removeProfileError()), 5000);
@@ -65,19 +65,21 @@ function Home() {
     return (
         <>
             <Tabs defaultValue="overview">
-                <TabsList className="my-6">
+                <TabsList className="my-4 mt-6">
                     <TabsTrigger value="overview">Overview</TabsTrigger>
                     <TabsTrigger value="notifications">Notifications</TabsTrigger>
                 </TabsList>
-                <div className="space-y-2">
-                    {errors
-                        .filter((error) => error.value !== "")
-                        .map((error) => (
-                            <AlertBox key={error.key} title={error.key} message={error.value} />
-                        ))}
-                </div>
+                {errors.some((error) => error.value !== "") && (
+                    <div className="space-y-2">
+                        {errors
+                            .filter((error) => error.value !== "")
+                            .map((error) => (
+                                <AlertBox key={error.key} title={error.key} message={error.value} />
+                            ))}
+                    </div>
+                )}
                 <TabsContent value="overview">
-                    <div className="p-6 space-y-6">
+                    <div className="px-6 space-y-6">
                         <BalanceCard />
                         <div className="grid gap-4 md:grid-cols-2 grid-cols-1">
                             <BudgetsOverview />

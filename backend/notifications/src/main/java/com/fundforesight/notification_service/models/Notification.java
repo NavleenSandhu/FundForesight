@@ -20,7 +20,7 @@ import lombok.Data;
 public class Notification {
 
     public enum NotificationType {
-        NEW_TRANSACTIONS, OVER_BUDGET_ALERT, LARGE_TRANSACTION_ALERT, SALARY_RECEIVED
+        NEW_TRANSACTIONS, OVER_BUDGET_ALERT, LOW_BUDGET_WARNING, LARGE_TRANSACTION_ALERT, SALARY_RECEIVED, EXPENDITURE_REVIEW
     }
 
     public Notification(int userId, NotificationType notificationType, String title, String message) {

@@ -19,7 +19,7 @@ function BudgetsPage() {
     }, [error, dispatch]);
     return (
         <div className="container mx-auto p-6">
-            <AlertBox title="Budgets" message={error} />
+            {error && <AlertBox title="Budgets" message={error} />}
             <h1 className="text-2xl font-bold mb-4">Budgets</h1>
             <p className="text-sm mb-6">Manage and track your budgets here.</p>
             <CreateBudgetDialog />

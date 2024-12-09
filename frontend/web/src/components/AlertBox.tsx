@@ -22,18 +22,27 @@ const AlertBox: React.FC<AlertProps> = ({ title, message }) => {
             setIsVisible(false)
         }
     }, [message]);
-
+    useEffect(() => {
+        if (isVisible) {
+            const timer = setTimeout(() => {
+                setIsVisible(false);
+            }, 4700);
+            return () => clearTimeout(timer);
+        }
+    }, [isVisible]);
     return (
-        <div
-            className={`transition-all duration-500 transform  ${isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-5 scale-50"
-                }`}
-        >
-            <Alert variant="destructive">
-                <AlertCircle className="h-5 w-5" />
-                <AlertTitle>{title} Error</AlertTitle>
-                <AlertDescription>{message}</AlertDescription>
-            </Alert>
-        </div>
+        <>
+            <div
+                className={`transition-all duration-500 transform  ${isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-5 scale-50"
+                    }`}
+            >
+                <Alert variant="destructive">
+                    <AlertCircle className="h-5 w-5" />
+                    <AlertTitle>{title} Error</AlertTitle>
+                    <AlertDescription>{message}</AlertDescription>
+                </Alert>
+            </div>
+        </>
     );
 };
 

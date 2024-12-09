@@ -13,3 +13,5 @@ spring:
                 dialect: org.hibernate.dialect.PostgreSQLDialect
 notifications:
     url: ${NOTIFICATIONS_URL}
+kafka:
+    url: ${KAFKA_URL}

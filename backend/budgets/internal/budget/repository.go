@@ -27,14 +27,37 @@ func (repo *Repository) CreateBudget(budget *Budget) error {
 	return nil
 }
 
-// GetAllBudgetsForAUser retrieves all budgets for a specific user
-func (repo *Repository) GetAllBudgetsForAUser(UserID int) ([]Budget, error) {
+// GetAllBudgets retrieves all budgets within a date range for cron job
+func (repo *Repository) GetBudgetsBetweenDates(startDate, endDate string) ([]Budget, error) {
 	var budgets []Budget
-	query := "SELECT * FROM budgets WHERE user_id=$1"
-	// Execute the query to retrieve all budgets for the user
-	rows, err := repo.DB.Query(query, UserID)
+	query := "SELECT * FROM budgets WHERE start_date >= $1 AND end_date <= $2"
+	// Execute the query to retrieve all budgets within the date range
+	rows, err := repo.DB.Query(query, startDate, endDate)
 	if err != nil {
-		log.Println(fmt.Sprintf("Error fetching budgets for user with user_id: %d", UserID), err)
+		log.Println(fmt.Sprintf("Error fetching budgets between dates %s and %s", startDate, endDate), err)
+		return nil, err
+	}
+	defer rows.Close()
+	// Iterate over the rows and append each budget to the list
+	for rows.Next() {
+		var budget Budget
+		if err := rows.Scan(&budget.BudgetID, &budget.UserID, &budget.CategoryName, &budget.InitialAmount, &budget.RemainingAmount, &budget.StartDate, &budget.EndDate); err != nil {
+			log.Println("Error scanning budget row:", err)
+			return nil, err
+		}
+		budgets = append(budgets, budget)
+	}
+	return budgets, nil
+}
+
+// GetAllBudgetsForAUser retrieves all budgets for a specific user within a date range
+func (repo *Repository) GetBudgetsForUserBetweenDates(UserID int, startDate, endDate string) ([]Budget, error) {
+	var budgets []Budget
+	query := "SELECT * FROM budgets WHERE user_id=$1 AND start_date >= $2 AND end_date <= $3"
+	// Execute the query to retrieve all budgets for the user within the date range
+	rows, err := repo.DB.Query(query, UserID, startDate, endDate)
+	if err != nil {
+		log.Println(fmt.Sprintf("Error fetching budgets for user with user_id: %d between dates %s and %s", UserID, startDate, endDate), err)
 		return nil, err
 	}
 	defer rows.Close()

@@ -43,6 +43,13 @@ public class NotificationController {
     private BudgetsApiService budgetsApiService;
     private UserPreferenceRepository preferenceRepository;
 
+    /**
+     * Retrieves all notifications for a user.
+     * 
+     * @param userId The ID of the user whose notifications are being retrieved.
+     * @return A ResponseEntity containing the list of notifications or an error
+     *         message.
+     */
     @GetMapping(value = { "/", "" })
     public ResponseEntity<?> getNotificationsByUserId(
             @RequestParam(name = "user_id", required = true) int userId) {
@@ -55,6 +62,12 @@ public class NotificationController {
         }
     }
 
+    /**
+     * Adds a new notification for a user based on the webhook code and item ID.
+     * 
+     * @param map The map containing the webhook code and item ID.
+     * @return A ResponseEntity containing the status of the operation.
+     */
     @PostMapping(value = { "/", "" })
     public ResponseEntity<?> addNotification(@RequestBody Map<String, Object> map) {
         // Null check for map and webhook_code

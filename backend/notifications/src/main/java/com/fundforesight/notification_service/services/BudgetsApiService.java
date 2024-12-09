@@ -23,4 +23,13 @@ public class BudgetsApiService {
                 .collectList()
                 .block();
     }
+
+    public List<Budget> getAllBudgetsBetweenDates(String startDate, String endDate) {
+        return budgetsServiceClient.get().uri("/budgets/all?start_date=" + startDate + "&end_date=" + endDate)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToFlux(Budget.class)
+                .collectList()
+                .block();
+    }
 }

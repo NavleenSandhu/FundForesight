@@ -17,7 +17,7 @@ function SavingGoalsPage() {
     }, [error, dispatch]);
     return (
         <div className="container mx-auto p-6 space-y-4">
-            <AlertBox title="Saving Goals" message={ error} />
+            {error && <AlertBox title="Saving Goals" message={ error} />}
             <h1 className="text-2xl font-bold">Saving Goals</h1>
             <SavingGoalsList />
         </div>
