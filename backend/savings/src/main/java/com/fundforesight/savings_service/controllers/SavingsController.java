@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fundforesight.savings_service.database.SavingGoalsRepository;
 import com.fundforesight.savings_service.models.SavingGoal;
+import com.fundforesight.savings_service.models.SavingGoal.Status;
 
 import lombok.AllArgsConstructor;
 
@@ -50,6 +51,9 @@ public class SavingsController {
     @PutMapping(value = { "/{goalId}" }, headers = { "Content-Type=application/json" })
     public ResponseEntity<?> putMethodName(@PathVariable int goalId, @RequestBody SavingGoal s) {
         try {
+            if(s.getCurrentAmount() >= s.getTargetAmount()) {
+                s.setStatus(Status.COMPLETED);
+            }
             savingsRepository.updateSavingGoal(s.getGoalName(), s.getTargetAmount(), s.getCurrentAmount(),
                     s.getStartDate(), s.getEndDate(), s.getStatus(), s.getGoalId(), s.getUserId());
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

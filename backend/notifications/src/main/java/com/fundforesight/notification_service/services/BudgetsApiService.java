@@ -1,5 +1,6 @@
 package com.fundforesight.notification_service.services;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.http.MediaType;
@@ -16,7 +17,11 @@ public class BudgetsApiService {
     WebClient budgetsServiceClient;
 
     public List<Budget> getBudgets(int userId) {
-        return budgetsServiceClient.get().uri("/budgets?user_id=" + userId)
+        // Calculate start and end date for the current month
+        String startDate = LocalDate.now().withDayOfMonth(1).toString();
+        String endDate = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth()).toString();
+        return budgetsServiceClient.get()
+                .uri("/budgets?user_id=" + userId + "&start_date=" + startDate + "&end_date=" + endDate)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToFlux(Budget.class)

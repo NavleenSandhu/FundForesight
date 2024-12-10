@@ -23,11 +23,11 @@ const SavingGoalListItem: React.FC<SavingGoalListItemProps> = ({ goal, progress,
             </CardHeader>
             <CardContent>
                 <div className="grid grid-cols-3">
-                    <div className='text-sm text-left col-span-2'>
+                    <div className='text-xs md:text-sm text-left col-span-2'>
                         <p><strong>Start Date:</strong> {formatDate(goal.startDate)}</p>
                         <p><strong>End Date:</strong> {formatDate(goal.endDate)}</p>
                     </div>
-                    <p className='mt-4'><span className='font-bold'>${goal.currentAmount.toFixed(2)}</span ><span className="text-xs text-muted-foreground">/{goal.targetAmount}</span></p>
+                    <p className='mt-3 md:mt-4'><span className='font-bold'>${goal.currentAmount.toFixed(2)}</span ><span className="text-xs text-muted-foreground">/{goal.targetAmount}</span></p>
                 </div>
                 <div className="mt-4">
                     <Progress value={progress} />

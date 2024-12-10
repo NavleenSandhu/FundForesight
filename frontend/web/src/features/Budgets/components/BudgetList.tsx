@@ -9,7 +9,7 @@ function BudgetList() {
     return (
         <div className="space-y-4 p-4">
             {loading && budgets.length === 0 ? (
-                // Case 3: Loading and no current budgets -> Show skeletons
+                // Case 1: Loading and no current budgets -> Show skeletons
                 <div className="space-y-4">
                     {[...Array(5)].map((_, index) =>
                         <BudgetListItemSkeleton key={index} />
@@ -19,7 +19,7 @@ function BudgetList() {
                 // Case 2: Success and budgets length is 0 -> Show no budgets available
                 <p className="text-center text-muted-foreground">No budgets available</p>
             ) : (
-                // Case 1 and Case 4: Show budgets (whether loading or not)
+                // Case 3: Show budgets
                 <>
                     {budgets.map((budget) => (
                         <BudgetListItem key={budget.budget_id} budget={budget} />

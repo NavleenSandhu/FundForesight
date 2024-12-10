@@ -1,72 +1,87 @@
 const { Router } = require("express");
 const router = Router();
+
 const {
-  login,
-  logout,
-  register
+    login,
+    logout,
+    register
 } = require("../controller/authController.js");
+
 const {
-  getBudget,
-  updateBudget,
-  deleteBudget,
-  createBudget,
-  getAllBudgets,
+    getBudget,
+    updateBudget,
+    deleteBudget,
+    createBudget,
+    getAllBudgets,
 } = require("../controller/budgetController.js");
+
 const {
-  getTransactions,
-  addTransaction,
-  updateTransaction,
-  deleteTransaction,
+    getTransactions,
+    addTransaction,
+    updateTransaction,
+    deleteTransaction,
 } = require("../controller/transactionController.js");
+
 const {
-  getSavings,
-  addSavings,
-  updateSaving,
-  deleteSaving
+    getSavings,
+    addSavings,
+    updateSaving,
+    deleteSaving
 } = require("../controller/savingController.js");
+
 const {
-  getProfile,
-  addProfile,
-  updateProfile,
-  deleteProfile
+    getProfile,
+    addProfile,
+    updateProfile,
+    deleteProfile
 } = require("../controller/profilesController.js")
+
 const {
-  getLinkToken,
-  addPlaidAccount,
-  getBalance
+    fetchUserNotifications,
+    deleteUserNotification
+} = require("../controller/notificationsController.js")
+
+const {
+    getLinkToken,
+    addPlaidAccount,
+    getBalance
 } = require("../controller/plaidAccountController.js");
 
-//auth routes
+// auth routes
 router.post("/login", login);
 router.post("/logout", logout);
 router.post("/register", register);
 
-//budget routes
+// budget routes
 router.get("/budgets", getAllBudgets);
 router.get("/budgets/:budget_id", getBudget);
 router.put("/budgets/:budget_id", updateBudget);
 router.delete("/budgets/:budget_id", deleteBudget);
 router.post("/budgets", createBudget);
 
-//transactions routes
+// transactions routes
 router.get("/transaction", getTransactions);
 router.post("/transaction", addTransaction);
 router.put("/transaction/:id", updateTransaction);
 router.delete("/transaction/:id", deleteTransaction);
 
-//savings routes
+// savings routes
 router.get("/savings", getSavings);
 router.post("/savings", addSavings);
 router.put("/savings/:id", updateSaving);
 router.delete("/savings/:id", deleteSaving);
 
-//savings routes
+// profiles routes
 router.get("/profiles", getProfile);
 router.post("/profiles", addProfile);
 router.put("/profiles/:id", updateProfile);
 router.delete("/profiles", deleteProfile);
 
-//Plaid Account routes
+// notifications routes
+router.get("/notifications", fetchUserNotifications);
+router.delete("/notifications/:id", deleteUserNotification);
+
+// Plaid Account routes
 router.get("/plaidAccounts/link-token", getLinkToken)
 router.post("/plaidAccounts/addPlaidAccount", addPlaidAccount)
 router.get("/plaidAccounts/balance", getBalance)

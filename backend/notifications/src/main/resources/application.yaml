@@ -13,23 +13,11 @@ spring:
         properties:
             hibernate:
                 dialect: org.hibernate.dialect.PostgreSQLDialect
-    kafka:
-        bootstrap-servers: ${KAFKA_URL}
-        consumer:
-            group-id: notifications
-            auto-offset-reset: earliest
-            key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-            value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-            properties:
-                spring:
-                    json:
-                        trusted:
-                            packages: '*'
-        properties:
-            session.timeout.ms: 30000
 transactions:
     api:
         url: ${TRANSACTIONS_URL}
 budgets:
     api:
         url: ${BUDGETS_URL}
+kafka:
+    url: ${KAFKA_URL}

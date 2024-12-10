@@ -4,8 +4,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -41,7 +39,7 @@ public class TransactionController {
     private TransactionHelper transactionHelper;
     private PlaidAccountRepository plaidAccountRepository;
     private PlaidService plaidService;
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private KafkaTemplate<String, Object> kafkaTemplate;
 
     /**
      * Retrieves all transactions for a user.
@@ -101,7 +99,7 @@ public class TransactionController {
             transactionRepository.saveAll(transactions);
 
             // Send a message to notification service.
-            kafkaTemplate.send("transactions", new JSONArray(transactions).toString());
+            kafkaTemplate.send("transactions", transactions);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
             // Handle exceptions and return an error response.
@@ -124,10 +122,9 @@ public class TransactionController {
             transactionRepository.updateTransaction(t.getBudgetId(), t.getAmount(), t.getMerchantName(),
                     t.getTransactionType(), id, t.getUserId());
             // Send a message to notification service.
-            JSONObject transaction = new JSONObject(t).put("transactionType", t.getTransactionType().name());
-            System.out.println(t);
-            System.out.println(transaction);
-            kafkaTemplate.send("transactions", new JSONArray().put(transaction).toString());
+            List<Transaction> transactions = new ArrayList<Transaction>();
+            transactions.add(t);
+            kafkaTemplate.send("transactions", transactions);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             // Handle exceptions and return an error response.

@@ -1,10 +1,12 @@
 import AlertBox from "@/components/AlertBox";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import BudgetsOverview from "@/features/Budgets/components/BudgetsOverview";
+import NotificationsPage from "@/features/Notifications/pages/NotificationsPage";
 import SavingsOverview from "@/features/SavingGoals/components/SavingsOverview";
 import BalanceCard from "@/features/Transactions/components/BalanceCard";
 import TransactionsOverview from "@/features/Transactions/components/TransactionsOverview";
 import { fetchBudgets, removeBudgetError } from "@/store/budgets/budgetsSlice";
+import { fetchNotifications } from "@/store/notifications/notificationSlice";
 import { fetchProfile, removeProfileError } from "@/store/profiles/profilesSlice";
 import { fetchSavingGoals, removeSavingError } from "@/store/savingGoals/savingGoalsSlice";
 import { AppDispatch, RootState } from "@/store/store";
@@ -32,6 +34,7 @@ function Home() {
         dispatch(fetchTransactions())
         dispatch(fetchSavingGoals())
         dispatch(fetchProfile())
+        dispatch(fetchNotifications())
     }, [dispatch])
 
     useEffect(() => {
@@ -89,6 +92,7 @@ function Home() {
                     </div>
                 </TabsContent>
                 <TabsContent value="notifications">
+                    <NotificationsPage />
                 </TabsContent>
             </Tabs>
         </>

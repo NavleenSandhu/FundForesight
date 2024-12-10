@@ -7,7 +7,6 @@ import com.fundforesight.notification_service.models.Budget;
 import com.fundforesight.notification_service.models.Notification;
 import com.fundforesight.notification_service.models.Notification.NotificationType;
 import com.fundforesight.notification_service.models.Transaction;
-import com.fundforesight.notification_service.models.Transaction.TransactionType;
 
 import lombok.AllArgsConstructor;
 
@@ -69,17 +68,11 @@ public class NotificationHelper {
         }
     }
 
-    public void handleBudgetNotifications(int userId,
-            List<Transaction> transactions, List<Budget> budgets) {
+    public void handleBudgetNotifications(int userId, List<Budget> budgets) {
         for (Budget budget : budgets) {
-            // Calculate total spent for each budget
-            double totalSpent = transactions.stream()
-                    .filter(transaction -> transaction.getBudgetId() == budget.getBudget_id()
-                            && transaction.getTransactionType() == TransactionType.EXPENSE)
-                    .mapToDouble(Transaction::getAmount)
-                    .sum();
+            
             // Calculate remaining amount for each budget
-            double remainingAmount = budget.getInitial_amount() - totalSpent;
+            double remainingAmount = budget.getRemaining_amount();
 
             // Check if notifications already exist for the budget
             boolean overBudgetNotificationExists = notificationRepository
@@ -98,8 +91,9 @@ public class NotificationHelper {
                         new Notification(userId, NotificationType.OVER_BUDGET_ALERT, "Budget Overrun Alert",
                                 String.format(
                                         "Your budget '%s' has been exceeded. Total spent: %.2f, Budget limit: %.2f.",
-                                        budget.getCategory_name(), totalSpent, budget.getInitial_amount())));
-            } else if (remainingAmount <= budget.getInitial_amount() * 0.1 && !lowBudgetNotificationExists) {
+                                        budget.getCategory_name(), remainingAmount, budget.getInitial_amount())));
+            } else if (remainingAmount <= budget.getInitial_amount() * 0.1 && !lowBudgetNotificationExists
+                    && !overBudgetNotificationExists) {
                 // Save notification for low budget warning
                 notificationRepository.save(
                         new Notification(userId, NotificationType.LOW_BUDGET_WARNING, "Low Budget Warning",
