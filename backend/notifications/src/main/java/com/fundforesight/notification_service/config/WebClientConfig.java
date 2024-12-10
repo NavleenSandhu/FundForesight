@@ -19,6 +19,7 @@ public class WebClientConfig {
                 .defaultHeader("Content-Type", "application/json")
                 .build();
     }
+
     @Bean
     public WebClient budgetsServiceClient(WebClient.Builder builder) {
         return builder

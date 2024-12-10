@@ -1,10 +1,12 @@
 import AlertBox from "@/components/AlertBox";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import BudgetsOverview from "@/features/Budgets/components/BudgetsOverview";
+import NotificationsPage from "@/features/Notifications/pages/NotificationsPage";
 import SavingsOverview from "@/features/SavingGoals/components/SavingsOverview";
 import BalanceCard from "@/features/Transactions/components/BalanceCard";
 import TransactionsOverview from "@/features/Transactions/components/TransactionsOverview";
 import { fetchBudgets, removeBudgetError } from "@/store/budgets/budgetsSlice";
+import { fetchNotifications } from "@/store/notifications/notificationSlice";
 import { fetchProfile, removeProfileError } from "@/store/profiles/profilesSlice";
 import { fetchSavingGoals, removeSavingError } from "@/store/savingGoals/savingGoalsSlice";
 import { AppDispatch, RootState } from "@/store/store";
@@ -32,6 +34,7 @@ function Home() {
         dispatch(fetchTransactions())
         dispatch(fetchSavingGoals())
         dispatch(fetchProfile())
+        dispatch(fetchNotifications())
     }, [dispatch])
 
     useEffect(() => {
@@ -54,7 +57,7 @@ function Home() {
             return () => clearTimeout(timeout);
         }
     }, [savingGoalsError, dispatch]);
-    
+
     useEffect(() => {
         if (profileError) {
             const timeout = setTimeout(() => dispatch(removeProfileError()), 5000);
@@ -65,19 +68,21 @@ function Home() {
     return (
         <>
             <Tabs defaultValue="overview">
-                <TabsList className="my-6">
+                <TabsList className="my-4 mt-6">
                     <TabsTrigger value="overview">Overview</TabsTrigger>
                     <TabsTrigger value="notifications">Notifications</TabsTrigger>
                 </TabsList>
-                <div className="space-y-2">
-                    {errors
-                        .filter((error) => error.value !== "")
-                        .map((error) => (
-                            <AlertBox key={error.key} title={error.key} message={error.value} />
-                        ))}
-                </div>
+                {errors.some((error) => error.value !== "") && (
+                    <div className="space-y-2">
+                        {errors
+                            .filter((error) => error.value !== "")
+                            .map((error) => (
+                                <AlertBox key={error.key} title={error.key} message={error.value} />
+                            ))}
+                    </div>
+                )}
                 <TabsContent value="overview">
-                    <div className="p-6 space-y-6">
+                    <div className="px-6 space-y-6">
                         <BalanceCard />
                         <div className="grid gap-4 md:grid-cols-2 grid-cols-1">
                             <BudgetsOverview />
@@ -87,6 +92,7 @@ function Home() {
                     </div>
                 </TabsContent>
                 <TabsContent value="notifications">
+                    <NotificationsPage />
                 </TabsContent>
             </Tabs>
         </>

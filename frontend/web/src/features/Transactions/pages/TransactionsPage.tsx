@@ -17,7 +17,7 @@ const TransactionsPage = () => {
 	}, [error, dispatch]);
 	return (
 		<div className="p-6 h-screen">
-			<AlertBox title="Transactions" message={error} />
+			{error && <AlertBox title="Transactions" message={error} />}
 			<h1 className="text-center text-2xl font-bold mb-4">Transactions</h1>
 			<div className='mb-8'>
 				<BalanceCard />

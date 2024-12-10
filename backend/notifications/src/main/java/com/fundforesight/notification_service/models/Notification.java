@@ -1,9 +1,12 @@
 package com.fundforesight.notification_service.models;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,7 +23,8 @@ import lombok.Data;
 public class Notification {
 
     public enum NotificationType {
-        NEW_TRANSACTIONS, OVER_BUDGET_ALERT, LARGE_TRANSACTION_ALERT, SALARY_RECEIVED
+        NEW_TRANSACTIONS, OVER_BUDGET_ALERT, LOW_BUDGET_WARNING, LARGE_TRANSACTION_ALERT, SALARY_RECEIVED,
+        EXPENDITURE_REVIEW
     }
 
     public Notification(int userId, NotificationType notificationType, String title, String message) {
@@ -28,6 +32,7 @@ public class Notification {
         this.notificationType = notificationType;
         this.title = title;
         this.message = message;
+        this.timestamp = Timestamp.from(Instant.now());
     }
 
     @Id
@@ -39,6 +44,7 @@ public class Notification {
     private int userId;
 
     @Column(name = "notification_type")
+    @Enumerated(EnumType.STRING)
     private NotificationType notificationType;
 
     private String title;

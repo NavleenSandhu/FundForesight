@@ -62,7 +62,7 @@ CREATE TABLE plaid_accounts (
 CREATE TABLE notifications (
     notification_id SERIAL PRIMARY KEY, 
     user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
-    notification_type VARCHAR(50) NOT NULL CHECK(type IN ('NEW_TRANSACTIONS', 'OVER_BUDGET_ALERT', 'LARGE_TRANSACTION_ALERT','SALARY_RECEIVED','UNASSIGNED_TRANSACTIONS')),                                         
+    notification_type VARCHAR(50) NOT NULL CHECK(type IN ('NEW_TRANSACTIONS', 'OVER_BUDGET_ALERT', 'LARGE_TRANSACTION_ALERT','SALARY_RECEIVED','LOW_BUDGET_WARNING', 'EXPENDITURE_REVIEW')),                                         
     title VARCHAR(50) NOT NULL,                                        
     message VARCHAR(255) NOT NULL,                                      
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,             

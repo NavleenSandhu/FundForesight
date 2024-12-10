@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +39,7 @@ public class TransactionController {
     private TransactionHelper transactionHelper;
     private PlaidAccountRepository plaidAccountRepository;
     private PlaidService plaidService;
+    private KafkaTemplate<String, Object> kafkaTemplate;
 
     /**
      * Retrieves all transactions for a user.
@@ -95,6 +97,9 @@ public class TransactionController {
         try {
             // Save all transactions to the database.
             transactionRepository.saveAll(transactions);
+
+            // Send a message to notification service.
+            kafkaTemplate.send("transactions", transactions);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
             // Handle exceptions and return an error response.
@@ -116,6 +121,10 @@ public class TransactionController {
             // Update the specified transaction in the database.
             transactionRepository.updateTransaction(t.getBudgetId(), t.getAmount(), t.getMerchantName(),
                     t.getTransactionType(), id, t.getUserId());
+            // Send a message to notification service.
+            List<Transaction> transactions = new ArrayList<Transaction>();
+            transactions.add(t);
+            kafkaTemplate.send("transactions", transactions);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             // Handle exceptions and return an error response.

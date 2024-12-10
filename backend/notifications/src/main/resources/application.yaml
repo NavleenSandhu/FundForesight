@@ -19,3 +19,5 @@ transactions:
 budgets:
     api:
         url: ${BUDGETS_URL}
+kafka:
+    url: ${KAFKA_URL}

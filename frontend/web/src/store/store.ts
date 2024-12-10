@@ -5,29 +5,31 @@ import { budgetReducer } from './budgets/budgetsSlice';
 import { savingGoalsReducer } from './savingGoals/savingGoalsSlice';
 import { transactionsReducer } from './transactions/transactionsSlice';
 import { profilesReducer } from './profiles/profilesSlice';
+import { notificationsReducer } from './notifications/notificationSlice'
 
 
 const rootReducer = combineReducers({
-  budgets: budgetReducer,
-  transactions: transactionsReducer,
-  savingGoals: savingGoalsReducer,
-  profile: profilesReducer
+    budgets: budgetReducer,
+    transactions: transactionsReducer,
+    savingGoals: savingGoalsReducer,
+    profile: profilesReducer,
+    notifications: notificationsReducer,
 });
 
 
 const persistConfig = {
-  key: "root",
-  storage,
-  version: 1,
+    key: "root",
+    storage,
+    version: 1,
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = configureStore({
-  reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: false,
-    }),
+    reducer: persistedReducer,
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: false,
+        }),
 });
 
 export const persistor: Persistor = persistStore(store);

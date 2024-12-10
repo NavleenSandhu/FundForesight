@@ -13,6 +13,7 @@ func NewRouter(db *sql.DB) *mux.Router {
 	router.HandleFunc("/budgets", budgetHandler.CreateBudget).Methods("POST")
 	router.HandleFunc("/budgets/{budget_id:[0-9]+}", budgetHandler.GetBudget).Methods("GET")
 	router.HandleFunc("/budgets", budgetHandler.GetBudgets).Methods("GET")
+	router.HandleFunc("/budgets/all", budgetHandler.GetAllBudgetsByDates).Methods("GET")
 	router.HandleFunc("/budgets/{budget_id:[0-9]+}", budgetHandler.UpdateBudget).Methods("PUT")
 	router.HandleFunc("/budgets/{budget_id:[0-9]+}", budgetHandler.DeleteBudget).Methods("DELETE")
 	return router
