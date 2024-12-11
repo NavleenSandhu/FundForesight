@@ -22,6 +22,8 @@ function BudgetDetails() {
     const dispatch = useDispatch<AppDispatch>();
     const { budget_id, referer } = location.state
     const budget: Budget = useSelector((state: RootState) => state.budgets.budgets.find(b => b.budget_id === budget_id))!
+    const { profile } = useSelector((state: RootState) => state.profile)
+
     if (!budget) {
         navigate('/dashboard/budgets');
         return null;
@@ -65,12 +67,12 @@ function BudgetDetails() {
                     <div className="flex gap-4 justify-between md:justify-start">
                         <div className="flex flex-col">
                             <span className="text-muted-foreground text-sm">Initial Amount</span>
-                            <span className="text-lg font-semibold">${budget.initial_amount.toFixed(2)}</span>
+                            <span className="text-lg font-semibold">{profile.currency} {budget.initial_amount.toFixed(2)}</span>
                         </div>
                         <div className="flex flex-col">
                             <span className="text-muted-foreground text-sm">Remaining Amount</span>
                             <span className="text-lg font-semibold">
-                                ${budget.remaining_amount.toFixed(2)}
+                                {profile.currency} {budget.remaining_amount.toFixed(2)}
                             </span>
                         </div>
                     </div>

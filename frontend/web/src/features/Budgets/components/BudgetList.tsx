@@ -17,7 +17,7 @@ function BudgetList() {
                 </div>
             ) : !loading && budgets.length === 0 ? (
                 // Case 2: Success and budgets length is 0 -> Show no budgets available
-                <p className="text-center text-muted-foreground">No budgets available</p>
+                <h2 className="text-center text-2xl font-semibold mb-4">No budgets available</h2>
             ) : (
                 // Case 3: Show budgets
                 <>

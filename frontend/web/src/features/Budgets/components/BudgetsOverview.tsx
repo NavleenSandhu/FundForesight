@@ -10,6 +10,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom"
 
 function BudgetsOverview() {
     const { budgets, loading, error } = useSelector((state: RootState) => state.budgets)
+    const { profile } = useSelector((state: RootState) => state.profile)
     const navigate = useNavigate()
     const location = useLocation()
 
@@ -48,7 +49,7 @@ function BudgetsOverview() {
                     <div className="text-center text-muted-foreground">
                         No budgets created.{" "}
                         <Link
-                            to="/dashboard/budgets">Create Budget</Link>
+                                to="/dashboard/budgets" className="text-base font-semibold text-primary hover:underline">Create Budget</Link>
                     </div>
                 ) : (
                     // Case 3: Show budgets
@@ -61,8 +62,8 @@ function BudgetsOverview() {
                                         <div className="grid grid-cols-1 px-2 md:grid-cols-2">
                                             <div className="md:text-left">
                                                 <p>
-                                                    ${budget.remaining_amount}/
-                                                    ${budget.initial_amount}
+                                                    <span className="font-semibold">{profile.currency} {budget.remaining_amount}</span>/
+                                                    {budget.initial_amount}
                                                 </p>
                                             </div>
                                             <p className="text-sm text-muted-foreground md:text-right">

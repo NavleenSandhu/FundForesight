@@ -5,6 +5,8 @@ import BalanceCard from '../components/BalanceCard';
 import TransactionList from '../components/TransactionList';
 import { removeTransactionError } from '@/store/transactions/transactionsSlice';
 import { useEffect } from 'react';
+import AddTransactionDialog from '../components/AddTransactionDialog';
+import { Separator } from '@/components/ui/separator';
 
 const TransactionsPage = () => {
 	const dispatch = useDispatch<AppDispatch>();
@@ -16,12 +18,16 @@ const TransactionsPage = () => {
 		}
 	}, [error, dispatch]);
 	return (
-		<div className="p-6 h-screen">
+		<div className="p-6 h-screen space-y-6">
 			{error && <AlertBox title="Transactions" message={error} />}
-			<h1 className="text-center text-2xl font-bold mb-4">Transactions</h1>
-			<div className='mb-8'>
+			<h1 className="text-center text-2xl font-bold">Transactions</h1>
+			<div>
 				<BalanceCard />
 			</div>
+			<div className='flex flex-row-reverse'>
+				<AddTransactionDialog />
+			</div>
+			<Separator />
 			<TransactionList transactions={transactions} />
 		</div>
 	)

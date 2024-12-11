@@ -10,11 +10,12 @@ import com.fundforesight.transactions_service.models.Budget;
 
 import jakarta.transaction.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
 public interface BudgetRepository extends JpaRepository<Budget, Integer> {
-    List<Budget> findByUserId(int userId);
+    List<Budget> findByUserIdAndStartDateAndEndDate(int userId, LocalDate startDate, LocalDate endDate);
 
     @Query("SELECT b.budgetId FROM Budget b WHERE b.userId=:userId AND b.categoryName=:categoryName")
     int findBudgetByUserIdAndCategory(@Param("userId") int userId, @Param("categoryName") String categoryName);

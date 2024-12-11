@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class SavingsController {
     private SavingGoalsRepository savingsRepository;
 
-    @GetMapping(value = {"/",""})
+    @GetMapping(value = { "/", "" })
     public ResponseEntity<?> getSavingGoals(
             @RequestParam(name = "user_id", defaultValue = "0", required = true) int userId) {
         try {
@@ -51,8 +51,10 @@ public class SavingsController {
     @PutMapping(value = { "/{goalId}" }, headers = { "Content-Type=application/json" })
     public ResponseEntity<?> putMethodName(@PathVariable int goalId, @RequestBody SavingGoal s) {
         try {
-            if(s.getCurrentAmount() >= s.getTargetAmount()) {
+            if (s.getCurrentAmount() >= s.getTargetAmount()) {
                 s.setStatus(Status.COMPLETED);
+            } else {
+                s.setStatus(Status.ACTIVE);
             }
             savingsRepository.updateSavingGoal(s.getGoalName(), s.getTargetAmount(), s.getCurrentAmount(),
                     s.getStartDate(), s.getEndDate(), s.getStatus(), s.getGoalId(), s.getUserId());

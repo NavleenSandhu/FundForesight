@@ -21,8 +21,10 @@ function BudgetsPage() {
         <div className="container mx-auto p-6">
             {error && <AlertBox title="Budgets" message={error} />}
             <h1 className="text-2xl font-bold mb-4">Budgets</h1>
-            <p className="text-sm mb-6">Manage and track your budgets here.</p>
-            <CreateBudgetDialog />
+            <p className="text-sm mb-6 text-muted-foreground">Manage and track your budgets here.</p>
+            <div className="flex flex-row-reverse">
+                <CreateBudgetDialog />
+            </div>
             <BudgetList />
         </div>
     );

@@ -9,6 +9,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
 import { Label } from "@/components/ui/label";
 import { countryCodes } from "@/utils/countryCodes";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store/store";
+import { addProfile } from "@/store/profiles/profilesSlice";
+import { addBudget } from "@/store/budgets/budgetsSlice";
+import { endOfMonth, startOfMonth } from "date-fns";
 
 const minUsernameLen: number = 3;
 const maxUsernameLen: number = 40;
@@ -28,6 +33,7 @@ type RegisterFormInputs = z.infer<typeof registerSchema>;
 
 function Register() {
     const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL;
+    const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate();
     const form = useForm<RegisterFormInputs>({
         resolver: zodResolver(registerSchema),
@@ -49,15 +55,30 @@ function Register() {
             },
             body: JSON.stringify({ email, password, username }),
         });
-        const profileRes = await fetch(`${GATEWAY_URL}/profiles`, {
-            method: "POST",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ countryCode }),
-        });
-        if (registerRes.status === 201 && profileRes.status === 201) {
+        dispatch(addProfile(countryCode))
+        const now = Date.now()
+        dispatch(addBudget({
+            category_name: 'Other',
+            initial_amount: 500,
+            remaining_amount: 500,
+            start_date: startOfMonth(now),
+            end_date: endOfMonth(now)
+        }))
+        dispatch(addBudget({
+            category_name: 'Groceries',
+            initial_amount: 500,
+            remaining_amount: 500,
+            start_date: startOfMonth(now),
+            end_date: endOfMonth(now)
+        }))
+        dispatch(addBudget({
+            category_name: 'Rent',
+            initial_amount: 700,
+            remaining_amount: 700,
+            start_date: startOfMonth(now),
+            end_date: endOfMonth(now)
+        }))
+        if (registerRes.status === 201) {
             navigate("/auth/plaidAccount");
         } else {
             console.error("Error while registering");
@@ -141,7 +162,7 @@ function Register() {
                 </Form>
                 <p className="text-center mt-4 text-sm">
                     Already have an account?{" "}
-                    <Link to="/auth/login" className={buttonVariants({ variant: "link" })}>
+                    <Link to="/auth/login" className="text-base font-semibold text-primary hover:underline">
                         Log In
                     </Link>
                 </p>

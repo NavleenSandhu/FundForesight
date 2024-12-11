@@ -8,7 +8,7 @@ export const fetchTransactions = createAsyncThunk('/transactions/fetchTransactio
     try {
         const now = new Date();
         const date30DaysEarlier = subDays(now, 30);
-        const res = await fetch(`${GATEWAY_URL}/transaction?startDate=${displayDate(date30DaysEarlier)}&endDate=${displayDate(now)}`, {
+        const res = await fetch(`${GATEWAY_URL}/transactions?startDate=${displayDate(date30DaysEarlier)}&endDate=${displayDate(now)}`, {
             method: 'GET',
             credentials: "include"
         })
@@ -25,22 +25,36 @@ export const fetchTransactions = createAsyncThunk('/transactions/fetchTransactio
     }
 });
 
-export const updateTransaction = createAsyncThunk('/transactions/updateTransaction', async (transaction: Transaction) => {
-    try {
-        const res = await fetch(`${GATEWAY_URL}/transaction/${transaction.transactionId}`, {
-            method: "PUT",
-            credentials: "include",
-            headers: {
-                "Content-type": "application/json"
-            },
-            body: JSON.stringify(transaction)
-        })
-        if (res.status === 200) {
-            return transaction
-        }
-    } catch (error: unknown) {
-        console.error(error);
+export const addTransaction = createAsyncThunk('/transactions/addTransaction', async (transaction: Omit<Transaction, 'transactionId' | 'userId'>) => {
+    const res = await fetch(`${GATEWAY_URL}/transactions`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify([transaction])
+    })
+    if (res.status === 201) {
+        const transactions = await res.json();
+        return transactions;
     }
+    throw new Error("An error occurred while adding the transaction.");
+});
+
+export const updateTransaction = createAsyncThunk('/transactions/updateTransaction', async (transaction: Transaction) => {
+    const res = await fetch(`${GATEWAY_URL}/transactions/${transaction.transactionId}`, {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify(transaction)
+    })
+    if (res.status === 200) {
+        return transaction
+    }
+    throw new Error("An error occurred while updating the transaction.");
+
 })
 
 export const fetchBalance = createAsyncThunk('/transactions/getBalance', async () => {
@@ -95,12 +109,19 @@ const transactionsSlice = createSlice({
                 state.loading = false
             })
             .addCase(fetchTransactions.rejected, (state, action) => {
-                state.error = action.error.message || "failed to fetch transactions";
+                state.error = action.error.message!;
                 state.loading = false
             })
             .addCase(fetchTransactions.pending, (state) => {
                 state.loading = true
-            }).addCase(updateTransaction.fulfilled, (state, action: PayloadAction<Transaction | undefined>) => {
+            })
+            .addCase(addTransaction.fulfilled, (state, action: PayloadAction<Transaction>) => {
+                state.transactions = state.transactions.concat(action.payload)
+            })
+            .addCase(addTransaction.rejected, (state, action)=>{
+                state.error = action.error.message!
+            })
+            .addCase(updateTransaction.fulfilled, (state, action: PayloadAction<Transaction | undefined>) => {
                 const transaction = action.payload;
                 if (transaction) {
                     state.transactions = state.transactions.map(t => t.transactionId === transaction.transactionId ? transaction : t);

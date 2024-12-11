@@ -33,6 +33,7 @@ export const addSavingGoal = createAsyncThunk('/savings/addSavingGoal', async (s
 
 
 export const editSavingGoal = createAsyncThunk('/savings/editSavingGoal', async (savingGoal: SavingGoal) => {
+    savingGoal.status = savingGoal.currentAmount >= savingGoal.targetAmount ? 'COMPLETED' : 'ACTIVE';
     const res = await fetch(`${GATEWAY_URL}/savings/${savingGoal.goalId}`, {
         method: "PUT",
         credentials: "include",
@@ -84,7 +85,7 @@ const savingGoalsSlice = createSlice({
             }).addCase(fetchSavingGoals.rejected, (state, action) => {
                 state.error = action.error.message || "Unable to fetch saving goals";
                 state.loading = false
-            }).addCase(fetchSavingGoals.pending, (state)=>{
+            }).addCase(fetchSavingGoals.pending, (state) => {
                 state.loading = true
             }).addCase(addSavingGoal.fulfilled, (state, action: PayloadAction<SavingGoal | SavingGoal[] | undefined>) => {
                 if (action.payload) {

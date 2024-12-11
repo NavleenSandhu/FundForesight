@@ -3,7 +3,6 @@ import { SavingGoal } from "@/models/SavingGoal";
 import { AppDispatch, RootState } from "@/store/store";
 import { deleteSavingGoal } from "@/store/savingGoals/savingGoalsSlice";
 import SavingGoalListItem from "./SavingGoalListItem";
-import SavingGoalDialog from "./SavingGoalDialog";
 import SavingGoalListItemSkeleton from "./SavingGoalListItemSkeleton";
 
 export default function SavingGoalsList() {
@@ -16,7 +15,6 @@ export default function SavingGoalsList() {
 
     return (
         <>
-            <SavingGoalDialog formType="Create" />
             {loading && savingGoals.length === 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
                     {[...Array(3)].map((_, index) =>

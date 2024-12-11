@@ -19,21 +19,31 @@ const EditBudgetDialog: React.FC<EditBudgetDialogProps> = ({ budget_id }) => {
     const dispatch = useDispatch<AppDispatch>();
     const editBudgetSchema = z.object({
         category_name: z.string().trim().min(1, 'This field is required'),
+        initial_amount: z.string()
+            .transform(val => parseFloat(val))
+            .refine(val => val > 0, 'Amount has to be greater than 0'),
     });
     type EditBudgetFormInputs = {
         category_name: string,
+        initial_amount: number,
     }
     const budget = useSelector((state: RootState) => state.budgets.budgets.find(budget => budget.budget_id === budget_id))
     const form = useForm<EditBudgetFormInputs>({
         resolver: zodResolver(editBudgetSchema),
-        defaultValues: { category_name: budget?.category_name || "" }
+        defaultValues: {
+            category_name: budget?.category_name || "",
+            initial_amount: budget?.initial_amount || 0,
+        }
     });
 
     const handleBudgetEditSubmit = async (data: EditBudgetFormInputs) => {
+        const diffInitial = data.initial_amount - budget!.initial_amount
         dispatch(editBudget({
             ...budget!,
             ...{
-                category_name: data.category_name
+                category_name: data.category_name,
+                initial_amount: data.initial_amount,
+                remaining_amount: budget!.remaining_amount + diffInitial
             }
         }))
     }
@@ -56,6 +66,24 @@ const EditBudgetDialog: React.FC<EditBudgetDialogProps> = ({ budget_id }) => {
                                     <Label htmlFor="categoryName">Category Name</Label>
                                     <FormControl>
                                         <Input id="categoryName" placeholder="eg. Groceries, Rent" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="initial_amount"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <Label htmlFor="amount">Amount Limit</Label>
+                                    <FormControl>
+                                        <Input id="amount"
+                                            type="number"
+                                            step={0.01}
+                                            min={0}
+                                            {...field}
+                                            value={field.value as number} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

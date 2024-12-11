@@ -49,7 +49,7 @@ function Login() {
             removeAllErrors(dispatch);
             navigate("/dashboard/home");
         }
-        
+
         else {
             const errorMessage = await res.json();
             setError(errorMessage.message);
@@ -59,7 +59,7 @@ function Login() {
 
     return (
         <div className="flex flex-col justify-center items-center w-full lg:w-1/2 p-6 lg:p-12">
-            { error && <AlertBox message={error}></AlertBox> }
+            {error && <AlertBox title="Login" message={error}></AlertBox>}
             <div className="w-full max-w-sm">
                 <h2 className="text-2xl font-semibold text-center">Login</h2>
                 <p className="text-center mt-2 mb-8">Enter your email and password below to login</p>
@@ -106,9 +106,7 @@ function Login() {
                 </Form>
                 <p className="text-center mt-6 text-sm">
                     Don’t have an account?{" "}
-                    <Link to="/auth/register" className={buttonVariants({
-                        variant: 'link',
-                    })}>
+                    <Link to="/auth/register" className="text-base font-semibold text-primary hover:underline">
                         Sign up
                     </Link>
                 </p>
