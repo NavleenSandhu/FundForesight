@@ -32,9 +32,9 @@ function TransactionsOverview() {
                     ) : !loading && transactions.length === 0 ? (
                         // Case 2: Success and transactions length is 0 -> Show no transactions
                         <div className="text-center text-muted-foreground">
-                            <p>No transactions. <Link to="/dashboard/transactions">Add</Link> a transaction or link with <Link to="/auth/plaidAccount">plaid</Link> to get started!</p>
+                            <p>No transactions. <Link to="/dashboard/transactions" className="text-base font-semibold text-primary hover:underline">Add</Link> a transaction or link with <Link to="/auth/plaidAccount" className="text-base font-semibold text-primary hover:underline">plaid</Link> to get started!</p>
                         </div>
-                    ) :
+                ) :
                         (<>
                             <ScrollArea>
                                 <div className="mt-4 h-96 space-y-4 p-2 rounded-lg">

@@ -123,8 +123,11 @@ public class TransactionHelper {
             rawInput.put(rawInputObject);
         }
 
+        // Get startDate and endDate of current month
+        LocalDate startDate = LocalDate.now().withDayOfMonth(1);
+        LocalDate endDate = LocalDate.now().plusMonths(1).withDayOfMonth(1).minusDays(1);
         // Fetch budgets from the database and prepare the db_input for the AI prompt.
-        List<Budget> budgets = budgetRepository.findByUserId(userId);
+        List<Budget> budgets = budgetRepository.findByUserIdAndStartDateAndEndDate(userId, startDate, endDate);
         JSONArray dbInput = new JSONArray();
         for (Budget budget : budgets) {
             JSONObject dbInputObject = new JSONObject();

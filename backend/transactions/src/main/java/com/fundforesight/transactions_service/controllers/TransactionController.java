@@ -96,11 +96,11 @@ public class TransactionController {
     public ResponseEntity<?> addTransactions(@RequestBody List<Transaction> transactions) {
         try {
             // Save all transactions to the database.
-            transactionRepository.saveAll(transactions);
+            List<Transaction> transactionsSaved = transactionRepository.saveAll(transactions);
 
             // Send a message to notification service.
-            kafkaTemplate.send("transactions", transactions);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            kafkaTemplate.send("transactions", transactionsSaved);
+            return new ResponseEntity<>(transactionsSaved, HttpStatus.CREATED);
         } catch (Exception e) {
             // Handle exceptions and return an error response.
             System.err.println(e.getMessage());

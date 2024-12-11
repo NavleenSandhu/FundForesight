@@ -30,10 +30,8 @@ const addTransaction = async (req, res) => {
     transactions.forEach((transaction) => {
       transaction.userId = userId;
     });
-
-    await addUserTransaction(transactions);
-
-    res.status(201).json({ message: "Added transaction" });
+    const transactionsSaved = await addUserTransaction(transactions);
+    res.status(201).json(transactionsSaved);
   } catch (error) {
     console.error(error);
     res.status(400).json({ message: error.message });

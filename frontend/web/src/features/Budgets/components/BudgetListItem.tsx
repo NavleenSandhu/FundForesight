@@ -1,8 +1,10 @@
 import { Button } from '@/components/ui/button'
 import { Budget } from '@/models/Budget'
+import { RootState } from '@/store/store'
 import { displayDate } from '@/utils/dateUtils'
 import { ArrowRight } from 'lucide-react'
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 interface BudgetListItemProps {
@@ -12,6 +14,8 @@ interface BudgetListItemProps {
 const BudgetItem: React.FC<BudgetListItemProps> = ({ budget }) => {
     const location = useLocation()
     const navigate = useNavigate()
+    const { profile } = useSelector((state: RootState) => state.profile)
+
     return (
         <div className="grid grid-cols-3 md:flex md:justify-between gap-8 items-center rounded-lg shadow p-4 mb-2">
             <div>
@@ -21,8 +25,8 @@ const BudgetItem: React.FC<BudgetListItemProps> = ({ budget }) => {
             </div>
             <div className="text-center">
                 <p>
-                    <span className="text-base md:text-lg font-bold">${budget.remaining_amount.toFixed(2)}</span>
-                    <span className="text-xs md:text-sm text-muted-foreground"> of ${budget.initial_amount.toFixed(2)}</span>
+                    <span className="text-base md:text-lg font-bold">{profile.currency} {budget.remaining_amount.toFixed(2)}</span>
+                    <span className="text-xs md:text-sm text-muted-foreground"> of {budget.initial_amount.toFixed(2)}</span>
                 </p>
                 <p
                     className={`hidden md:block text-sm ${budget.remaining_amount < budget.initial_amount * 0.2 ? 'text-red-500' : 'text-emerald-400'

@@ -11,6 +11,7 @@ interface SavingGoalListItemProps {
     handleDelete: (goalId: number) => void
 }
 const SavingGoalListItem: React.FC<SavingGoalListItemProps> = ({ goal, progress, handleDelete }) => {
+
     return (
         <Card key={goal.goalId} className="border rounded-lg shadow-md p-2">
             <CardHeader className="text-center mb-2">
@@ -27,7 +28,7 @@ const SavingGoalListItem: React.FC<SavingGoalListItemProps> = ({ goal, progress,
                         <p><strong>Start Date:</strong> {formatDate(goal.startDate)}</p>
                         <p><strong>End Date:</strong> {formatDate(goal.endDate)}</p>
                     </div>
-                    <p className='mt-3 md:mt-4'><span className='font-bold'>${goal.currentAmount.toFixed(2)}</span ><span className="text-xs text-muted-foreground">/{goal.targetAmount}</span></p>
+                    <p className='mt-3 md:mt-4'><span className='font-bold'>{goal.currentAmount.toFixed(2)}</span ><span className="text-xs text-muted-foreground">/{goal.targetAmount}</span></p>
                 </div>
                 <div className="mt-4">
                     <Progress value={progress} />

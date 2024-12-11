@@ -60,10 +60,10 @@ router.delete("/budgets/:budget_id", deleteBudget);
 router.post("/budgets", createBudget);
 
 // transactions routes
-router.get("/transaction", getTransactions);
-router.post("/transaction", addTransaction);
-router.put("/transaction/:id", updateTransaction);
-router.delete("/transaction/:id", deleteTransaction);
+router.get("/transactions", getTransactions);
+router.post("/transactions", addTransaction);
+router.put("/transactions/:id", updateTransaction);
+router.delete("/transactions/:id", deleteTransaction);
 
 // savings routes
 router.get("/savings", getSavings);
