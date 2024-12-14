@@ -18,8 +18,9 @@ public class BudgetsApiService {
 
     public List<Budget> getBudgets(int userId) {
         // Calculate start and end date for the current month
-        String startDate = LocalDate.now().withDayOfMonth(1).toString();
-        String endDate = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth()).toString();
+        String startDate = LocalDate.now().withDayOfMonth(1).minusDays(1).atStartOfDay().toString().split("T")[0];
+        String endDate = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth()).atStartOfDay().toString()
+                .split("T")[0];
         return budgetsServiceClient.get()
                 .uri("/budgets?user_id=" + userId + "&start_date=" + startDate + "&end_date=" + endDate)
                 .accept(MediaType.APPLICATION_JSON)

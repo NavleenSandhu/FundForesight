@@ -1,12 +1,11 @@
 import { Budget } from "@/models/Budget";
-import { displayDate } from "@/utils/dateUtils";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { endOfMonth, startOfMonth } from "date-fns";
 
 const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL;
 export const fetchBudgets = createAsyncThunk('/budgets/getBudgets', async () => {
     const now = Date.now()
-    const res = await fetch(`${GATEWAY_URL}/budgets?start_date=${displayDate(startOfMonth(now))}&end_date=${displayDate(endOfMonth(now))}`, {
+    const res = await fetch(`${GATEWAY_URL}/budgets?start_date=${startOfMonth(now).toISOString().split("T")[0]}&end_date=${endOfMonth(now).toISOString().split("T")[0]}`, {
         method: "GET",
         credentials: "include"
     })

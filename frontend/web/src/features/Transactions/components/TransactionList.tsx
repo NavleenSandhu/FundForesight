@@ -23,7 +23,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ transactions }) => {
                 (<ScrollArea>
                     <div className="mt-4 h-96 space-y-4 p-2 rounded-lg">
                         {transactions.length > 0 ?
-                            (transactions.map(transaction =>
+                            (transactions.sort((a, b) => a.transactionId - b.transactionId).map(transaction =>
                                 <TransactionItem key={transaction.transactionId} transaction={transaction} />
                             )) :
                             (<h2 className="text-center text-2xl font-semibold mb-4">No transactions to display.</h2>)
