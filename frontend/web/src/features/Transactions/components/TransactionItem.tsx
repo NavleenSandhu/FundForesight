@@ -8,7 +8,7 @@ interface TransactionItemProps {
 
 const TransactionItem: React.FC<TransactionItemProps> = ({ transaction }) => {
     return (
-        <div className='rounded-lg shadow p-4 bg-card'>
+        <div className='rounded-lg shadow p-4 bg-card border'>
             <div className="grid grid-cols-3 gap-2 items-center">
                 <div className='flex flex-col text-left'>
                     <p className="text-sm md:text-base font-semibold">{transaction.merchantName}</p>

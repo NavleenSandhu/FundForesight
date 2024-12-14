@@ -17,7 +17,7 @@ const BudgetItem: React.FC<BudgetListItemProps> = ({ budget }) => {
     const { profile } = useSelector((state: RootState) => state.profile)
 
     return (
-        <div className="grid grid-cols-3 md:flex md:justify-between gap-8 items-center rounded-lg shadow p-4 mb-2">
+        <div className="grid grid-cols-3 md:flex md:justify-between gap-8 items-center rounded-lg shadow p-4 mb-2 bg-card border">
             <div>
                 <p className="font-semibold">{budget.category_name}</p>
                 <p className="hidden md:block text-sm">Start Date: {displayDate(budget.start_date)}</p>
