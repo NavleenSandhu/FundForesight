@@ -1,14 +1,13 @@
 import { Transaction } from "@/models/Transaction";
 import { displayDate } from "@/utils/dateUtils";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { addDays, subDays } from "date-fns";
+import { endOfMonth, startOfMonth } from "date-fns";
 
 const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL;
 export const fetchTransactions = createAsyncThunk('/transactions/fetchTransactions', async () => {
     try {
         const now = new Date();
-        const date30DaysEarlier = subDays(now, 30);
-        const res = await fetch(`${GATEWAY_URL}/transactions?startDate=${displayDate(date30DaysEarlier)}&endDate=${displayDate(addDays(now, 1))}`, {
+        const res = await fetch(`${GATEWAY_URL}/transactions?startDate=${displayDate(startOfMonth(now))}&endDate=${endOfMonth(now).toISOString().split("T")[0]}`, {
             method: 'GET',
             credentials: "include"
         })
