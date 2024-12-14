@@ -53,6 +53,7 @@ const getRegisterToken = async (email, username, password) => {
 };
 
 module.exports = {
+  getUser,
   getUserId,
   getLoginToken,
   getRegisterToken,

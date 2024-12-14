@@ -63,6 +63,14 @@ const updateUserBudget = async (token, budget, budget_id) => {
     }
 };
 const deleteUserBudget = async (token, budget_id) => {
+    const budgetRes = await getUserBudget(token, budget_id);
+    const budget = await budgetRes.json();
+    if (!budget) {
+        throw new HttpError("Budget not found", 404);
+    }
+    if (budget.category_name === "Other") {
+        throw new HttpError("Can not delete default budget", 400);
+    }
     const user_id = await getUserId(token);
     if (!user_id) {
         throw new Error("User validation failed");

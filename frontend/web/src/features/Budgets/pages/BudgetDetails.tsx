@@ -48,12 +48,14 @@ function BudgetDetails() {
                     })}>
                     <ArrowLeft />
                 </Link>
-
-                <ConfirmationDialog
-                    name="Delete Budget"
-                    prompt={`Are you sure you want to delete "${budget.category_name}" budget?`}
-                    func={deleteBudgetById}
-                />
+                {
+                    budget.category_name !== 'Other' &&
+                    <ConfirmationDialog
+                        name="Delete Budget"
+                        prompt={`Are you sure you want to delete "${budget.category_name}" budget?`}
+                        func={deleteBudgetById}
+                    />
+                }
             </div>
 
             <Card>

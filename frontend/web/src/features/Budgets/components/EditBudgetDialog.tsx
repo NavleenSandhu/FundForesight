@@ -65,7 +65,7 @@ const EditBudgetDialog: React.FC<EditBudgetDialogProps> = ({ budget_id }) => {
                                 <FormItem>
                                     <Label htmlFor="categoryName">Category Name</Label>
                                     <FormControl>
-                                        <Input id="categoryName" placeholder="eg. Groceries, Rent" {...field} />
+                                        <Input id="categoryName" placeholder="eg. Groceries, Rent"  disabled={budget?.category_name === 'Other'} {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
