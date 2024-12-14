@@ -48,7 +48,7 @@ const MoveTransactionDialog: React.FC<MoveTransactionDialogProps> = ({ transacti
                     </SelectTrigger>
                     <SelectContent>
                         {
-                            budgets.map((budget) =>
+                            budgets.filter(budget => budget.budget_id !== transaction.budgetId).map((budget) =>
                                 <SelectItem key={budget.budget_id} value={budget.budget_id.toString()}>{budget.category_name}</SelectItem>
                             )
                         }

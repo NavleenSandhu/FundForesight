@@ -24,7 +24,8 @@ function Plaid() {
                 console.error(error);
             }
         }
-        fetchLinkToken()
+        const timeOut = setTimeout(async () => await fetchLinkToken(), 2000);
+        return () => clearTimeout(timeOut);
     }, [])
 
     const onSuccess = useCallback(async (publicToken: string) => {
