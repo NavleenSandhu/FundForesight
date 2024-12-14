@@ -4,7 +4,8 @@ const router = Router();
 const {
     login,
     logout,
-    register
+    register,
+    validateUser
 } = require("../controller/authController.js");
 
 const {
@@ -51,6 +52,7 @@ const {
 router.post("/login", login);
 router.post("/logout", logout);
 router.post("/register", register);
+router.get("/validateUser", validateUser);
 
 // budget routes
 router.get("/budgets", getAllBudgets);
