@@ -5,7 +5,7 @@ function TopNavigation() {
     const location = useLocation();
     const isActive = (path: string) => location.pathname.startsWith(path) ? 'default' : 'outline'
     return (
-        <div className="w-full py-3 px-4 shadow-md hidden md:flex fixed z-50 backdrop-blur-sm bg-white/30 ">
+        <div className="w-full py-3 px-4 shadow-md hidden md:flex fixed z-50 backdrop-blur-sm bg-background/30 ">
 
             <div className="text-lg font-semibold mx-4">Fund Foresight</div>
             <div className="space-x-4">

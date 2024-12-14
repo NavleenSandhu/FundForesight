@@ -10,6 +10,14 @@
 <body>
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
+  <script>
+    // add class dark to html if time is between 6pm and 6am
+    const date = new Date();
+    const hours = date.getHours();
+    if (hours >= 18 || hours < 6) {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
 </body>
 
 </html>

@@ -38,7 +38,7 @@ const BalanceCard = () => {
 
     return (
         <div>
-            <div className="rounded-lg shadow-lg shadow-slate-500 p-6 text-center" style={cardStyle}>
+            <div className="rounded-lg shadow-lg shadow-slate p-6 text-center" style={cardStyle}>
                 {
                     balance ?
                         <>
