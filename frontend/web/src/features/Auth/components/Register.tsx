@@ -171,8 +171,8 @@ function Register() {
                     <span className="px-4">OR CONTINUE WITH</span>
                     <hr className="flex-grow border-t border-gray-300" />
                 </div>
-                <Link
-                    to="/auth/plaidAccount"
+                <a
+                    href="/auth/google"
                     className={buttonVariants({
                         variant: "outline",
                         className: "w-full",
@@ -180,7 +180,7 @@ function Register() {
                 >
                     <FcGoogle className="mr-2" />
                     Google
-                </Link>
+                </a>
             </div>
         </div>
     );

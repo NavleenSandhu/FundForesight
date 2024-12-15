@@ -59,8 +59,8 @@ export const googleSignIn = async (req: Request, res: Response): Promise<void> =
     const { email, username,google_id } = req.body;
     try {
         // Log in the user and return a JWT token
-        const token = await signinWithGoogle(email,username,google_id);
-        res.status(200).json({ token });
+        const data = await signinWithGoogle(email,username,google_id);
+        res.status(200).json(data);
     } catch (error: any) {
         console.error(`Error during login: ${error}`);
 

@@ -9,7 +9,7 @@ import {
 
 
 import { Switch } from "@/components/ui/switch";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { AppDispatch, persistor, RootState } from "@/store/store";
 import { UserCircle } from "lucide-react";
@@ -56,6 +56,7 @@ export default function DropDown() {
 			<DropdownMenuContent className="px-2">
 				<DropdownMenuLabel className="flex"><span className="mr-3">Notifications</span> <Switch onCheckedChange={handleSwitchChange} checked={profile.receiveNotifications} /></DropdownMenuLabel>
 				<DropdownMenuSeparator />
+				<DropdownMenuItem><Link to="/auth/plaidAccount">Link bank accounts</Link></DropdownMenuItem>
 				<DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>Sign Out</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>
