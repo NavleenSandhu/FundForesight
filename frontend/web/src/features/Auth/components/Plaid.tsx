@@ -1,14 +1,22 @@
 import { Button, buttonVariants } from "@/components/ui/button";
+import { fetchProfile } from "@/store/profiles/profilesSlice";
+import { AppDispatch, RootState } from "@/store/store";
 import { useCallback, useEffect, useState } from "react";
 import { usePlaidLink } from "react-plaid-link";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import SelectCountry from "./SelectCountry";
 
 function Plaid() {
+    const dispatch = useDispatch<AppDispatch>()
+    dispatch(fetchProfile())
     const [linkToken, setLinkToken] = useState<string | null>(null)
     const [transactionsAdded, setTransactionsAdded] = useState<boolean>(false)
     const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL
     const navigate = useNavigate()
+    const { profile } = useSelector((state: RootState) => state.profile)
     useEffect(() => {
+
         async function fetchLinkToken() {
             try {
 
@@ -26,7 +34,7 @@ function Plaid() {
         }
         const timeOut = setTimeout(async () => await fetchLinkToken(), 2000);
         return () => clearTimeout(timeOut);
-    }, [])
+    }, [profile?.countryCode])
 
     const onSuccess = useCallback(async (publicToken: string) => {
         try {
@@ -66,14 +74,20 @@ function Plaid() {
                     >
                         Connect Bank Account
                     </Button>
-
-                    <Link to='/dashboard/home'
-                        className={buttonVariants({
-                            variant: 'outline'
-                        })}
-                    >
-                        Skip for Now
-                    </Link>
+                    {!profile ?
+                        <>
+                            <SelectCountry />
+                            <p className="text-sm text-muted-foreground">You need to select a country to link a bank account</p>
+                        </>
+                        :
+                        <Link to='/dashboard/home'
+                            className={buttonVariants({
+                                variant: 'outline'
+                            })}
+                        >
+                            Skip for Now
+                        </Link>
+                    }
 
                     {transactionsAdded && (
                         <div className="mt-4 text-center text-green-600 font-medium">

@@ -110,12 +110,14 @@ export const signinWithGoogle = async (email: string, username: string, google_i
         // Add a check if no user is found (edge case handling)
 
         let user_id;
+        let newUser = false;
         if (!user) {
             user_id = await addUserWithGoogle(email, username, google_id)
-
+            newUser = true;
         } else if (!user.google_id) {
             user_id = await updateUserGoogleId(email, google_id);
-
+        } else {
+            user_id = user.user_id;
         }
 
 
@@ -125,7 +127,7 @@ export const signinWithGoogle = async (email: string, username: string, google_i
         // Sign the JWT token using the secret
         const token = jwt.sign(payload, JWT_SECRET);
 
-        return token;
+        return { token, newUser };
 
     } catch (error: any) {
         console.error(error);
