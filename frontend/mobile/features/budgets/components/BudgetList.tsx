@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import BudgetListItem from './BudgetListItem';
 import { RootState } from '@/store/store';
 // import BudgetListItemSkeleton from './BudgetListItemSkeleton';
@@ -9,7 +9,7 @@ function BudgetList() {
     const { budgets, loading } = useSelector((state: RootState) => state.budgets);
 
     return (
-        <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.container}>
             {loading && budgets.length === 0 ? (
                 // Case 1: Loading and no current budgets -> Show skeletons
                 <View style={styles.skeletonContainer}>
@@ -26,7 +26,7 @@ function BudgetList() {
                     <BudgetListItem key={budget.budget_id} budget={budget} />
                 ))
             )}
-        </ScrollView>
+        </View>
     );
 }
 

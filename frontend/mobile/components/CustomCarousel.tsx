@@ -89,7 +89,7 @@ const CustomCarousel: React.FC<CustomCarouselProps> = ({
             borderColor: colors.border,
         },
         activeDot: {
-            backgroundColor: colors.cardForeground,
+            backgroundColor: colors.primary,
         },
         inactiveDot: {
             backgroundColor: colors.card,

@@ -132,6 +132,7 @@ const CreateBudgetDialogButton = () => {
                     <TextInput
                         style={styles.input}
                         placeholder="eg. Groceries, Rent"
+                        placeholderTextColor={colors.mutedForeground}
                         value={formValues.category_name}
                         onChangeText={(value) => handleInputChange('category_name', value)}
                     />
@@ -141,6 +142,7 @@ const CreateBudgetDialogButton = () => {
                     <TextInput
                         style={styles.input}
                         placeholder="Amount"
+                        placeholderTextColor={colors.mutedForeground}
                         keyboardType="numeric"
                         value={formValues.initial_amount}
                         onChangeText={(value) => handleInputChange('initial_amount', value)}
@@ -164,7 +166,7 @@ const CreateBudgetDialogButton = () => {
                                         />
                                     )}
                                 </View>
-                                <Text style={{ color: colors.text }}>{type}</Text>
+                                <Text>{type}</Text>
                             </TouchableOpacity>
                         ))}
                     </View>

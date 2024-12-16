@@ -13,8 +13,11 @@ import BudgetsOverview from '@/features/budgets/components/BudgetsOverview'
 import SavingGoalsOverview from '@/features/savingGoals/components/SavingGoalsOverview'
 import TransactionsOverview from '@/features/transactions/components/TransactionsOverview'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import Switch from '@/components/Switch'
 
-const HomeScreen = () => {
+const Overview = () => {
+
+
     const dispatch = useDispatch<AppDispatch>()
     const GATEWAY_URL = process.env.EXPO_PUBLIC_GATEWAY_URL
     useEffect(() => {
@@ -43,7 +46,8 @@ const HomeScreen = () => {
     }, [])
     return (
         <SafeAreaView>
-            <ScrollView>
+            <ScrollView style={{ marginBottom: 60 }}>
+                <Switch active='overview' />
                 <BalanceCard />
                 <BudgetsOverview />
                 <SavingGoalsOverview />
@@ -53,4 +57,4 @@ const HomeScreen = () => {
     )
 }
 
-export default HomeScreen
+export default Overview

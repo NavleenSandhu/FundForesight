@@ -1,4 +1,4 @@
-import { View, ScrollView } from 'react-native'
+import { View } from 'react-native'
 import React from 'react'
 import { RootState } from '@/store/store';
 import TransactionListItem from './TransactionListItem';
@@ -22,11 +22,11 @@ const TransactionsList: React.FC<TransactionsListProps> = ({ transactions }) => 
                     ))}
                 </View>
             ) : (
-                <ScrollView>
+                <View>
                     {transactionsSorted.map((transaction, index) =>
                         <TransactionListItem key={index} transaction={transaction} />
                     )}
-                </ScrollView>
+                </View>
             )}
         </View>
     )

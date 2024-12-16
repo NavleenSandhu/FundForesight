@@ -19,6 +19,10 @@ const BudgetsOverview = () => {
             backgroundColor: colors.card,
             borderColor: colors.border,
             margin: 15,
+            shadowColor: '#000',
+            shadowOpacity: 0.1,
+            shadowRadius: 4,
+            elevation: 2,
         },
         title: {
             fontSize: 24,
