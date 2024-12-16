@@ -10,20 +10,18 @@ function App() {
 	const navigate = useNavigate();
 	const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL;
 	useEffect(() => {
-		if (location.pathname === "/") {
-			(async () => {
-				const res = await fetch(`${GATEWAY_URL}/validateUser`, {
-					method: "GET",
-					credentials: "include",
-				})
-				if(res.status === 401){
-					navigate('/auth/login')
-				}else{
-					navigate('/dashboard/home')
-				}
-			})()
-		}
-	}, []);
+		(async () => {
+			const res = await fetch(`${GATEWAY_URL}/validateUser`, {
+				method: "GET",
+				credentials: "include",
+			})
+			if (res.status === 401) {
+				navigate('/auth/login')
+			} else if (res.status === 200 && location.pathname === "/") {
+				navigate('/dashboard/home')
+			}
+		})()
+	}, [location.pathname]);
 
 
 	return (

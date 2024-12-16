@@ -6,6 +6,8 @@
     "module": "ESNext",
     "target": "ESNext",
     "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "paths": {
       "@/*": [
         "./*"

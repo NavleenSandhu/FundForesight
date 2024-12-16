@@ -1,29 +1,39 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, useColorScheme } from 'react-native'
 import React from 'react'
 import { Colors } from '@/constants/Colors'
 import SavingGoalsList from '@/features/savingGoals/components/SavingGoalsList'
+import SavingGoalsDialogButton from '@/features/savingGoals/components/SavingGoalsDialogButton'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const SavingGoalsScreen = () => {
+    const colorScheme = useColorScheme();
+    const colors = colorScheme === 'dark' ? Colors.dark : Colors.light;
+    const styles = StyleSheet.create({
+        title: {
+            fontSize: 32,
+            fontWeight: 'bold',
+            textAlign: 'center',
+            marginBottom: 10,
+            color: colors.foreground,
+        },
+        description: {
+            textAlign: 'center',
+            color: Colors.light.mutedForeground,
+        }
+    })
     return (
-        <View style={{ marginTop: 50 }}>
-            <Text style={styles.title}>Savings</Text>
-            <Text style={styles.description}>Manage goals here and save money.</Text>
-            <SavingGoalsList />
-        </View>
+        <SafeAreaView>
+            <View>
+                <Text style={styles.title}>Savings</Text>
+                <Text style={styles.description}>Manage goals here and save money.</Text>
+                <View style={{ flexDirection: 'row-reverse', marginRight: 20, marginTop: 8 }}>
+                    <SavingGoalsDialogButton formType='Create' />
+                </View>
+                <SavingGoalsList />
+            </View>
+        </SafeAreaView>
     )
 }
 
-const styles = StyleSheet.create({
-    title: {
-        fontSize: 32,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginBottom: 10,
-    },
-    description: {
-        textAlign: 'center',
-        color: Colors.light.mutedForeground,
-    }
-})
 
 export default SavingGoalsScreen

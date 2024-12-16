@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -124,7 +125,7 @@ public class TransactionHelper {
         }
 
         // Get startDate and endDate of current month
-        LocalDate startDate = LocalDate.now().withDayOfMonth(1);
+        LocalDate startDate = LocalDate.now().withDayOfMonth(1).minusDays(1);
         LocalDate endDate = LocalDate.now().plusMonths(1).withDayOfMonth(1).minusDays(1);
         // Fetch budgets from the database and prepare the db_input for the AI prompt.
         List<Budget> budgets = budgetRepository.findByUserIdAndStartDateAndEndDate(userId, startDate, endDate);
@@ -141,10 +142,10 @@ public class TransactionHelper {
         promptObject.put("raw_input", rawInput);
         promptObject.put("db_input", dbInput);
         String prompt = rawPrompt.concat(promptObject.toString()).concat("\nOnly return a json array with ids.");
-
+        JSONArray responseArray = new JSONArray();
         try {
             // Send the prompt to the AI service and parse the response.
-            JSONArray responseArray = aiService.getResponse(prompt, transactions.size());
+            responseArray = aiService.getResponse(prompt, transactions.size());
 
             // Update the budget IDs for each transaction based on the AI response.
             for (int i = 0; i < responseArray.length(); i++) {
@@ -153,6 +154,10 @@ public class TransactionHelper {
         } catch (IOException e) {
             // Log any errors that occur during the AI request.
             System.err.println(e.getMessage());
+        } catch (JSONException e) {
+            for (int i = 0; i < responseArray.length(); i++) {
+                transactions.get(i).setBudgetId((int) responseArray.getJSONObject(i).get("budget_id"));
+            }
         }
     }
 }

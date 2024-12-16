@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from 'react-native'
+import { View, ScrollView } from 'react-native'
 import React from 'react'
 import { RootState } from '@/store/store';
 import TransactionListItem from './TransactionListItem';
@@ -14,8 +14,7 @@ const TransactionsList: React.FC<TransactionsListProps> = ({ transactions }) => 
     const { loading } = useSelector((state: RootState) => state.transactions)
     const transactionsSorted = [...transactions].sort((a, b) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime());
     return (
-
-        <View style={{ marginTop: 0 }}>
+        <View>
             {loading && transactions && transactions.length === 0 ? (
                 <View className="mt-4 h-96 p-2 rounded-lg">
                     {[...Array(5)].map((_, index) => (
@@ -26,8 +25,7 @@ const TransactionsList: React.FC<TransactionsListProps> = ({ transactions }) => 
                 <ScrollView>
                     {transactionsSorted.map((transaction, index) =>
                         <TransactionListItem key={index} transaction={transaction} />
-                    )
-                    }
+                    )}
                 </ScrollView>
             )}
         </View>

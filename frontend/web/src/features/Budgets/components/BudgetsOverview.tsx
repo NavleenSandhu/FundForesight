@@ -4,21 +4,15 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { Skeleton } from "@/components/ui/skeleton"
 import { RootState } from "@/store/store"
 import { displayDate } from "@/utils/dateUtils"
-import { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 
 function BudgetsOverview() {
-    const { budgets, loading, error } = useSelector((state: RootState) => state.budgets)
+    const { budgets, loading } = useSelector((state: RootState) => state.budgets)
     const { profile } = useSelector((state: RootState) => state.profile)
     const navigate = useNavigate()
     const location = useLocation()
 
-    useEffect(() => {
-        if (error === "Unauthorized") {
-            navigate("/auth/login")
-        }
-    }, [error, navigate])
 
     return (
         <Card className="px-8">

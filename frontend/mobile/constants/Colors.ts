@@ -33,6 +33,7 @@ export const Colors = {
   dark: {
     text: 'hsl(218, 10%, 97.8%)',
     background: 'hsl(218, 65%, 4.48%)',
+    foreground: 'hsl(0, 0%, 100%)',
     tint: tintColorDark,
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',
