@@ -75,7 +75,7 @@ const MoveTransactionDialogButton: React.FC<MoveTransactionDialogButtonProps> = 
                 onClose={() => setDialogVisible(false)}
                 title="Move Transaction"
                 description="Assign this transaction to a different budget."
-                propStyles={{ dialogContainer: { top: "20%", left: "11%" } }}
+                propStyles={{ dialogContainer: { top: "30%", left: "11%" } }}
             >
                 <ScrollView>
                     <Text style={styles.label}>Select Budget</Text>
@@ -84,7 +84,7 @@ const MoveTransactionDialogButton: React.FC<MoveTransactionDialogButtonProps> = 
                         style={styles.picker}
                         onChange={(option) => setSelectedBudget(option.key.toString())}
                         initValue={budgets.find((budget) => budget.budget_id === transaction.budgetId)?.category_name}
-                        initValueTextStyle={{ textAlign: 'left', color: colors.text }}
+                        initValueTextStyle={{ textAlign: 'left', color: Colors.light.text }}
                         selectedKey={selectedBudget}
                     />
                 </ScrollView>

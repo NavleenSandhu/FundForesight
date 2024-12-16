@@ -18,6 +18,10 @@ const SavingGoalsOverview: React.FC = () => {
             borderColor: colors.border,
             borderRadius: 10,
             margin: 15,
+            shadowColor: '#000',
+            shadowOpacity: 0.1,
+            shadowRadius: 4,
+            elevation: 2,
         },
         header: {
             textAlign: 'center',
@@ -45,12 +49,12 @@ const SavingGoalsOverview: React.FC = () => {
         goalName: {
             fontSize: 18,
             fontWeight: '600',
+            color: colors.cardForeground,
         },
         amounts: {
             color: colors.mutedForeground
         },
         progressBar: {
-            marginTop: 10,
             height: 10,
             borderRadius: 5,
         },
@@ -74,8 +78,8 @@ const SavingGoalsOverview: React.FC = () => {
                                 <Text style={styles.goalName}>{goal.goalName}</Text>
                                 <Text style={styles.amounts}>{profile.currency} {goal.currentAmount} of {goal.targetAmount}</Text>
                             </View>
-                            <View style={[styles.progressBar, { backgroundColor: colors.muted }]}>
-                                <View style={[styles.progressBar, { width: `${progress}%`, backgroundColor: progress >= 100 ? 'green' : 'blue' }]} />
+                            <View style={[styles.progressBar, { backgroundColor: colors.muted, marginTop: 10 }]}>
+                                <View style={[styles.progressBar, { width: `${progress >= 1 ? progress : 0}%`, backgroundColor: progress >= 100 ? 'green' : colors.primary }]} />
                             </View>
                         </View>
                     )

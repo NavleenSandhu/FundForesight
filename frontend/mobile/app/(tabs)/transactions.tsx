@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, useColorScheme } from 'react-native'
+import { View, Text, StyleSheet, useColorScheme, ScrollView, } from 'react-native'
 import React from 'react'
 import TransactionsList from '@/features/transactions/components/TransactionsList'
 import BalanceCard from '@/features/transactions/components/BalanceCard'
@@ -22,21 +22,21 @@ const TransactionsScreen = () => {
         description: {
             textAlign: 'center',
             color: Colors.light.mutedForeground,
-        }
+        },
     })
 
     const { transactions } = useSelector((state: RootState) => state.transactions)
 
     return (
         <SafeAreaView>
-            <View>
+            <ScrollView style={{ marginBottom: 60 }}>
                 <Text style={styles.title}>Transactions</Text>
                 <BalanceCard />
                 <View style={{ flexDirection: 'row-reverse', marginRight: 20 }}>
                     <AddTransactionDialogButton />
                 </View>
                 <TransactionsList transactions={transactions} />
-            </View>
+            </ScrollView>
         </SafeAreaView>
     )
 }

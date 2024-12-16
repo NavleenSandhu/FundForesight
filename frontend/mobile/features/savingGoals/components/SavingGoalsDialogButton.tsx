@@ -147,6 +147,7 @@ const SavingGoalsDialogButton: React.FC<SavingGoalsDialogButtonProps> = ({ formT
                     <TextInput
                         style={styles.input}
                         placeholder="eg. Car, House"
+                        placeholderTextColor={colors.mutedForeground}
                         value={formValues.goalName}
                         onChangeText={(value) => handleInputChange('goalName', value)}
                     />
@@ -156,6 +157,7 @@ const SavingGoalsDialogButton: React.FC<SavingGoalsDialogButtonProps> = ({ formT
                     <TextInput
                         style={styles.input}
                         placeholder="Target Amount"
+                        placeholderTextColor={colors.mutedForeground}
                         keyboardType="numeric"
                         value={formValues.targetAmount}
                         onChangeText={(value) => handleInputChange('targetAmount', value)}
@@ -168,6 +170,7 @@ const SavingGoalsDialogButton: React.FC<SavingGoalsDialogButtonProps> = ({ formT
                             <TextInput
                                 style={styles.input}
                                 placeholder="Start Date"
+                                placeholderTextColor={colors.mutedForeground}
                                 value={formValues.startDate}
                                 onChangeText={(value) => handleInputChange('startDate', value)}
                             />
@@ -179,6 +182,7 @@ const SavingGoalsDialogButton: React.FC<SavingGoalsDialogButtonProps> = ({ formT
                     <TextInput
                         style={styles.input}
                         placeholder="End Date"
+                        placeholderTextColor={colors.mutedForeground}
                         value={formValues.endDate}
                         onChangeText={(value) => handleInputChange('endDate', value)}
                     />

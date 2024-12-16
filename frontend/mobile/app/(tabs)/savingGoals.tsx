@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, useColorScheme } from 'react-native'
+import { View, Text, StyleSheet, useColorScheme, ScrollView } from 'react-native'
 import React from 'react'
 import { Colors } from '@/constants/Colors'
 import SavingGoalsList from '@/features/savingGoals/components/SavingGoalsList'
@@ -23,14 +23,14 @@ const SavingGoalsScreen = () => {
     })
     return (
         <SafeAreaView>
-            <View>
+            <ScrollView style={{ marginBottom: 60}}>
                 <Text style={styles.title}>Savings</Text>
                 <Text style={styles.description}>Manage goals here and save money.</Text>
                 <View style={{ flexDirection: 'row-reverse', marginRight: 20, marginTop: 8 }}>
                     <SavingGoalsDialogButton formType='Create' />
                 </View>
                 <SavingGoalsList />
-            </View>
+            </ScrollView>
         </SafeAreaView>
     )
 }

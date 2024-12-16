@@ -84,7 +84,6 @@ const SavingGoalListItem: React.FC<SavingGoalListItemProps> = ({ goal, progress,
             color: colors.mutedForeground,
         },
         progressBar: {
-            marginTop: 10,
             height: 10,
             borderRadius: 5,
         },
@@ -103,7 +102,7 @@ const SavingGoalListItem: React.FC<SavingGoalListItemProps> = ({ goal, progress,
             padding: 10,
             backgroundColor: colors.destructive,
             borderRadius: 10,
-            marginLeft:10
+            marginLeft: 10
         },
         buttonText: {
             color: colors.destructiveForeground,
@@ -132,13 +131,13 @@ const SavingGoalListItem: React.FC<SavingGoalListItemProps> = ({ goal, progress,
                     </View>
                     <Text style={styles.amountText}><Text style={styles.bold}>{profile.currency} {goal.currentAmount.toFixed(2)}</Text>/<Text style={styles.targetAmount}>{goal.targetAmount}</Text></Text>
                 </View>
-                <View style={[styles.progressBar, { backgroundColor: colors.muted }]}>
-                    <View style={[styles.progressBar, { width: `${progress}%`, backgroundColor: progress >= 100 ? 'green' : 'blue' }]} />
+                <View style={[styles.progressBar, { backgroundColor: colors.muted, marginTop: 10 }]}>
+                    <View style={[styles.progressBar, { width: `${progress >= 1 ? progress : 0}%`, backgroundColor: progress >= 100 ? 'green' : colors.primary }]} />
                 </View>
                 <Text style={styles.progressText}>{progress.toFixed(0)}% completed</Text>
             </View>
             <View style={styles.buttonContainer}>
-                <SavingGoalsDialogButton formType='Edit' goalId={goal.goalId}/>
+                <SavingGoalsDialogButton formType='Edit' goalId={goal.goalId} />
                 <TouchableOpacity style={styles.button} onPress={() => handleDelete(goal.goalId)}>
                     <Text style={styles.buttonText}>Delete</Text>
                 </TouchableOpacity>

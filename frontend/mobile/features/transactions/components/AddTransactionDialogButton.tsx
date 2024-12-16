@@ -161,7 +161,8 @@ const AddTransactionDialogButton = () => {
                     <Text style={styles.label}>Merchant Name</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder="Merchant Name"
+                        placeholder="eg. Walmart, Amazon"
+                        placeholderTextColor={colors.mutedForeground}
                         value={formValues.merchantName}
                         onChangeText={(value) => handleInputChange('merchantName', value)}
                     />
@@ -171,6 +172,7 @@ const AddTransactionDialogButton = () => {
                     <TextInput
                         style={styles.input}
                         placeholder="Amount"
+                        placeholderTextColor={colors.mutedForeground}
                         keyboardType="numeric"
                         value={formValues.amount}
                         onChangeText={(value) => handleInputChange('amount', value)}
@@ -181,6 +183,7 @@ const AddTransactionDialogButton = () => {
                     <TextInput
                         style={styles.input}
                         placeholder="Transaction Date"
+                        placeholderTextColor={colors.mutedForeground}
                         value={formValues.transactionDate}
                         onChangeText={(value) => handleInputChange('transactionDate', value)}
                     />
@@ -203,7 +206,7 @@ const AddTransactionDialogButton = () => {
                                         />
                                     )}
                                 </View>
-                                <Text style={{ color: colors.text }}>{type}</Text>
+                                <Text>{type.charAt(0) + type.slice(1).toLowerCase()}</Text>
                             </TouchableOpacity>
                         ))}
                     </View>
@@ -215,7 +218,7 @@ const AddTransactionDialogButton = () => {
                         style={styles.picker}
                         onChange={(option) => handleInputChange('budgetId', option.key.toString())}
                         initValue={budgets.find((budget) => budget.budget_id === parseInt(formValues.budgetId))?.category_name}
-                        initValueTextStyle={{ textAlign: 'left', color: colors.text }}
+                        initValueTextStyle={{ textAlign: 'left', color: Colors.light.text }}
                         selectedKey={formValues.budgetId}
                     />
                     {formErrors.budgetId && <Text style={styles.errorText}>{formErrors.budgetId}</Text>}

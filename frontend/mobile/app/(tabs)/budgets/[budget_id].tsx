@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, useColorScheme } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, useColorScheme, ScrollView, SafeAreaView } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '@/store/store';
@@ -16,18 +16,16 @@ const BudgetDetails = () => {
 
     const styles = StyleSheet.create({
         container: {
-            flex: 1,
             padding: 16,
-            marginTop: 24
         },
         header: {
             flexDirection: 'row',
             justifyContent: 'space-between',
-            marginVertical: 16,
+            marginBottom: 16,
         },
         card: {
             padding: 16,
-            backgroundColor: '#fff',
+            backgroundColor: colors.card,
             borderRadius: 8,
             borderWidth: 1,
             borderColor: colors.border,
@@ -38,6 +36,7 @@ const BudgetDetails = () => {
             color: 'hsl(211.2, 83.2%, 53.3%)',
         },
         title: {
+            color: colors.cardForeground,
             fontSize: 18,
             fontWeight: 'bold',
             textAlign: 'center',
@@ -92,38 +91,41 @@ const BudgetDetails = () => {
     };
 
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity onPress={() => router.back()}>
-                    <MaterialIcons name='arrow-back-ios' style={styles.backButton} />
-                </TouchableOpacity>
-                {budget.category_name !== 'Other' && (
-                    <TouchableOpacity style={styles.deleteButton} onPress={deleteBudgetById} >
-                        <Text style={styles.deleteButtonText}>Delete Budget</Text>
+        <SafeAreaView>
+            <ScrollView style={styles.container}>
+                <View style={styles.header}>
+                    <TouchableOpacity onPress={() => router.replace('/budgets')}>
+                        <MaterialIcons name='arrow-back-ios' style={styles.backButton} />
                     </TouchableOpacity>
-                )}
-            </View>
-            <View style={styles.card}>
-                <Text style={styles.title}>{budget.category_name}</Text>
-                <Text style={{ textAlign: 'center' }}>Budget period: {new Date(budget.start_date).toLocaleDateString()} to {new Date(budget.end_date).toLocaleDateString()}</Text>
-                <View style={styles.amounts}>
-                    <View style={styles.amount}>
-                        <Text style={{ color: colors.mutedForeground }}>Initial Amount</Text>
-                        <Text style={{ fontSize: 16, fontWeight: '600' }}>{profile.currency} {budget.initial_amount.toFixed(2)}</Text>
-                    </View>
-                    <View style={[styles.amount]}>
-                        <Text style={{ color: colors.mutedForeground, textAlign: 'right' }}>Remaining Amount</Text>
-                        <Text style={{ fontSize: 16, fontWeight: '600', textAlign: 'right' }}>{profile.currency} {budget.remaining_amount.toFixed(2)}</Text>
+                    {budget.category_name !== 'Other' && (
+                        <TouchableOpacity style={styles.deleteButton} onPress={deleteBudgetById} >
+                            <Text style={styles.deleteButtonText}>Delete Budget</Text>
+                        </TouchableOpacity>
+                    )}
+                </View>
+                <View style={styles.card}>
+                    <Text style={styles.title}>{budget.category_name}</Text>
+                    <Text style={{ textAlign: 'center', color: colors.cardForeground }}>Budget period: {new Date(budget.start_date).toLocaleDateString()} to {new Date(budget.end_date).toLocaleDateString()}</Text>
+                    <View style={styles.amounts}>
+                        <View style={styles.amount}>
+                            <Text style={{ color: colors.mutedForeground }}>Initial Amount</Text>
+                            <Text style={{ fontSize: 16, fontWeight: '600', color: colors.cardForeground }}>{profile.currency} {budget.initial_amount.toFixed(2)}</Text>
+                        </View>
+                        <View style={[styles.amount]}>
+                            <Text style={{ color: colors.mutedForeground, textAlign: 'right' }}>Remaining Amount</Text>
+                            <Text style={{ fontSize: 16, fontWeight: '600', color: colors.cardForeground, textAlign: 'right' }}>{profile.currency} {budget.remaining_amount.toFixed(2)}</Text>
+                        </View>
                     </View>
                 </View>
-            </View>
-            <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
-                <Text style={styles.badge}>Transactions: {transactions.length}</Text>
-                <EditBudgetDialogButton budget_id={id} />
-            </View>
-            <View style={{ borderBottomColor: colors.border, borderBottomWidth: 1, marginVertical: 16 }} />
-            <TransactionsList transactions={transactions} />
-        </View>
+                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+                    <Text style={styles.badge}>Transactions: {transactions.length}</Text>
+                    <EditBudgetDialogButton budget_id={id} />
+                </View>
+                <View style={{ borderBottomColor: colors.border, borderBottomWidth: 1, marginVertical: 16 }} />
+                <TransactionsList transactions={transactions} />
+            </ScrollView>
+        </SafeAreaView>
+
     );
 };
 

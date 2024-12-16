@@ -13,7 +13,6 @@ export default function TabLayout() {
 
     return (
         <Tabs
-            initialRouteName="home"
             screenOptions={{
                 tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
                 headerShown: false,
@@ -28,7 +27,7 @@ export default function TabLayout() {
                 }),
             }}>
             <Tabs.Screen
-                name="home"
+                name="(home)"
                 options={{
                     title: 'Home',
                     tabBarIcon: ({ color }: { color: string }) => <IconSymbol name="house.fill" color={color} />,
@@ -53,6 +52,13 @@ export default function TabLayout() {
                 options={{
                     title: 'Saving Goals',
                     tabBarIcon: ({ color }: { color: string }) => <IconSymbol name="target" color={color} />,
+                }}
+            />
+            <Tabs.Screen
+                name="profile"
+                options={{
+                    title: 'Profile',
+                    tabBarIcon: ({ color }: { color: string }) => <IconSymbol name="person" color={color} />,
                 }}
             />
         </Tabs>
