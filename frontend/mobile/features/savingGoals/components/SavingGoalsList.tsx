@@ -7,7 +7,7 @@ import SavingGoalListItem from './SavingGoalListItem';
 
 export default function SavingGoalsList() {
     const dispatch = useDispatch<AppDispatch>();
-    const { savingGoals, loading } = useSelector((state: RootState) => state.savingGoals);
+    const { savingGoals } = useSelector((state: RootState) => state.savingGoals);
 
     const handleDelete = (goalId: number) => {
         dispatch(deleteSavingGoal(goalId));
@@ -15,9 +15,7 @@ export default function SavingGoalsList() {
 
     return (
         <View style={styles.container}>
-            {loading && savingGoals.length === 0 ? (
-                <View></View>
-            ) : !loading && savingGoals.length === 0 ? (
+            {savingGoals.length === 0 ? (
                 <Text style={styles.noGoalsText}>No Saving Goals to Display.</Text>
             ) : (
                 savingGoals.map((goal) => (

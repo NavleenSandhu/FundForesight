@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView, useColorScheme } from 'react-native
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import { Colors } from '@/constants/Colors';
+import { ThemedText } from '@/components/ThemedText';
 
 const SavingGoalsOverview: React.FC = () => {
     const { savingGoals } = useSelector((state: RootState) => state.savingGoals);
@@ -70,20 +71,24 @@ const SavingGoalsOverview: React.FC = () => {
         <View style={styles.container}>
             <Text style={styles.header}>Savings Goals</Text>
             <ScrollView>
-                {savingGoals.slice(0, 2).map((goal) => {
-                    const progress = (goal.currentAmount / goal.targetAmount) * 100;
-                    return (
-                        <View style={styles.card} key={goal.goalId}>
-                            <View style={styles.row}>
-                                <Text style={styles.goalName}>{goal.goalName}</Text>
-                                <Text style={styles.amounts}>{profile.currency} {goal.currentAmount} of {goal.targetAmount}</Text>
+                {savingGoals.length === 0 ?
+                    <ThemedText>No goals yet.</ThemedText>
+                    :
+                    savingGoals.slice(0, 2).map((goal) => {
+                        const progress = (goal.currentAmount / goal.targetAmount) * 100;
+                        return (
+                            <View style={styles.card} key={goal.goalId}>
+                                <View style={styles.row}>
+                                    <Text style={styles.goalName}>{goal.goalName}</Text>
+                                    <Text style={styles.amounts}>{profile.currency} {goal.currentAmount} of {goal.targetAmount}</Text>
+                                </View>
+                                <View style={[styles.progressBar, { backgroundColor: colors.muted, marginTop: 10 }]}>
+                                    <View style={[styles.progressBar, { width: `${progress >= 1 ? progress : 0}%`, backgroundColor: progress >= 100 ? 'green' : colors.primary }]} />
+                                </View>
                             </View>
-                            <View style={[styles.progressBar, { backgroundColor: colors.muted, marginTop: 10 }]}>
-                                <View style={[styles.progressBar, { width: `${progress >= 1 ? progress : 0}%`, backgroundColor: progress >= 100 ? 'green' : colors.primary }]} />
-                            </View>
-                        </View>
-                    )
-                })}
+                        )
+                    })
+                }
             </ScrollView>
         </View>
     );

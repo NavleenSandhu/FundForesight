@@ -90,33 +90,9 @@ const BalanceCard = () => {
         },
     });
 
-    const { transactions, total30DayExpense, total30DayIncome, balance, loading } = useSelector((state: RootState) => state.transactions);
+    const { total30DayExpense, total30DayIncome, balance } = useSelector((state: RootState) => state.transactions);
     const { profile } = useSelector((state: RootState) => state.profile);
 
-    if (loading && transactions && transactions.length === 0) {
-        return (
-            <View style={styles.container}>
-                <View style={styles.card}>
-                    <View style={styles.skeletonContainer}>
-                        <View style={styles.skeleton}>
-                            <View style={styles.skeletonItem} />
-                        </View>
-                        <View style={styles.skeleton}>
-                            <View style={styles.skeletonItem} />
-                        </View>
-                    </View>
-                    <View style={styles.skeletonRow}>
-                        <View style={styles.skeleton}>
-                            <View style={styles.skeletonItem} />
-                        </View>
-                        <View style={styles.skeleton}>
-                            <View style={styles.skeletonItem} />
-                        </View>
-                    </View>
-                </View>
-            </View>
-        );
-    }
 
     return (
         <View style={styles.container}>

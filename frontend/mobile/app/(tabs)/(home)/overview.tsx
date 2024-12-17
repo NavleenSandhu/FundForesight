@@ -1,7 +1,7 @@
-import { ScrollView } from 'react-native'
+import { ActivityIndicator, ScrollView } from 'react-native'
 import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { AppDispatch } from '@/store/store'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '@/store/store'
 import { fetchBalance, fetchTransactions } from '@/store/transactions/transactionsSlice'
 import { fetchBudgets } from '@/store/budgets/budgetsSlice'
 import { fetchSavingGoals } from '@/store/savingGoals/savingGoalsSlice'
@@ -15,8 +15,10 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import Switch from '@/components/Switch'
 
 const Overview = () => {
-
-
+    const { transactions, loading: transactionsLoading } = useSelector((state: RootState) => state.transactions)
+    const { budgets, loading: budgetsLoading } = useSelector((state: RootState) => state.budgets)
+    const { savingGoals, loading: savingsLoading } = useSelector((state: RootState) => state.savingGoals)
+    const { loading: profileLoading } = useSelector((state: RootState) => state.profile)
     const dispatch = useDispatch<AppDispatch>()
     useEffect(() => {
         dispatch(fetchBalance())
@@ -30,10 +32,19 @@ const Overview = () => {
         <SafeAreaView>
             <ScrollView style={{ marginBottom: 60 }}>
                 <Switch active='overview' />
-                <BalanceCard />
-                <BudgetsOverview />
-                <SavingGoalsOverview />
-                <TransactionsOverview />
+                {(transactionsLoading && transactions.length === 0) ||
+                    (budgetsLoading && budgets.length === 0) ||
+                    (savingsLoading && savingGoals.length === 0) ||
+                    profileLoading ?
+                    (<ActivityIndicator />)
+                    :
+                    (<>
+                        <BalanceCard />
+                        <BudgetsOverview />
+                        <SavingGoalsOverview />
+                        <TransactionsOverview />
+                    </>)
+                }
             </ScrollView>
         </SafeAreaView>
     )

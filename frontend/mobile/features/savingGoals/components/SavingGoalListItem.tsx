@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button, useColorScheme, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, useColorScheme, TouchableOpacity } from 'react-native';
 import { SavingGoal } from '@/models/SavingGoal';
 import { formatDate } from '@/utils/dateUtils';
 import { Colors } from '@/constants/Colors';

@@ -1,5 +1,4 @@
-import { View, Text } from 'react-native'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'expo-router'
 
 const Home = () => {
@@ -18,11 +17,6 @@ const Home = () => {
             }
         })()
     }, [])
-    return (
-        <View>
-            <Text>Home</Text>
-        </View>
-    )
 }
 
 export default Home
