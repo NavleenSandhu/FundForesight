@@ -8,6 +8,11 @@
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/images/favicon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0000ff"
+    },
     "ios": {
       "supportsTablet": true
     },

@@ -10,6 +10,8 @@ import 'react-native-reanimated';
 import { persistor, store } from '@/store/store';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { PersistGate } from 'redux-persist/integration/react';
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -21,9 +23,11 @@ export default function RootLayout() {
     });
 
     useEffect(() => {
-        if (loaded) {
-            SplashScreen.hideAsync();
-        }
+        setTimeout(() => {
+            if (loaded) {
+                SplashScreen.hideAsync();
+            }
+        }, 2000);
     }, [loaded]);
 
     if (!loaded) {
@@ -36,6 +40,8 @@ export default function RootLayout() {
                 <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
                     <Stack>
                         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                        <Stack.Screen name="index" options={{ headerShown: false }} />
                         <Stack.Screen name="+not-found" options={{ headerShown: false }} />
                     </Stack>
                     <StatusBar style="auto" />
