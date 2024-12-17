@@ -6,6 +6,11 @@ import { Colors } from '@/constants/Colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { countryCodes } from '@/constants/countryCodes'
 import ModalSelector from 'react-native-modal-selector';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/store/store';
+import { addProfile } from '@/store/profile/profileSlice';
+import { addBudget } from '@/store/budgets/budgetsSlice';
+import { endOfMonth, startOfMonth } from 'date-fns';
 type RegisterFormInputs = {
     username: string;
     email: string;
@@ -111,9 +116,10 @@ const Register = () => {
     });
     const [error, setError] = useState("");
     const router = useRouter();
-
+    const dispatch = useDispatch<AppDispatch>()
     const handleRegister = async (data: RegisterFormInputs) => {
         setError("");
+        const { email, password, username, countryCode } = data
         try {
             const res = await fetch(`${process.env.EXPO_PUBLIC_GATEWAY_URL}/register`, {
                 method: 'POST',
@@ -121,8 +127,31 @@ const Register = () => {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify({ email, password, username })
             });
+            dispatch(addProfile(countryCode))
+            const now = Date.now()
+            dispatch(addBudget({
+                category_name: 'Other',
+                initial_amount: 500,
+                remaining_amount: 500,
+                start_date: startOfMonth(now),
+                end_date: endOfMonth(now)
+            }))
+            dispatch(addBudget({
+                category_name: 'Groceries',
+                initial_amount: 500,
+                remaining_amount: 500,
+                start_date: startOfMonth(now),
+                end_date: endOfMonth(now)
+            }))
+            dispatch(addBudget({
+                category_name: 'Rent',
+                initial_amount: 700,
+                remaining_amount: 700,
+                start_date: startOfMonth(now),
+                end_date: endOfMonth(now)
+            }))
             if (res.status === 201) {
                 router.replace("/overview");
             } else {
