@@ -16,7 +16,9 @@ function App() {
 				credentials: "include",
 			})
 			if (res.status === 401) {
-				navigate('/auth/login')
+				if (location.pathname !== "/auth/login" && location.pathname !== "/auth/register") {
+					navigate('/auth/login')
+				}
 			} else if (res.status === 200 && location.pathname === "/") {
 				navigate('/dashboard/home')
 			}
