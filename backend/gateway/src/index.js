@@ -3,7 +3,6 @@ const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const { Strategy } = require("passport-google-oauth20");
 const session = require("express-session");
-const cors = require('cors');
 require("dotenv").config();
 const path = require("path");
 const Router = require("./routes/gatewayRoutes.js");

@@ -9,7 +9,6 @@ import SelectCountry from "./SelectCountry";
 
 function Plaid() {
     const dispatch = useDispatch<AppDispatch>()
-    dispatch(fetchProfile())
     const [linkToken, setLinkToken] = useState<string | null>(null)
     const [transactionsAdded, setTransactionsAdded] = useState<boolean>(false)
     const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL
@@ -18,8 +17,8 @@ function Plaid() {
     useEffect(() => {
 
         async function fetchLinkToken() {
+            dispatch(fetchProfile())
             try {
-
                 const res = await fetch(`${GATEWAY_URL}/plaidAccounts/link-token`, {
                     method: "GET",
                     credentials: "include"
