@@ -102,7 +102,7 @@ const BalanceCard = () => {
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
             >
-                {balance && (
+                {balance > 0 && (
                     <>
                         <Text style={styles.totalBalanceText}>Total Balance</Text>
                         <Text style={styles.balanceText}>

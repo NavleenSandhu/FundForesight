@@ -56,7 +56,7 @@ const profile = () => {
     }
     return (
         <SafeAreaView>
-            <ScrollView>
+            <ScrollView style={{ marginBottom: 60 }}>
                 <Text style={styles.title}>Profile</Text>
                 <TouchableOpacity style={styles.row} onPress={() => { Linking.openURL('http://192.168.248.32:4000/auth/login') }}>
                     <Text style={styles.linkAccountText}>Link bank account</Text>

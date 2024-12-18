@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
 import { deleteSavingGoal } from '@/store/savingGoals/savingGoalsSlice';
 import SavingGoalListItem from './SavingGoalListItem';
+import { ThemedText } from '@/components/ThemedText';
 
 export default function SavingGoalsList() {
     const dispatch = useDispatch<AppDispatch>();
@@ -16,7 +17,7 @@ export default function SavingGoalsList() {
     return (
         <View style={styles.container}>
             {savingGoals.length === 0 ? (
-                <Text style={styles.noGoalsText}>No Saving Goals to Display.</Text>
+                <ThemedText style={{ textAlign: 'center', marginVertical: 10 }} type='subtitle'>No Saving Goals to Display.</ThemedText>
             ) : (
                 savingGoals.map((goal) => (
                     <SavingGoalListItem
@@ -37,11 +38,5 @@ const styles = StyleSheet.create({
     },
     columnWrapper: {
         justifyContent: 'space-between',
-    },
-    noGoalsText: {
-        textAlign: 'center',
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginVertical: 20,
     },
 });
