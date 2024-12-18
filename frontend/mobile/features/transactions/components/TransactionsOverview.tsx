@@ -38,7 +38,7 @@ const TransactionsOverview = () => {
         buttonText: {
             color: colors.primaryForeground,
             fontSize: 14,
-            fontWeight:"600"
+            fontWeight: "600"
         },
     })
 
@@ -48,11 +48,14 @@ const TransactionsOverview = () => {
         <View style={styles.container}>
             <Text style={styles.title}>Transactions</Text>
             <TransactionsList transactions={transactions.slice(0, 5)} />
-            <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
-                <TouchableOpacity style={styles.button} onPress={() => { router.push('/transactions') }}>
-                    <Text style={styles.buttonText}>View More</Text>
-                </TouchableOpacity>
-            </View>
+            {transactions.length > 5
+                &&
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
+                    <TouchableOpacity style={styles.button} onPress={() => { router.push('/transactions') }}>
+                        <Text style={styles.buttonText}>View More</Text>
+                    </TouchableOpacity>
+                </View>
+            }
         </View>
     )
 }

@@ -13,15 +13,6 @@ const app = express();
 const port = process.env.PORT;
 const secret = process.env.SECRET;
 
-
-//Remove in prod
-app.use(cors({
-    origin: [process.env.FRONTEND_URL, 'http://localhost:8081', 'http://152.59.78.9'],
-    credentials: true
-}))
-//Remove in prod
-
-
 app.use(express.json());
 app.use(cookieParser(secret));
 
@@ -92,9 +83,10 @@ app.get(
         const { token, newUser } = req.user;
         res
             .cookie("access_token", token, {
-                maxAge: 24 * 60 * 60 * 1000,
+                maxAge: 315360000 * 1000,
                 httpOnly: true,
                 signed: true,
+                secure: true,
             })
         // if not newUser redirect to dashboard
         if (newUser) {

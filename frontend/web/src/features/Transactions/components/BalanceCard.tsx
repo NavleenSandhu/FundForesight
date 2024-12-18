@@ -40,7 +40,7 @@ const BalanceCard = () => {
         <div>
             <div className="rounded-lg shadow-lg shadow-slate p-6 text-center" style={cardStyle}>
                 {
-                    balance ?
+                    balance > 0 ?
                         <>
                             <p className="text-xl font-semibold text-secondary">Total Balance</p>
                             <p className={`text-3xl font-bold text-white`}>

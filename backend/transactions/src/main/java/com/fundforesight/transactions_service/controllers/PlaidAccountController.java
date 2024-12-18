@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingServletRequestParameterException;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,7 +40,6 @@ public class PlaidAccountController {
      * @param userId The ID of the user for whom the link token is generated.
      * @return A ResponseEntity containing the link token or an error message.
      */
-    @CrossOrigin("${API_GATEWAY_URL}")
     @GetMapping("/link-token")
     public ResponseEntity<?> getLinkToken(
             @RequestParam(name = "user_id", defaultValue = "0", required = false) int userId) {
@@ -69,7 +67,6 @@ public class PlaidAccountController {
      * @param body A map containing the user's public token and ID.
      * @return A ResponseEntity indicating the result of the operation.
      */
-    @CrossOrigin("${API_GATEWAY_URL}")
     @PostMapping(value = "/addPlaidAccount", headers = { "Content-Type=application/json" })
     public ResponseEntity<?> addPlaidAccounts(@RequestBody Map<String, Object> body) {
         try {

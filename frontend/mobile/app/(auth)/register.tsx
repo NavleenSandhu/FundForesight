@@ -11,6 +11,7 @@ import { AppDispatch } from '@/store/store';
 import { addProfile } from '@/store/profile/profileSlice';
 import { addBudget } from '@/store/budgets/budgetsSlice';
 import { endOfMonth, startOfMonth } from 'date-fns';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 type RegisterFormInputs = {
     username: string;
     email: string;
@@ -129,30 +130,32 @@ const Register = () => {
                 },
                 body: JSON.stringify({ email, password, username })
             });
-            dispatch(addProfile(countryCode))
-            const now = Date.now()
-            dispatch(addBudget({
-                category_name: 'Other',
-                initial_amount: 500,
-                remaining_amount: 500,
-                start_date: startOfMonth(now),
-                end_date: endOfMonth(now)
-            }))
-            dispatch(addBudget({
-                category_name: 'Groceries',
-                initial_amount: 500,
-                remaining_amount: 500,
-                start_date: startOfMonth(now),
-                end_date: endOfMonth(now)
-            }))
-            dispatch(addBudget({
-                category_name: 'Rent',
-                initial_amount: 700,
-                remaining_amount: 700,
-                start_date: startOfMonth(now),
-                end_date: endOfMonth(now)
-            }))
             if (res.status === 201) {
+                const cookies = res.headers.get('set-cookie')
+                AsyncStorage.setItem('token', cookies?.split(';')[0] || '')
+                dispatch(addProfile(countryCode))
+                const now = Date.now()
+                dispatch(addBudget({
+                    category_name: 'Other',
+                    initial_amount: 500,
+                    remaining_amount: 500,
+                    start_date: startOfMonth(now),
+                    end_date: endOfMonth(now)
+                }))
+                dispatch(addBudget({
+                    category_name: 'Rent',
+                    initial_amount: 700,
+                    remaining_amount: 700,
+                    start_date: startOfMonth(now),
+                    end_date: endOfMonth(now)
+                }))
+                dispatch(addBudget({
+                    category_name: 'Groceries',
+                    initial_amount: 500,
+                    remaining_amount: 500,
+                    start_date: startOfMonth(now),
+                    end_date: endOfMonth(now)
+                }))
                 router.replace("/overview");
             } else {
                 const errorMessage = await res.json();

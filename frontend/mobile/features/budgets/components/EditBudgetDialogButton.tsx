@@ -112,7 +112,7 @@ const EditBudgetDialogButton: React.FC<EditBudgetDialogButtonProps> = ({ budget_
                 <ScrollView>
                     <Text style={styles.label}>Category Name</Text>
                     <TextInput
-                        style={styles.input}
+                        style={[styles.input, budget?.category_name === 'Other' && { color: Colors.light.mutedForeground }]}
                         placeholder="eg. Groceries, Rent"
                         placeholderTextColor={colors.mutedForeground}
                         value={formValues.category_name}

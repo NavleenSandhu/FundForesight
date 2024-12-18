@@ -11,9 +11,10 @@ const login = async (req, res) => {
         const token = await getLoginToken(email, password);
         res
             .cookie("access_token", token, {
-                maxAge: 24 * 60 * 60 * 1000,
+                maxAge: 315360000 * 1000,
                 httpOnly: true,
                 signed: true,
+                secure: true,
             })
             .status(200).json({ message: "User logged-in successfully" });
     } catch (error) {
@@ -33,9 +34,10 @@ const register = async (req, res) => {
         const token = await getRegisterToken(email, username, password);
         res
             .cookie("access_token", token, {
-                maxAge: 24 * 60 * 60 * 1000,
+                maxAge: 315360000 * 1000,
                 httpOnly: true,
                 signed: true,
+                secure: true,
             })
             .status(201).json({ message: "User registered successfully" });
     } catch (error) {

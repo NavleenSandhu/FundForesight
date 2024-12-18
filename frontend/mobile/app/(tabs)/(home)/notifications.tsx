@@ -19,7 +19,7 @@ const notifications = () => {
     })
     return (
         <SafeAreaView>
-            <ScrollView>
+            <ScrollView style={{ marginBottom: 60 }}>
                 <Switch active='notifications' />
                 <Text style={styles.title}>Notifications</Text>
                 <NotificationList />

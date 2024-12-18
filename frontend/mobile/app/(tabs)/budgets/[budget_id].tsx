@@ -17,6 +17,7 @@ const BudgetDetails = () => {
     const styles = StyleSheet.create({
         container: {
             padding: 16,
+            marginBottom: 60
         },
         header: {
             flexDirection: 'row',

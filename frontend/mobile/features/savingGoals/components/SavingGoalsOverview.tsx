@@ -72,7 +72,7 @@ const SavingGoalsOverview: React.FC = () => {
             <Text style={styles.header}>Savings Goals</Text>
             <ScrollView>
                 {savingGoals.length === 0 ?
-                    <ThemedText>No goals yet.</ThemedText>
+                    <ThemedText style={{ textAlign: 'center', marginVertical: 10 }} type='subtitle'>No goals yet.</ThemedText>
                     :
                     savingGoals.slice(0, 2).map((goal) => {
                         const progress = (goal.currentAmount / goal.targetAmount) * 100;

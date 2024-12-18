@@ -1,0 +1,133 @@
+services:
+  postgres:
+    image: postgres
+    container_name: postgres
+    env_file:
+      - postgres.env
+    volumes:
+      - 'C:\Projects\Budgeting App\backend\data\schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro'
+      - ./db-data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    networks:
+      - fund-foresight
+
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: zookeeper
+    ports:
+      - '2181:2181'
+    networks:
+      - fund-foresight
+
+  kafka:
+    image: wurstmeister/kafka
+    container_name: kafka
+    env_file:
+      - kafka.env
+    ports:
+      - '9092:9092'
+    networks:
+      - fund-foresight
+    depends_on:
+      - zookeeper
+
+  auth-service:
+    image: auth-service
+    container_name: auth-service
+    env_file:
+      - './backend/auth/.env'
+    ports:
+      - '5000:5000'
+    networks:
+      - fund-foresight
+    depends_on:
+      - postgres
+
+  budget-service:
+    image: budget-service
+    container_name: budget-service
+    env_file:
+      - './backend/budgets/.env'
+    ports:
+      - '6500:6500'
+    networks:
+      - fund-foresight
+    depends_on:
+      - postgres
+
+  transactions-service:
+    image: transactions-service
+    container_name: transactions-service
+    env_file:
+      - './backend/transactions/.env'
+    ports:
+      - '8080:8080'
+    networks:
+      - fund-foresight
+    depends_on:
+      - postgres
+      - kafka
+
+  savings-service:
+    image: savings-service
+    container_name: savings-service
+    env_file:
+      - './backend/savings/.env'
+    ports:
+      - '7000:7000'
+    networks:
+      - fund-foresight
+    depends_on:
+      - postgres
+
+  profiles-service:
+    image: profiles-service
+    container_name: profiles-service
+    env_file:
+      - './backend/profiles/.env'
+    ports:
+      - '7500:7500'
+    networks:
+      - fund-foresight
+    depends_on:
+      - postgres
+
+  notifications-service:
+    image: notifications-service
+    container_name: notifications-service
+    env_file:
+      - './backend/notifications/.env'
+    ports:
+      - '7200:7200'
+    networks:
+      - fund-foresight
+    depends_on:
+      - postgres
+      - kafka
+      - transactions-service
+      - budget-service
+
+  gateway:
+    image: gateway
+    container_name: gateway
+    env_file:
+      - './backend/gateway/.env'
+    ports:
+      - '4000:4000'
+    networks:
+      - fund-foresight
+    depends_on:
+      - auth-service
+      - budget-service
+      - transactions-service
+      - savings-service
+      - profiles-service
+      - notifications-service
+
+networks:
+  fund-foresight:
+
+
+volumes:
+  db-data:

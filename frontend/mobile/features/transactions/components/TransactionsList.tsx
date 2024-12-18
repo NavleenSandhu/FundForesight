@@ -14,7 +14,7 @@ const TransactionsList: React.FC<TransactionsListProps> = ({ transactions }) => 
         <View>
             {
                 transactions.length === 0 ?
-                    <ThemedText type='subtitle'>No transactions to display here.</ThemedText>
+                    <ThemedText style={{ textAlign: 'center', marginVertical:10 }} type='subtitle'>No transactions to display here.</ThemedText>
                     :
                     transactionsSorted.map((transaction, index) =>
                         <TransactionListItem key={index} transaction={transaction} />
