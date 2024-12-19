@@ -156,7 +156,9 @@ const Register = () => {
                     start_date: startOfMonth(now),
                     end_date: endOfMonth(now)
                 }))
-                router.replace("/overview");
+                setTimeout(()=>{
+                    router.replace("/overview");
+                }, 2000)
             } else {
                 const errorMessage = await res.json();
                 setError(errorMessage.message);

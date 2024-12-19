@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import { Colors } from '@/constants/Colors';
 import CustomCarousel from '@/components/CustomCarousel';
+import { ThemedText } from '@/components/ThemedText';
 
 
 const BudgetsOverview = () => {
@@ -33,25 +34,25 @@ const BudgetsOverview = () => {
         },
         noBudgetsText: {
             textAlign: 'center',
-            fontSize: 16,
+            marginVertical: 10,
         }
     });
 
     const { budgets } = useSelector((state: RootState) => state.budgets);
 
-
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Budgets</Text>
-            {budgets.length === 0 ? (
-                <Text style={styles.noBudgetsText}>
-                    No budgets created.
-                </Text>
-            ) : (
-                <CustomCarousel
-                    data={budgets}
-                />
-            )}
+            {
+                budgets.length === 0 ? (
+                    <ThemedText style={styles.noBudgetsText} type='subtitle'>
+                        No budgets created.
+                    </ThemedText>
+                ) : (
+                    <CustomCarousel
+                        data={budgets}
+                    />
+                )}
         </View>
     );
 };
