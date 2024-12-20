@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: budget-service
+  labels:
+    app: budget-service
+  namespace: fund-foresight
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: budget-service
+  template:
+    metadata:
+      labels:
+        app: budget-service
+    spec:
+      containers:
+      - name: budget-service
+        image: navleensandhu/budget-service
+        ports:
+        - containerPort: 6500
+        envFrom:
+        - configMapRef:
+            name: budget-service-config
