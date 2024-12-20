@@ -14,6 +14,8 @@ import { AppDispatch } from "@/store/store";
 import { addProfile } from "@/store/profiles/profilesSlice";
 import { addBudget } from "@/store/budgets/budgetsSlice";
 import { endOfMonth, startOfMonth } from "date-fns";
+import AlertBox from "@/components/AlertBox";
+import { useState } from "react";
 
 const minUsernameLen: number = 3;
 const maxUsernameLen: number = 40;
@@ -34,6 +36,7 @@ type RegisterFormInputs = z.infer<typeof registerSchema>;
 function Register() {
     const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL;
     const dispatch = useDispatch<AppDispatch>()
+    const [error, setError] = useState("");
     const navigate = useNavigate();
     const form = useForm<RegisterFormInputs>({
         resolver: zodResolver(registerSchema),
@@ -81,12 +84,15 @@ function Register() {
         if (registerRes.status === 201) {
             navigate("/auth/plaidAccount");
         } else {
+            const errorMessage = await registerRes.json();
+            setError(errorMessage.message);
             console.error("Error while registering");
         }
     };
 
     return (
         <div className="flex flex-col justify-center items-center w-full lg:w-1/2 py-6">
+            {error && <AlertBox title="Register" message={error}></AlertBox>}
             <div className="w-full">
                 <h2 className="text-2xl font-semibold text-center">Create an account</h2>
                 <p className="text-center mt-2 mb-6">
