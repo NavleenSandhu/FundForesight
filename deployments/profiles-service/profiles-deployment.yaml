@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: profiles-service
+  namespace: fund-foresight
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: profiles-service
+  template:
+    metadata:
+      labels:
+        app: profiles-service
+    spec:
+      containers:
+        - name: profiles-service
+          image: navleensandhu/profiles-service
+          ports:
+            - containerPort: 7500
+          envFrom:
+            - configMapRef:
+                name: profiles-service-config

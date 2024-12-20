@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: notifications-service
+  labels:
+    app: notifications-service
+  namespace: fund-foresight
+spec:
+  selector:
+    app: notifications-service
+  ports:
+    - protocol: TCP
+      port: 7200
+      targetPort: 7200
+  type: ClusterIP

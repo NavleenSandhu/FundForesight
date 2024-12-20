@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notifications-service
+  labels:
+    app: notifications-service
+  namespace: fund-foresight
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notifications-service
+  template:
+    metadata:
+      labels:
+        app: notifications-service
+    spec:
+      containers:
+        - name: notifications
+          image: navleensandhu/notifications-service
+          ports:
+            - containerPort: 7200
+          envFrom:
+            - configMapRef:
+                name: notifications-service-config

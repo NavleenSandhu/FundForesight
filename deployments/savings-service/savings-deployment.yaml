@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: savings-service
+  labels:
+    app: savings-service
+  namespace: fund-foresight
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: savings-service
+  template:
+    metadata:
+      labels:
+        app: savings-service
+    spec:
+      containers:
+        - name: savings-service
+          image: navleensandhu/savings-service
+          ports:
+            - containerPort: 7000
+          envFrom:
+            - configMapRef:
+                name: savings-service-config
