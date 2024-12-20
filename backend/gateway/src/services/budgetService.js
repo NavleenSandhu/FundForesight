@@ -63,8 +63,7 @@ const updateUserBudget = async (token, budget, budget_id) => {
     }
 };
 const deleteUserBudget = async (token, budget_id) => {
-    const budgetRes = await getUserBudget(token, budget_id);
-    const budget = await budgetRes.json();
+    const budget = await getUserBudget(token, budget_id);
     if (!budget) {
         throw new HttpError("Budget not found", 404);
     }
@@ -74,7 +73,7 @@ const deleteUserBudget = async (token, budget_id) => {
     const user_id = await getUserId(token);
     if (!user_id) {
         throw new Error("User validation failed");
-    }
+    }   
 
     const res = await fetch(
         `${process.env.BUDGET_URL}/${budget_id}?user_id=${user_id}`, {

@@ -36,19 +36,17 @@ const getLoginToken = async (email, password) => {
 };
 
 const getRegisterToken = async (email, username, password) => {
-    console.log(process.env.AUTH_URL);
-
     const res = await fetch(`${process.env.AUTH_URL}/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, username, password }),
     });
 
+    const data = await res.json();
     if (res.ok) {
-        const data = await res.json();
         return data.token;
     } else {
-        throw new Error(await res.text());
+        throw new Error(await data.error);
     }
 };
 

@@ -55,6 +55,10 @@ services:
       - fund-foresight
     depends_on:
       - postgres
+      - profiles-service
+      - savings-service
+      - transactions-service
+      - auth-service
 
   transactions-service:
     image: transactions-service
@@ -127,7 +131,6 @@ services:
 
 networks:
   fund-foresight:
-
 
 volumes:
   db-data:

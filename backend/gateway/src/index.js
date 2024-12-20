@@ -7,14 +7,14 @@ require("dotenv").config();
 const path = require("path");
 const Router = require("./routes/gatewayRoutes.js");
 const { initBudgets } = require("./utils/initBudgets.js");
-
+const logger = require('./logging/logger')
 const app = express();
 const port = process.env.PORT;
 const secret = process.env.SECRET;
 
 app.use(express.json());
 app.use(cookieParser(secret));
-
+app.use(logger)
 // Passport configuration
 passport.use(
     new Strategy(
