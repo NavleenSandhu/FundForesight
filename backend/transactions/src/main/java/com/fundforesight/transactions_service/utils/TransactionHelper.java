@@ -1,6 +1,7 @@
 package com.fundforesight.transactions_service.utils;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -94,7 +95,7 @@ public class TransactionHelper {
 
             // Update the budget amounts based on the calculated totals.
             totalAmounts.forEach((budgetId, totalAmount) -> {
-                budgetRepository.updateBudgetAmountById(budgetId, totalAmount);
+                budgetRepository.updateBudgetAmountById(budgetId, BigDecimal.valueOf(totalAmount));
             });
         }
     }

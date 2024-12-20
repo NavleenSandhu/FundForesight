@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fundforesight.transactions_service.database.BudgetRepository;
 import com.fundforesight.transactions_service.database.PlaidAccountRepository;
 import com.fundforesight.transactions_service.database.TransactionRepository;
-import com.fundforesight.transactions_service.models.Budget;
 import com.fundforesight.transactions_service.models.Transaction;
 import com.fundforesight.transactions_service.services.PlaidService;
 import com.fundforesight.transactions_service.utils.TransactionHelper;
@@ -103,13 +101,12 @@ public class TransactionController {
             // Save all transactions to the database.
             List<Transaction> transactionsSaved = transactionRepository.saveAll(transactions);
             transactionsSaved.forEach(t -> {
-                Optional<Budget> budgetOpt = budgetRepository.findById(t.getBudgetId());
-                Budget budget;
-                if (budgetOpt.isPresent()) {
-                    budget = budgetOpt.get();
-                    // Update the budget for the transaction.
-                    budgetRepository.updateBudgetAmountById(t.getBudgetId(), budget.getRemainingAmount().subtract(BigDecimal.valueOf(t.getAmount())).doubleValue());
+                // Update the budget for the transaction.
+                BigDecimal amount = BigDecimal.valueOf(t.getAmount());
+                if (t.getTransactionType().equals(Transaction.TransactionType.INCOME)) {
+                    amount = amount.negate();
                 }
+                budgetRepository.updateBudgetAmountById(t.getBudgetId(), amount);
             });
             // Send a message to notification service.
             kafkaTemplate.send("transactions", transactionsSaved);

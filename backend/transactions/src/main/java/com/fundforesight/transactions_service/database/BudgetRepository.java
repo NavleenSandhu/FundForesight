@@ -10,6 +10,7 @@ import com.fundforesight.transactions_service.models.Budget;
 
 import jakarta.transaction.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,5 +24,5 @@ public interface BudgetRepository extends JpaRepository<Budget, Integer> {
     @Modifying
     @Transactional
     @Query("UPDATE Budget b SET b.remainingAmount = b.remainingAmount - :remainingAmount WHERE b.budgetId = :budgetId")
-    void updateBudgetAmountById(@Param("budgetId") int budgetId, @Param("remainingAmount") double remainingAmount);
+    void updateBudgetAmountById(@Param("budgetId") int budgetId, @Param("remainingAmount") BigDecimal remainingAmount);
 }
