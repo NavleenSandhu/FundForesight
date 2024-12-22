@@ -13,6 +13,10 @@ Fund Foresight is a comprehensive budgeting app that helps users centralize and 
 - **Responsive Design**: Works seamlessly on both web and mobile devices.
 - **Real-time Updates**: Fetch transaction data on each reload while maintaining previous transaction visibility.
 
+## Data flow
+
+<img src="./assets/images/flow.png">
+
 ## Tech Stack
 
 - **Frontend**:
@@ -35,6 +39,26 @@ Fund Foresight is a comprehensive budgeting app that helps users centralize and 
   - Plaid API for fetching financial data
   - JWT for user authentication
   - Kafka for messaging between services
+
+## Demo
+
+<img src="./assets/gifs/signup.gif">
+
+<img src="./assets/gifs/link.gif">
+
+<img src="./assets/gifs/home.gif">
+
+## Wireframes
+<div style="display: grid; grid-template-columns: auto auto auto auto;">
+  <img src="./assets/images/banks.png" height=300 style="margin-bottom: 20px;">
+  <img src="./assets/images/accounts.png" height=300 style="margin-bottom: 20px;">
+  <img src="./assets/images/home.png" height=300 style="margin-bottom: 20px;">
+  <img src="./assets/images/transactions.png" height=300 style="margin-bottom: 20px;">
+  <img src="./assets/images/budget.png" height=300 style="margin-bottom: 20px;">
+  <img src="./assets/images/create-budget.png" height=300 style="margin-bottom: 20px;">
+  <img src="./assets/images/savings.png" height=300 style="margin-bottom: 20px;">
+  <img src="./assets/images/edit-savings.png" height=300 style="margin-bottom: 20px;">
+</div>
 
 ## Live
 
