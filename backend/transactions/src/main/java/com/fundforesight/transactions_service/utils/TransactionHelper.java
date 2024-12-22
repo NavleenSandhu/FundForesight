@@ -83,6 +83,16 @@ public class TransactionHelper {
             // Save all fetched transactions to the database.
             transactionRepository.saveAll(transactions);
 
+            // Filter transactions to only include those from the current month.
+            transactions = transactions.stream()
+                    .filter(transaction -> {
+                        LocalDate transactionDate = transaction.getTransactionDate().toInstant()
+                                .atZone(ZoneId.systemDefault()).toLocalDate();
+                        LocalDate firstDayOfMonth = LocalDate.now().withDayOfMonth(1).minusDays(1);
+                        LocalDate lastDayOfMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
+                        return !transactionDate.isBefore(firstDayOfMonth) && !transactionDate.isAfter(lastDayOfMonth);
+                    })
+                    .collect(Collectors.toList());
             // Group transactions by budget ID and calculate the total amount for each
             // budget.
             Map<Integer, Double> totalAmounts = transactions.stream()
